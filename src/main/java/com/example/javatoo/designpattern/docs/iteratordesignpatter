@@ -1,0 +1,127 @@
+Iterator Design Pattern
+-----------------------
+This design pattern is used to provide a standard way to traverse through a group of objects.
+
+> Provides a way to access the elements of an aggregate object without exposing its underlying represenation.
+
+> It hides the actual implementation of traversal through the collection and client programs just use iterator methods.
+
+Suppose we have a list of Radio channels and the client program want to travese through them one by one or based on the type of channel. For example some client programs are only interested in English channels and want to process only them, they don't want to process other types of channels.
+
+So we can provide a collection of channels to the client and let them write the logic to traverse through the channels and decide whether to process them. But this solution has lots of issues such as client has to come up with the logic for traversal. We can't make sure that client logic is correct. Furthermore if the number of client grows then it will become very hard to maintain.
+
+Here we can use iterator pattern and provide iteration based on type of channel. We should make sure that client program can access the list of channels only thorugh the iterator.
+
+The first part of implementation is to define the contract for our collection and iterator interfaces.
+
+public enum ChannelTyeEnum {
+	ENGLISH, HINDI, FRENCH, ALL;
+}
+
+public class Channel {
+	private double frequency;
+	private ChannelTypeEnum TYPE;
+	
+	// constructor with parameter
+	// getters
+	// toString implementation
+}
+
+public interface ChannelCollection{
+	public void addChannel(Channel c);
+	public void removeChannel(Channel c);
+	public ChannelIterator iterator(ChannelTypeEnum type);
+}
+
+ChannelCollection interface defines the contract for our collection class implementation. Notice that there are methods to add and remove a channel but there is no method that returns the list of channels. ChannelCollection has a method that returns the iterator for traversal. ChannelIterator interface defines following methods.
+
+public interface ChannelIterator {
+	public boolean hasNext();
+	public Channel next();
+}
+
+public class ChannelCollectionImpl implements ChannelCollection {
+	private List<Channel> channelsList;
+	public ChannelCollectionImpl(){
+		channelsList = new ArrayList<>();
+	}
+	public void addChannel(Channel c){
+		this.channelsList.add(c);
+	}
+	public void removeChannel(Channel c){
+		this.channelsList.remove(c);
+	}
+	
+	@Override
+	public ChannelIterator iterator(ChannelTypeEnum type){
+		return new ChannelIteratorImpl(type, this.channelsList);
+	}
+	
+	private class ChannelIteratorImpl implements ChannelIterator{
+		private ChannelTypeEnum type;
+		private List<Channel> channels;
+		private int prosition;
+		
+		public ChannelIteratorImpl(ChannelTypeEnum ty, List<Channel> channelsList){
+			this.type = ty;
+			this.channels = channelsList;
+		}
+		
+		@Override
+		public boolean hasNext(){
+			while(position < channels.size()){
+				Channel c = channels.get(position);
+				if(c.getTYPE().equals(type)) || type.equals(ChannelTypeEnum.ALL)){
+					return true;
+				} else {
+					position++;
+				}
+				return false;
+			}
+		}
+		
+		@Override
+		public Channel next(){
+			Channel c = channels.get(position);
+			position++;
+			return c;
+		}
+	}
+}
+
+Notice the inner class implementation of iterator interface so that the implementation can't be used by any other collection. Same approach is followed by collection classes also and all of them thave inner class implementation of iterator interface.
+
+public class IteratorPatternTest {
+	public static void main(String[] args){
+		ChannelCollection channels = populateChannels();
+		ChannelIterator baseIterator = channels.iterator(ChannelTypeEnum.ALL);
+		while(baseIterator.hasNext()){
+			Channel c = baseIterator.next();
+			System.out.println(c.toString());
+		}
+		System.out.println("******");
+		//Channel Type Iterator
+		ChannelIterator englishIterator = channels.iterator(ChannelTypeEnum.ENGLISH);
+		while(englishIterator.hasNext()){
+			Channel c = englishIterator.next();
+			System.out.println(c.toString());
+		}
+	}
+	
+	private static ChannelCollection populateChannels(){
+		ChannelCollection channels = new ChannelCollectionImpl();
+		channels.addChannel(new Channel(98.5, ChannleTypeEnum.ENGLISH));
+		channels.addChannel(new Channel(100.5, ChannleTypeEnum.HINDI));
+		channels.addChannel(new Channel(101.5, ChannleTypeEnum.ENGLISH));
+		channels.addChannel(new Channel(102.5, ChannleTypeEnum.HINDI));
+		channels.addChannel(new Channel(103.5, ChannleTypeEnum.FRENCH));
+		returns channels;
+	}
+}
+
+prons:
+> Iterator pattern is useful when you want to provide a standard way to iterate over a collection and hide the implementation logic from client program.
+> The logic for iteration is embedded in the collection itself and it helps client program to iterate over them easily.
+
+Ex:
+Collection framework, java.uitl.Scanner

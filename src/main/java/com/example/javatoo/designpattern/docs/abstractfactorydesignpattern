@@ -1,0 +1,95 @@
+Abstract Factory Design Pattern
+-------------------------------
+Abstract Factory design pattern is one of the creational pattern. Abstract Factory pattern is almost similiar to Factory Pattern except the fact that its more like factory of factories.
+
+public abstract class Flight {
+    public abstract String getSpeed();
+}
+
+public class Indigo extends Flight {
+    private String speedPerHour;
+	public Indigo(String speedPerHour){
+		this.speedPerHour = speedPerHour;
+	}
+	
+	@Override
+	public String getSpeed(){
+		return this.speedPerHour;
+	}
+}
+
+public class AirAsia extends Flight {
+	private String speedPerHour;
+	public AirAsia(String speedPerHour){
+		this.speedPerHour = speedPerHour;
+	}
+	
+	@Override
+	public String getSpeed(){
+		return this.speedPerHour;
+	}
+}
+
+> First of all we need to create a Abstract Factory interface or abstrct class.
+
+public interface FlightAbstractFactory {
+	public Flight createFlight();
+}
+
+> Notice that createFlight method is returning an instance of super class Flight.
+Now our factory classes will implement this interface and return their respective sub-class
+
+public class IndigoFactory implements FlightAbstractFactory {
+	private String speedPerHour;
+	public IndigoFactory(String speedPerHour){
+		this.speedPerHour = speedPerHour;
+	}
+	
+	@Override
+	public Flight creatFlight(){
+		return new Indigo(speedPerHour);
+	}
+}
+
+public class AirAsiaFactory implements FlightAbstractFactory {
+	private String speedPerHour;
+	public AirAsiaFactory(String speedPerHour){
+		this.speedPerHour = speedPerHour;
+	}
+	
+	@Override
+	public Flight creatFlight(){
+		return new AirAsia(speedPerHour);
+	}
+}
+
+
+public class FlightFactory {
+    public static Flight getFlight(FlightAbstractFactory factory){
+		return factory.creatFlight();
+	}
+}
+
+> Notice that its a simple class and getFlight method is accepting FlightAbstractFactory argument and returning Flight object. At this point the implementation must be getting clear.
+
+> Lets write a simple test method and see how to use the abstract factory to get the instance of sub classes
+
+public class TestAbstractFactory{
+	public static void main(String[] args){
+		testAbstractFactory();
+	}
+	private static void testAbstractFactory(){
+		Flight idigo = FlightFactory.getFlight(new IndigoFactory("2000"));
+		Flight airAsia = FlightFactory.getFlight(new AirAsia("1500"));
+	}
+}
+
+Benifits:
+> Abstract Factory  design pattern provides approach to code for interface rather than implementation.
+> Abstract Factory pattern is "factory of factories" and can be easily extended to accommodate more products, for example we can add another sub-class to factory.
+> Abstract Factory pattern is robust and void conditional logic of Factory Pattern.
+
+Example:
+javax.xml.parsers.DocumentBuilderFactory#newInstance()
+javax.xml.transform.TransformerFactory#newInstance()
+javax.xml.XpathFactory#newInstance()

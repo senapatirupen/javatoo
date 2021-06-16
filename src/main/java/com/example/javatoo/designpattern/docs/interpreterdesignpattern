@@ -1,0 +1,85 @@
+Interpreter Design Pattern
+--------------------------
+Interpreter design pattern is used to defines a grammatical representation for a language and provides an interpreter to deal with this grammar.
+
+The best example of interpreter design pattern is java complier that interprets the java source code into byte code that is understandable by JVM. Google Translator is also an example of interpreter pattern where the input can be in any language and we can get the output interpreted in another language.
+
+Example:
+> To implement interpreter pattern, we need to create interpreter context engine that will do the interpretation work.
+> Then we need to create different Expression implementations that will consume the functionalities provided by the interpreter context.
+> Finally we need to create the client that will take the input from user and decide which Expression to use and then generate output for the user.
+> Lets understand this with an example where the user input will be of two forms-"<Number> in Binary" or "<Number_Binary_String>" and "<Number> in Hexadecimal= <Number_Binary_String>" respectively.
+> Our first step will be to write the interpreter context class that will do the actual interpretation.
+
+public class InterpreterContext{
+	public String getBinaryFormat(int i){
+		return Integer.toBinaryString(i);
+	}
+	public String getHexadecimalFormat(int i){
+		return Integer.toHexString(i);
+	}
+}
+
+> now we need to create different types of Expressions that will consume the interpreter context class.
+
+public interface Expression {
+	String interpret(InterpreterContext ic);
+}
+
+> We will have two expression implementations ont ot convert int to binary and other to convert int to hexadecimal format.
+
+public class IntToBinaryExpression implements Expression {
+	private int i;
+	public IntToBinaryExpression(int c){
+		this.i c;
+	}
+	@Override
+	public String interpret(InterpreterContext ic){
+		return ic.getBinaryFormat(this.i);
+	}
+}
+
+public class IntToHexadecimalExpression implements Expression {
+	private int i;
+	public IntToHexadecimalExpression(int c){
+		this.i c;
+	}
+	@Override
+	public String interpret(InterpreterContext ic){
+		return ic.getHexadecimalFormat(this.i);
+	}
+}
+
+> now we can create our client application that will have the logic to parse the user input and pass it to correct expression and then use the output to generate the user response.
+
+public class InterpreterClient{
+	public InterpreterContext ic;
+	public InterpreterClient(InterpreterContext i){
+		this.ic=i;
+	}
+	public String interpret(String str){
+		Expression exp = null;
+		//create rules for expressions
+		if(str.contains("Hexadecimal")){
+			exp = new IntToHexExpression(Integer.parseInt(str.substring(0, str.indexOf(" "))));
+		}else if(str.contains("Binary")){
+			exp = new IntToBinaryExpression(Integer.parseInt(str.substring(0, str.indexOf(" "))));
+		}else
+			return str;
+		return exp.interpret(ic);
+	}
+	
+	public static void main(String args[]){
+		String str1 = "28 in Binary";
+		String str2 = "28 in Hexadecimal";
+		InterpreterClient ec = new InterpreterClient(new InterpreterContext());
+		System.out.println(str1+"= "+ec.interpret(str1));
+		System.out.println(str2+"= "+ec.interpret(str2));
+	}
+}
+
+prons:
+> Interpreter pattern can be used when we can create a syntax tree for the grammer we have.
+> Interpreter design pattern requires a lot of error checking and a lot of expressions and code to evaluate them. It gets complicated when the grammar becomes more complicated and hence hard to maintain and provide efficiency.
+> java.util.Pattern and subclasses of java.text.Format are some of the examples of interpreter pattern used in JDK.
+

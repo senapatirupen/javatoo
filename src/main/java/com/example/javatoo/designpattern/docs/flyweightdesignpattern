@@ -1,0 +1,151 @@
+Flyweight design pattern
+------------------------
+Flyweight design pattern is used when we need to create a lot of Objects of a class. Since every object consumes memory space that can be crucial for low memory devices, such as mobile devices or embedded systems, flyweight design pattern can be applied to reduce the load on memoty by sharing objects.
+
+Before we apply flyweight design patten, we need to consider following factors:
+> The number of Objects to be created by application sould be huge.
+> The object creation is heavy on memory and it can be time consuming too.
+> The object properties can be divided into intrinsic and extrinsic properties, extrinsic properties of an object should be defined by the client program.
+
+To apply flyweight pattern, we need to divide Object property into intrisic and extrinsic properties. Intrinsic properties make the Object unique whereas extrinsic properties are set by client code and used to perform different operations. For example, an Object Circle can have extrinsic properties such as color and width.
+
+For applying flyweight pattern, we need to create a Flyweight factory that returns the shared objects. For our example, lets say we need to create a drawing with lines and Ovals. So we will have an interface Shape and its concrete implementations as Line and Oval. Oval class will have instrinsic property to determine whether to fill the Oval with given color or not whereas Line will not have any instrinsic property.
+
+public interface Shape {
+	public void draw(Graphics g, int x, int y, int width, int height, Color color){
+	}
+}
+
+public class Line implements Shape {
+	public Line(){
+		System.out.println("Creating Line object");
+		//adding time delay
+		try{
+			Thread.sleep(2000);
+		} catch(InterruptedException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void draw(Graphics line, int x1, int y1, int x2, int y2, Color color){
+		line.setColor(color);
+		line.drawLine(x1, y1, x2, y2);
+	}
+}
+
+public class Oval implements Shape {
+	//intrinsic property
+	private boolean fill;
+	
+	public Oval(boolean f){
+		this.fill = f;
+		System.out.println("Creating Oval object with fill="+f);
+		//adding time delay
+		try{
+			Thead.sleep(2000);
+		} catch(InterruptedException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void draw(Graphics circle, intx, int y , int width, int height, Color color){
+		circle.setColor(color);
+		circle.drawOval(x, y, width, height);
+		if(fill){
+			circle.fillOval(x, y, width, height);
+		}
+	}
+}
+
+Notice that i have intensionally introduced delay in creating the Object of concrete classes to make the point that flyweight pattern can be used for Objects that takes a lot of time while instantiated.
+
+Flyweight Factory
+the flyweight factory will be used by client programs to instantiate the Object, so we need to keep a map of Objects in the factory that should not be accessible by client applicaiton.
+
+Whenever client program makes a call to get an instance of Object, it should be  returned from the HashMap, if not found then create an new Obejct and put in the Map and then return it. We need to make sure that all the intrinsic properties are considered while creating the Object.
+
+public class ShapeFactory{
+	private static final HashMap<ShapeType, Shape> shapes = new HashMap<ShapeType, Shape>();
+	public static Shape getShape(ShapeType type){
+		Shape shapeImpl = shapes.get(type);
+		
+		if(shapeImpl == null){
+			if(type.equals(ShapeType.OVAL_FILL)){
+				shapeImpl = new Oval(true);
+			} elses if(type.equals(ShapeType.OVAL_NOFILL)){
+				shapeImpl = new Oval(false);
+			} else if(type.equals(ShapeType.LINE)){
+				shapeImpl = new Line();
+			}
+			shapes.put(type, shapeImpl);
+		}
+		return shapeImpl;
+	}
+	public static enum ShapeType{
+		OVAL_FILL, OVAL_NOFILL, LINE;
+	}
+}
+
+Flyweight Design Pattern Client
+
+public class DrawingClinet extends JFrame{
+	private final int WIDTH;
+	private final int HEIGHT;
+	private static final ShapeType shapes[] = { ShapeType.LINE, ShapeType.OVAL_FILL, ShapeType.OVAL_NOFILL};
+	private static final Color colors[] = {
+		Color.RED, Color.GREEN, Color.YELLOW };
+	public DrawingClinet(int width, int height){
+		this.WIDTH = width;
+		this.HEIGHT = height;
+		Container contentPane = getContentPane();
+		JButton startButton = new JButton("Draw");
+		final JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayou.CENTER);
+		contentPane.add(startButton, BorderLayout.SOUTH);
+		setSize(WIDTH, HEIGHT);
+		setDefaultCloseOperation(JFrame.EXIT_NO_CLOSE);
+		setVisible(true);
+		startButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent event){
+				Grahics g = panel.getGraphics();
+				for(int i = 0; i < 20; ++i){
+					ShapeFactory.getShape(getRandomShape());
+					shape.draw(g, getRandomX(), getRandomY(), getRandomWidth(), getRandomHeight(), getRandomColor());
+				}
+			}
+		});
+	}
+	private ShapeType getRandomShape(){
+		return shapes[(int)(Math.random()*shapes.length)];
+	}
+	private int getRandomX(){
+		return (int)(Math.random()*WIDTH);
+	}
+	private int getRandomY(){
+		return (int)(Math.random()*HEIGHT);
+	}
+	private int getRandomWith(){
+		return (int)(Math.random()*(WIDTH/10));
+	}
+	private Color getRandomColor(){
+		return colors[(int)(Math.random()*colors.length)];
+	}
+	public static void main(String[] args){
+		DrawingClinet drawing = new DrawingClinet(500, 600);
+	}
+	
+}
+
+I have used random number generation to generate different type of Shapes in our frame.
+
+If you run above client program, you will notice the delay in creating first Line Object and Oval objects with fill as true and false. After that the program executes quickly since its using the shared objects.
+
+> All the wrapper classes valueOf() emthod uses cached objects showing use of flyweight design pattern. The best example is Java String class String Pool implementation
+
+> In our example, the client code is not forced to create object using flyweight factory but we can force that to make sure client code uses flyweight pattern im' but its a complete design decision for particular applicaiton.
+
+> flyweight pattern introduces complexity and if number of shared objects are huge then there is a trade of between memory and time. So we need to use it judiciously based on our requirements.
+
+> flyweight pattern implementation is not useful when the number of intrinsic properties of Object is huge, making implementation of Factory class complex.

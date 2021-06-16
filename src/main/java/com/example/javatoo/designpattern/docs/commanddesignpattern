@@ -1,0 +1,147 @@
+Command Design Pattern
+----------------------
+> Is used to implement loose coupling in a request-response model.
+> In command pattern, the request is send to the invoker and invoker pass it to the encapsulated command object.
+> Command object passes the request to the appropriate method of Receiver to perform the specific action.
+> The client program create the receiver object and then attach it to the Command. Then it creates the invoke object and attach the command object to perform an action.
+> Now when client program executes the action, it's processed based on the command and receiver object.
+
+We will look at a real life scenario where we can implement Command pattern. Lets say we want to provide a File System utility with methods to open, write and close file. This file system utility should support multiple operating systems such as windows and unix.
+
+To implement our file system utility, first of all we need to create the receiver classes that will actually do all the work.
+
+public interface FileSystemReceiver {
+	void openFile();
+	void writeFile();
+	void closeFile();
+}
+
+public class UnixFileSystemRecevier implements FileSystemReceiver {
+	@Override
+	public void openFile(){
+		System.out.println("Opening file in unix OS");
+	}
+	
+	@Override
+	public void writeFile(){
+		System.out.println("Writing file in unix OS");
+	}
+	
+	@Override
+	public void closeFile(){
+		System.out.println("Closing file in the unix OS");
+	}
+}
+
+public class WindowsFileSystemRevevier implements FileSystemReceiver {
+
+	@Override
+	public void openFile(){
+		System.out.println("Opening file in Window OS");
+	}
+	
+	@Override
+	public void writeFile(){
+		System.out.println("Writing file in Window OS");
+	}
+	
+	@Override
+	public void closeFile(){
+		System.out.println("Closing file in the Window OS");
+	}
+}
+
+Command pattern interface implement
+
+public interface Command{
+	void execute();
+}
+
+Now we need to create implementations for all the different types of action performed by the receiver. Since we have three actions we will create three Command implementations. Each Command implementation will forward the request to the appropriate method of receiver.
+
+public class OpenFileCommand implements Command{
+	private FileSystemReceiver fileSystem;
+	public OpenFileCommand(FileSystemReceiver fs){
+		this.fileSystem=fs;
+	}
+	@Override
+	public void execute(){
+		//open command is forwarding request to openFile method
+		this.fileSystem.openFile();
+	}
+}
+
+public class CloseFileCommand implements Command{
+	private FileSystemReceiver fileSystem;
+	public CloseFileCommand(FileSystemReceiver fs){
+		this.fileSystem=fs;
+	}
+	@Override
+	public void execute(){
+		//open command is forwarding request to closeFile method
+		this.fileSystem.closeFile();
+	}
+}
+
+Now we have receiver and command implementations ready, so we can move to implement the invoke class
+Invoke is a simple class that encapsulates the Command and passes the request to the command object to process it.
+
+public class FileInvoker{
+	public Command command;
+	public FileInvoker(Command c){
+		this.command=c;
+	}
+	public void execute(){
+		this.command.execute();
+	}
+}
+
+Our file system utility implementation is ready and we can move to write a simple command pattern client program. But before that i will provide a utility method to create the appropriate FileSystemReceiver object.
+
+public class FileSystemReceiverUtil{
+	public static FileSystemReceiver getUnderlyingFileSystem(){
+		String osName = System.getProperty("os.name");
+		System.out.println("Underlying OS is: "+osName);
+		if(osName.contains("Windows")){
+			return new WindowsFileSystemReceiver();
+		} else {
+			return new UnixFileSystemRecevier();
+		}
+	}
+}
+
+client program
+public class FileSystemClinet{
+	publiic static void main(String[] args){
+		//creating the receiver object
+		FileSystemReceiver fs = FileSystemReceiverUtil.getUnderlyingFileSystem();
+		
+		//creating command and associating with receiver
+		OpenFileCommand openFileCommand = new OpenFileCommand(fs);
+		
+		//creating invoker and associating with Command
+		FileInvoker file = new FileInvoker(openFileCommand);
+		
+		//perform action on invoker object
+		file.execute();
+		
+		WriteFileCommand writeFileCommand = new WriteFileCommand(fs);
+		file = new FileInvoker(writeFileCommand);
+		file.execute();
+		
+		CloseFileCommand closeFileCommand = new CloseFileCommand(fs);
+		file = new FileInvoker(closeFileCommand);
+		file.execute();
+		
+	}
+}
+
+prons:
+> Command is the core of command design pattern that defines the contract for implementation.
+> Receiver implementation is separate from command implementation
+> Command implementation classes chose the method to invoke on receiver object, for every method in reveiver there will be a command implementation. It works as a bridge between receiver and action methods.
+> Invoker class just forward the request from client to the command object.
+> Client is responsible to instantiate appropriate command and receiver implementation and then associate them together.
+> Client is also responsible for instantiating invoker object and associating command object with it and execute the action method.
+> Command design pattern is easily extendible, we can add new action methods in receivers and create new Command implementations without changing the client code.
+> The drawback with command design pattern is that the code gets huge and confusing with high number of action methods and because of so many associations.

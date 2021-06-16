@@ -1,0 +1,73 @@
+Decorator Design Pattern
+------------------------
+Decorator pattern is used to modify the functionality of an object at runtime. At the same time other instances of the same class will not be affected by this, so individual object gets the modified behaviour. It uses abstract classes or interface with composition to implement.
+
+We use inheritance or composition to extend the behaviour of an object but this is done at compile time and its applicable to all the instances of the class. We can't add any new functionality or remove any existing behaviour at runtime- this is when Decorator pattern comes into picture.
+
+Suppose we want to implement different kinds of cars-we can create interface Car to define the assemble method and then we can have a Basic car, further more we can extend it to Sports car and Luxury Car.
+
+But if we want to get a car at runtime that has both the features of sports car and luxury car, then the implementation gets complex and if further more we want to specify which features should be added first, it gets even more complex. Now imagine if we have ten different kinds of cars, the implementation logic using inheritance and composition will be impossible to manage.
+
+public class Car {
+	public void assemble();
+}
+
+public class BasicCar implements Car{
+	@Override
+	public void assemble(){
+		System.out.println("Basic Car.");
+	}
+}
+
+> Decorator class implements the  component interface and it has a HAS-A relationship with the component interface. The component variable should be accessible to the child decorator classes, so we will make this variable protected.
+
+public class CarDecorator implements Car{
+	protected Car car;
+	public CarDecorator(Car c){
+		this.car = c;
+	}
+	@Override
+	public void assemble(){
+		this.car.assemble();
+	}
+}
+
+Concrete Decorator-
+Extending the base decorator functionality and modified the component behaviour accordingly. We can have concrete decorator classes as LuxuryCar and SportsCar.
+
+public class SportsCar extends CarDecorator{
+	public SportsCar(Car c){
+		super(c);
+	}
+	@Override
+	public void assemble(){
+		super.assemble();
+		System.out.print("adding features of sports car");
+	}
+}
+
+public class LuxuryCar extends CarDecorator{
+	public LuxuryCar(Car c){
+		super(c)
+	}
+	@Override
+	public void assemble(){
+		super.assemble();
+		System.out.println("adding features of Luxury Car");
+	}
+}
+
+Test:
+public class DecoratorPatternTest{
+	public static void main(String[] args){
+		Car sportsCar = new SportsCar(new BasicCar());
+		sportsCar.assemble();
+		Car sportsLuxuryCar = new SportsCar(new LuxuryCar(new BasicCar()));
+		sportsLuxuryCar.assemble();
+	}
+}
+
+> Notice that client program can create different kinds of Object at runtime and they can specify the order of execution too.
+> Decorator pattern is helpful in providing runtime modification abilities and hence more flexible its easy to maintain and extend when the number of choices are more
+> The disadvantage of decorator pattern is that it uses a lot of similar kind of objects.
+> Ex: Java IO classes (FileReader, BufferedReader, etc...)

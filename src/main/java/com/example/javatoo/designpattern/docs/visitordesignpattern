@@ -1,0 +1,86 @@
+Visitor Design Pattern
+----------------------
+Is used when we have to perform an operation on a group of similar kind of Objects. With the help of visitor pattern. We can move the operational logic from the objets to another class.
+
+Ex: think of a shopping cart where we can add different type of items(Elements). When we click on checkout button, it calculates the total amount to be paid. Now we can have the calculation logic in item classes or we can move out this logic to another class using visitor pattern.
+
+public interface ItemElement {
+	public int accept(ShoppingCartVisitor visitor);
+}
+
+public class Book implements ItemElement {
+	private int price;
+	private String isbnNumber;
+	public Book(int cost, String isbn){
+		this.price = cost;
+		this.isbnNumber = isbn;
+	}
+	//getters 
+	
+	@Override
+	public int accept(ShoppingCartVisitor visitor){
+		return visitor.visit(this);
+	}
+}
+
+public class Fruit implements ItemElement{
+	private int price;
+	private int weight;
+	public Fruit(int priceKg, int wt){
+		this.price = priceKg;
+		this.weight = wt;
+	}
+	//getters
+	
+	@Override
+	public int accept(ShoppingCartVisitor visitor){
+		return visitor.visit(this);
+	}
+}
+
+public interface ShoppingCartVisitor{
+	int visit(Book book);
+	int visit(Fruit fruit);
+}
+
+public class ShoppingCartVisitorImpl implements ShoppingCartVisitor{
+	@Override
+	public int visit(Book book){
+		int cost=0;
+		if(book.getPrice() > 5)
+			return cost = book.getPrice()+10;
+	}
+	
+	@Override
+	public int visit(Fruit fruit){
+		int cost = 0;
+		if(fruit.getPriceKg()>6)
+			return fruit.getPriceKg()+20;
+	}
+}
+
+client implementation
+
+public class ShoppingCartClient{
+	public static void main(String[] args){
+		ItemElement[] items = new ItemElement[]{new Book(20, "1324"), new Fruit(30, 65), new Book(56,"564")};
+		
+		int calulate = calculatePrice(items);
+	}
+	
+	private static int calculatePrice(ItemElement[] items){
+		ShoppingCartVisitor visitor = new ShoppingCartVisitorImpl();
+		int sum = 0;
+		for(ItemElement item : items){
+			sum = sum+item.accept(visitor);
+		}
+		reutrn sum;
+	}
+}
+
+
+Prons:
+The benifit of this pattern is that if the logic of operation changes, then we need to make change only in the visitor implementation rather than doing it in all the item classes.
+
+Another benifit is that adding a new item to the system is easy, it will require change only in visitor interface and implementation and existing classes will not be affected.
+

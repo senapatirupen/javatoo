@@ -1,0 +1,45 @@
+Bridge Design Pattern
+---------------------
+When we have interface hierarchies in both interfaces as well as implementations, then bridge design pattern is used to decouple the interfaces from implementations and hiding the implementation details from the client programs.
+
+"Decouple an abstraction from its implementation so that the two can vary independently"
+
+public interface Color {
+	public void applyColor();
+}
+
+public abstract class Shape{
+	//Composition - implementor
+	protected Color color;
+	//constructor with implementor as input argument
+	public Shape(Color c){
+		this.color = c;
+	}
+	public abstract void applyColor();
+}
+
+public class Tringle extends Shape{
+	public Tringle(Color c){
+		super(c);
+	}
+	@Override
+	public void applyColor(){
+		color.applyColor();
+	}
+}
+
+public class RedColor implements Color{
+	public void applyColor(){
+		System.out.println("red");
+	}
+}
+
+public class BridgePatternTest{
+	public static void main(String[] args){
+		Shape tri = new Tringle(new RedColor());
+		tri.applyColor();
+	}
+}
+
+
+Bridge design pattern can be used when both abstraction and implementation can have different hierachies independently and we want to hide the implementation from the client application.

@@ -1,0 +1,53 @@
+Builder Design Pattern
+----------------------
+Builder pattern is a creational design pattern it means its solves problem related to object creation.
+> Builder pattern is used to create instance of very complex object in easiest way
+
+Constructors in java are used to create object and can take parameters required to create object.
+
+public class Person{
+	private String name;
+	private String age;
+	public Person(String name, String age){
+		this.name = name;
+		this.age = age;
+	}
+	
+	//getters and setters
+}
+
+Things are simple if there are only 2-6 fields but, lets say if you want to add more fields to the pojo then it becomes hectic to maintain complex pojo plus the order of the minimum fields to required to create the object. Also it can leads to bug in code base;
+
+Create static anonymous inner class named Builder to the pojo. Add same fields to it from pojo. Alson add the empty constructor and setter of each field with return type of Builder class. Add method build which will return the new Person object instance.
+
+public class Person {
+	private String name;
+	private String age;
+	public Person(String name, String age){
+		this.name = name;
+		this.age = age;
+	}
+	public static class Builder{
+		private String name;
+		private String age;
+		public Builder setName(String name){
+			this.name = name;
+			return this;
+		}
+		public Builder setAge(String age){
+			this.age = age;
+			return this;
+		}
+		public Person build(){
+			return new Person(name, age);
+		}
+	}
+}
+
+The resulting builder create code:
+Person person = new Person.Builder().setName("alok").setAge("28");
+
+Pros:
+> Code is more maintainable if number of fields required to creat object is more than 4-6
+> Object creation code less error-prone as user willl know what they are passing because of explicit method call
+> Builder pattern increase robustness, as only fully constructed object will be available to client

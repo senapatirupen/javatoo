@@ -1,0 +1,54 @@
+Singleton
+---------
+> Singleton pattern restricts the instantiation of a class and ensures that only one
+instance of the class exists in the java virtual machine
+> The singleton class must provide a global access point to get the instance of the class
+> Singleton pattern is used for logging, drivers objects, caching and thread pool
+> Singleton design pattern is also used in other design patterns like Abstract Factory, Builder, Prototype, Facade etc.
+> Singleton design pattern is used in core java classes also, for example java.lang.Runtime, java.awt.Desktop
+
+To implement singleton pattern we have different approaches but all of them have following common concepts.
+> private constructor to restrict instantiation of the class from other classes
+> private static variable of the same class that is the only instance of the class
+> public static method that returns the instance of the class, this is the global access pint for outer world to get the instance of the singleton class
+
+public class ThreadSafeSingleTon {
+	private static ThreadSafeSingleTon instance;
+	
+	private ThreadSafeSingleTon(){
+	}
+	
+	public static ThreadSafeSingleTon getInstance(){
+		if(instance == null){
+			synchronized(ThreadSafeSingleTon.class){
+				if(instance == null){
+					instance = new ThreadSafeSingleTon();
+				}
+			}
+		}
+		return instance;
+	}
+}
+
+public class BillPughSingleton {
+
+	private BillPughSingleton(){
+	}
+	
+	private static class SingletonHelper {
+		private static final BillPughSingleton INSTANCE = new BillPughSingleton();
+	}
+	
+	public static BillPughSingleton getInstance(){
+		return SingletonHelper.INSTANCE;
+	}
+	
+}
+
+public enum EnumSingleton{
+	INSTANCE;
+	public static void doSomething(){
+		//do something
+	}
+}
+

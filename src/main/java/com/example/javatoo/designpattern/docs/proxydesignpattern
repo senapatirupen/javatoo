@@ -1,0 +1,64 @@
+Proxy Deisgn Pattern
+--------------------
+proxy design pattern intent according to GoF is: provide a surrogate or placeholder for another object to control access to it.
+
+This pattern is used when we want to provide controlled access of a functionality.
+Let's say we have a class that can run some command on the system. Now if we are using it, its fine but if we want to give this program to a client application, it can have severe issues because clinet program can issue command to delete some system files or change some settings that you don't want.
+
+Here a proxy class can be created to provide controlled access of the program.
+
+public interface CommandExecutor {
+	public void runCommand(String cmd) throws Exception;
+}
+
+public class CommandExecutorImpl implements CommandExecutor {
+
+	@Override
+	public void runCommand(String cmd) throws IOException {
+		//some heavy implementation
+		Runtimg.getRuntime().exec(cmd);
+		System.out.println("'"+cmd+"'command executed.");
+	}
+}
+
+Now we want to provide only admin users to have full access of above class, if the user is not admin then only limited commands will be allowed. Here is our very simple proxy class implementation.
+
+public class CommandExecutorProxy implements CommandExecutor {
+	private boolean isAdmin;
+	private CommandExecutor executor;
+	
+	public CommandExecutorProxy(String user, String pwd){
+		if("pankaj".equals(user) && "JoranD$v".equals(pwd)) isAdmin=true;
+		executor = new CommandExecutorImpl();
+	}
+	
+	@Override
+	public void runCommand(String cmd) throws Exception {
+		if(isAdmin){
+			executor.runCommand(cmd);
+		} else {
+			if(cmd.trim().startsWith("rm")){
+				throw new Exception("rm command is not allowed for non-amdin users.");
+			} else {
+				executor.runCommand(cmd);
+			}
+		}
+	}
+}
+
+Client Program
+public class ProxyPatternTest {
+	public static void main(String[] args){
+		CommandExecutor executor = new CommandExecutorProxy("pankaj", "wrong_pwd");
+		try{
+			executor.runCommand("ls-ltr");
+			executor.runCommand(" rm -rf abc.pdf");
+		} catch(Exception e){
+			System.out.println("Exception Message::"+e.getMessage());
+		}
+	}
+}
+
+proxy design pattern common uses are to control access or to provide a wrapper implementation for better performance.
+
+Java RMI package uses proxy pattern. That's all for proxy design pattern in java.
