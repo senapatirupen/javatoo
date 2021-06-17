@@ -3,6 +3,7 @@ package com.example.javatoo.basic.javacollections;
 import com.example.javatoo.model.Address;
 import com.example.javatoo.model.LastNameComparator;
 import com.example.javatoo.model.MyStringComparator;
+import com.example.javatoo.util.Display;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,7 @@ import java.util.*;
 public class CollectionExTest {
 
     @Test
-    public void addElementToArrayList(){
+    public void addElementToArrayList() {
         ArrayList<String> listOfNames = new ArrayList<>();
         listOfNames.add("A");
         listOfNames.add("B");
@@ -29,7 +30,7 @@ public class CollectionExTest {
     }
 
     @Test
-    public void arrayListToArrayTest(){
+    public void arrayListToArrayTest() {
         ArrayList<Integer> numbers = new ArrayList<Integer>();
         numbers.add(1);
         numbers.add(2);
@@ -38,13 +39,13 @@ public class CollectionExTest {
         numbersArray = numbers.toArray(numbersArray);
         //sum of the array
         Integer sum = 0;
-        for(Integer n: numbersArray) sum += n;
+        for (Integer n : numbersArray) sum += n;
         log.info("display the content: " + numbers);
-        log.info("sum of integers: "+ sum);
+        log.info("sum of integers: " + sum);
     }
 
     @Test
-    public void linkedListTest(){
+    public void linkedListTest() {
         LinkedList<String> names = new LinkedList<String>();
         names.add("B");
         names.add("C");
@@ -62,19 +63,19 @@ public class CollectionExTest {
     }
 
     @Test
-    public void arrayDequeTest(){
+    public void arrayDequeTest() {
         //use it like a stack
         ArrayDeque<String> names = new ArrayDeque<>();
         names.push("A");
         names.push("B");
         //get the entries out of array
-        while(names.poll() != null){
-            log.info(names.pop()+ " ");
+        while (names.poll() != null) {
+            log.info(names.pop() + " ");
         }
     }
 
     @Test
-    public void iteratorUseOverArrayList(){
+    public void iteratorUseOverArrayList() {
         ArrayList<String> listOfNames = new ArrayList<>();
         listOfNames.add("A");
         listOfNames.add("B");
@@ -82,24 +83,24 @@ public class CollectionExTest {
         listOfNames.add("D");
         listOfNames.add("E");
         Iterator<String> names = listOfNames.iterator();
-        while(names.hasNext()){
-            log.info(names.next()+ " ");
+        while (names.hasNext()) {
+            log.info(names.next() + " ");
         }
         //modify entry while iterate using listIterator
         ListIterator<String> nameList = listOfNames.listIterator();
-        while (nameList.hasNext()){
-            log.info(nameList.next()+" ");
+        while (nameList.hasNext()) {
+            log.info(nameList.next() + " ");
             nameList.add("F");
         }
         //view elements in reverse order
-        while (nameList.hasPrevious()){
-            log.info(nameList.previous()+" ");
+        while (nameList.hasPrevious()) {
+            log.info(nameList.previous() + " ");
         }
         log.info("display the content: " + listOfNames);
     }
 
     @Test
-    public void SpliteratorTest(){
+    public void SpliteratorTest() {
         ArrayList<Double> vals = new ArrayList<>();
         vals.add(1.0);
         vals.add(2.0);
@@ -107,18 +108,18 @@ public class CollectionExTest {
         vals.add(4.0);
         vals.add(5.0);
         Spliterator<Double> numbers = vals.spliterator();
-        while(numbers.tryAdvance((n)-> log.info("val: "+ n)));
+        while (numbers.tryAdvance((n) -> log.info("val: " + n))) ;
 
         numbers = vals.spliterator();
         ArrayList<Double> sqrt = new ArrayList<>();
-        while (numbers.tryAdvance((n)->sqrt.add(Math.sqrt(n))));
+        while (numbers.tryAdvance((n) -> sqrt.add(Math.sqrt(n)))) ;
 
         Spliterator<Double> sqrts = sqrt.spliterator();
-        sqrts.forEachRemaining((n)-> log.info("val: "+ n));
+        sqrts.forEachRemaining((n) -> log.info("val: " + n));
     }
 
     @Test
-    public void mailListTest(){
+    public void mailListTest() {
         LinkedList<Address> ml = new LinkedList<Address>();
         // Add elements to the linked list.
         ml.add(new Address("J.W. West", "11 Oak Ave",
@@ -129,12 +130,12 @@ public class CollectionExTest {
                 "Champaign", "IL", "61820"));
 
         // Display the mailing list.
-        for(Address element : ml)
+        for (Address element : ml)
             System.out.println(element + "\n");
     }
 
     @Test
-    public void hashMapAndTreeMapTest(){
+    public void hashMapAndTreeMapTest() {
         HashMap<String, Double> hm = new HashMap<String, Double>();
         hm.put("John Doe", 3434.34);
         hm.put("Tom Smith", 123.22);
@@ -142,9 +143,9 @@ public class CollectionExTest {
         hm.put("Tod Hall", 99.22);
         hm.put("Ralph Smith", -19.08);
         Set<Map.Entry<String, Double>> set = hm.entrySet();
-        for(Map.Entry<String, Double> entry: set){
-            log.info("Entry Key: "+ entry.getKey());
-            log.info("Entry Value: "+ entry.getValue());
+        for (Map.Entry<String, Double> entry : set) {
+            log.info("Entry Key: " + entry.getKey());
+            log.info("Entry Value: " + entry.getValue());
         }
         // Deposit 1000 into John Doe's account.
         double balance = hm.get("John Doe");
@@ -157,9 +158,9 @@ public class CollectionExTest {
         tm.put("Tod Hall", 99.22);
         tm.put("Ralph Smith", -19.08);
         Set<Map.Entry<String, Double>> settm = tm.entrySet();
-        for(Map.Entry<String, Double> entry: settm){
-            log.info("Entry Key: "+ entry.getKey());
-            log.info("Entry Value: "+ entry.getValue());
+        for (Map.Entry<String, Double> entry : settm) {
+            log.info("Entry Key: " + entry.getKey());
+            log.info("Entry Value: " + entry.getValue());
         }
         // Deposit 1000 into John Doe's account.
         double balances = hm.get("John Doe");
@@ -167,7 +168,7 @@ public class CollectionExTest {
     }
 
     @Test
-    public void reverseStringComparisionTest(){
+    public void reverseStringComparisionTest() {
         TreeSet<String> ts = new TreeSet<String>(new MyStringComparator());
         ts.add("C");
         ts.add("A");
@@ -175,19 +176,19 @@ public class CollectionExTest {
         ts.add("E");
         ts.add("F");
         ts.add("D");
-        for(String element : ts)
+        for (String element : ts)
             log.info(element + " ");
         //using lambda expression for reversing the string
         TreeSet<String> tsc = new TreeSet<String>((str1, str2) -> str2.compareTo(str1));
         tsc.add("C");
         tsc.add("A");
         tsc.add("B");
-        for(String element : tsc)
+        for (String element : tsc)
             log.info(element + " ");
     }
 
     @Test
-    public void lastNameComparisionTest(){
+    public void lastNameComparisionTest() {
         TreeMap<String, Double> tm = new TreeMap<String, Double>(new LastNameComparator());
         tm.put("John Doe", 3434.34);
         tm.put("Tom Smith", 123.22);
@@ -195,14 +196,14 @@ public class CollectionExTest {
         tm.put("Tod Hall", 99.22);
         tm.put("Ralph Smith", -19.08);
         Set<Map.Entry<String, Double>> set = tm.entrySet();
-        for(Map.Entry<String, Double> me : set) {
+        for (Map.Entry<String, Double> me : set) {
             log.info(me.getKey() + ": ");
-            log.info(me.getValue()+": ");
+            log.info(me.getValue() + ": ");
         }
     }
 
     @Test
-    public void connectionsFunctionsTest(){
+    public void connectionsFunctionsTest() {
         LinkedList<Integer> ll = new LinkedList<Integer>();
         ll.add(-8);
         ll.add(20);
@@ -213,5 +214,61 @@ public class CollectionExTest {
         Collections.shuffle(ll);
         Collections.min(ll);
         Collections.max(ll);
+    }
+
+    @Test
+    public void arrayTest() {
+        int[] array = new int[10];
+        for (int i = 0; i < 10; i++) {
+            array[i] = -3 * i;
+        }
+        Display.displayIntArray(array);
+        Arrays.sort(array);
+        Display.displayIntArray(array);
+        Arrays.fill(array, 2, 6, -1);
+        int index = Arrays.binarySearch(array, -9);
+        log.info(index+"");
+    }
+
+    @Test
+    public void vectorTest(){
+        Vector<Integer> nums = new Vector<>(3, 2);
+        nums.size();
+        nums.capacity();
+        nums.addElement(5);
+        nums.firstElement();
+        nums.lastElement();
+        Enumeration<Integer> vNums = nums.elements();
+        while(vNums.hasMoreElements()){
+            log.info(vNums.nextElement()+"");
+        }
+    }
+
+    @Test
+    public void hashTableTest(){
+        Hashtable<String, Double> balance = new Hashtable<String, Double>();
+        balance.put("John Doe", 3434.34);
+        balance.put("Tom Smith", 123.22);
+        balance.put("Jane Baker", 1378.00);
+        balance.put("Tod Hall", 99.22);
+        balance.put("Ralph Smith", -19.08);
+        Set<String> names = balance.keySet();
+        Iterator<String> namesI = names.iterator();
+        while(namesI.hasNext()){
+            log.info(balance.get(namesI.next())+"");
+        }
+    }
+
+    @Test
+    public void propertyTest(){
+        Properties capitals = new Properties();
+        capitals.setProperty("Illinois", "Springfield");
+        capitals.setProperty("Missouri", "Jefferson City");
+        capitals.setProperty("Washington", "Olympia");
+        capitals.setProperty("California", "Sacramento");
+        capitals.setProperty("Indiana", "Indianapolis");
+        Set<?> states = capitals.keySet();
+        for(Object name : states)
+            log.info("The capital of " + name + " is " + capitals.getProperty((String)name) + ".");
     }
 }

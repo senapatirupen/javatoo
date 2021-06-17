@@ -1,2 +1,2 @@
 ####Index of new words
-ArrayDeque, ListIterator, Spliterator, 
+ArrayDeque, ListIterator, Spliterator, Enhanced for loop, ResourceUtils, 
