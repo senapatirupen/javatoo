@@ -8,6 +8,7 @@ public class StringAlgorithmsMain {
         new StringAlgorithmsMain().reverseString("new one");
         String reverse = new StringAlgorithmsMain().reverseStringRecursive("new one");
         log.info("reverseStringRecursive " + reverse);
+        new StringAlgorithmsMain().bubbleSort();
     }
 
     //reverse string using charAt()
@@ -26,5 +27,23 @@ public class StringAlgorithmsMain {
             return args;
         else
             return args.charAt(args.length() - 1) + reverseStringRecursive(args.substring(0, args.length() - 1));
+    }
+
+    //bubble sort
+    public void bubbleSort(){
+        String arr[] = {
+                "Now", "is", "the", "time", "for", "all", "good", "men",
+                "to", "come", "to", "the", "aid", "of", "their", "country"
+        };
+        for(int j = 0; j < arr.length; j++) {
+            for (int i = j + 1; i < arr.length; i++) {
+                if (arr[i].compareTo(arr[j]) < 0) {
+                    String t = arr[j];
+                    arr[j] = arr[i];
+                    arr[i] = t;
+                }
+            }
+            log.info(arr[j]);
+        }
     }
 }
