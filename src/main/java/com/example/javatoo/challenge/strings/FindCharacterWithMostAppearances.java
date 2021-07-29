@@ -1,11 +1,11 @@
-package com.example.javatoo.challenge;
+package com.example.javatoo.challenge.strings;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
+
 import static java.util.Map.Entry.comparingByValue;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;

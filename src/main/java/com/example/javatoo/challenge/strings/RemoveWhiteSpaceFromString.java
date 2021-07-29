@@ -1,4 +1,4 @@
-package com.example.javatoo.challenge;
+package com.example.javatoo.challenge.strings;
 
 public class RemoveWhiteSpaceFromString {
     private static final String TEXT = "My high school, the Illinois Mathematics and Science Academy, ";

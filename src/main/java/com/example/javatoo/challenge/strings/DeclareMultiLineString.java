@@ -1,4 +1,4 @@
-package com.example.javatoo.challenge;
+package com.example.javatoo.challenge.strings;
 
 public class DeclareMultiLineString {
 

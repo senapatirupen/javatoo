@@ -1,4 +1,4 @@
-package com.example.javatoo.challenge;
+package com.example.javatoo.challenge.strings;
 
 import com.example.javatoo.util.DisplayExecutionTime;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,6 @@
-package com.example.javatoo.challenge;
+package com.example.javatoo.challenge.strings;
 
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 public class CountStringInString {
