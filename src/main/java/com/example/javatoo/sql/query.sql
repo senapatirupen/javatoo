@@ -250,3 +250,34 @@ union all
 select employee_id from hr.job_history) u
 group by u.employee_id) jh
 group by jh.JobsHeld;
+
+--Basing a Where Condition on a Query
+--Problem
+--You need to query the data from a table, but one of your criteria will be dependent on data from another
+--table at the time the query runs—and you want to avoid hard-coding criteria. Specifically, you want to
+--find all departments with offices in North America for the purposes of reporting.
+select department_name
+from hr.departments
+where location_id in
+(select location_id
+from hr.locations
+where country_id = 'US'
+or country_id = 'CA');
+
+--Selecting from the Results of Another Query
+--Problem
+--You need to treat the results of a query as if they were the contents of a table. You don't want to store the
+--intermediate results as you need them freshly generated every time you run your query.
+select d.department_name
+from
+(select department_id, department_name
+from hr.departments
+where location_id != 1700) d;
+
+--Updating Multiple Fields with One Statement
+--Problem
+--You want to change multiple columns for one or more rows of a table.
+update hr.employees
+set (job_id,Phone_number,Salary)
+= (select 'ST_MAN','650.124.9876',salary * 1.5 from dual)
+where employee_id = 131;
