@@ -113,5 +113,5 @@ public class Book implements Serializable {
 }
 
  */
-public class OneToOneBiidirectionalAssociation {
+public class OneToOneBidirectionalAssociation {
 }
