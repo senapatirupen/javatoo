@@ -1,12 +1,23 @@
 package com.example.javatoo.challenge.collections;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class ReverseArray {
     public static void main(String[] args) {
         int[] integers = {-1, 2, 3, 1, 4, 5, 3, 2, 22};
+        //find duplicate in array
+        Set<Integer> nums = new HashSet<>();
+         for(int i=0; i<= integers.length-1; i++){
+            for(int j=0; j<= integers.length-1; j++){
+                if(integers[i] == integers[j] && i != j){
+                    nums.add(integers[i]);
+                }
+            }
+        }
+        nums.stream().forEach(System.out::print);
+        System.out.println("end of for loop >>>>");
+
         Melon[] melons = new Melon[]{
                 new Melon("Crenshaw", 2000), new Melon("Gac", 1200), new Melon("Bitter", 2200)};
 
