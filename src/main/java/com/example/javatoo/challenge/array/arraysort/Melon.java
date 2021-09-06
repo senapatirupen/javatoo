@@ -1,4 +1,4 @@
-package com.example.javatoo.challenge.arraysort;
+package com.example.javatoo.challenge.array.arraysort;
 
 public class Melon {
 

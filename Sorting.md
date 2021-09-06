@@ -1,4 +1,4 @@
-##### All the sorting code is available on at "com.example.javatoo.challenge.arraysort" location
+##### All the sorting code is available on at "com.example.javatoo.challenge.array.arraysort" location
 #### Bubble Sort
 ![Alt text](images/bubbleSort.PNG?raw=true "Bubble Sort")
     

@@ -1,4 +1,4 @@
-package com.example.javatoo.challenge.collections;
+package com.example.javatoo.challenge.array;
 
 import lombok.extern.slf4j.Slf4j;
 

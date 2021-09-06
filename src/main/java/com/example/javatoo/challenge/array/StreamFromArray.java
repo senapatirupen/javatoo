@@ -1,4 +1,4 @@
-package com.example.javatoo.challenge.collections;
+package com.example.javatoo.challenge.array;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;

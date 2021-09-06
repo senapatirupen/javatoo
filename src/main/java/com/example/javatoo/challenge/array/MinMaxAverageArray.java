@@ -1,4 +1,6 @@
-package com.example.javatoo.challenge.collections;
+package com.example.javatoo.challenge.array;
+
+import com.example.javatoo.challenge.collections.Melon;
 
 import java.util.Arrays;
 import java.util.Comparator;

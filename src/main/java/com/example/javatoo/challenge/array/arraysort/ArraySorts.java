@@ -1,4 +1,4 @@
-package com.example.javatoo.challenge.arraysort;
+package com.example.javatoo.challenge.array.arraysort;
 
 import java.util.*;
 
