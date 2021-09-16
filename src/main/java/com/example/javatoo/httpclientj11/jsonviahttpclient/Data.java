@@ -1,14 +1,14 @@
 package com.example.javatoo.httpclientj11.jsonviahttpclient;
 
-import javax.json.bind.annotation.JsonbProperty;
+//import javax.json.bind.annotation.JsonbProperty;
 
 public class Data {
 
     private Integer id;
     private String email;
-    @JsonbProperty("first_name")
+//    @JsonbProperty("first_name")
     private String firstName;
-    @JsonbProperty("last_name")
+//    @JsonbProperty("last_name")
     private String lastName;
     private String avatar;
 
