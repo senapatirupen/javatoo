@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2002/06/xhtml2/ http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd" xmlns:epub="http://www.idpf.org/2007/ops">
+<head>
+<link href="Styles/Style00.css" rel="stylesheet" type="text/css" />
+<link href="Styles/Style01.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">body{margin:1em;background-color:transparent!important;}#sbo-rt-content *{text-indent:0pt!important;}#sbo-rt-content .bq{margin-right:1em!important;}#sbo-rt-content *{word-wrap:break-word!important;word-break:break-word!important;}#sbo-rt-content table,#sbo-rt-content pre{overflow-x:unset!important;overflow:unset!important;overflow-y:unset!important;white-space:pre-wrap!important;}</style></head>
+<body><div id="sbo-rt-content"><section data-type="chapter" epub:type="chapter" data-pdf-bookmark="Chapter 8. Introduction to MySQL"><div class="chapter" id="introduction_to_mysql">
+<h1><span class="label">Chapter 8. </span>Introduction to MySQL</h1>
+
+<aside data-type="sidebar" epub:type="sidebar"><div class="sidebar" id="idm45310009496104"><h5>A note for Early Release readers</h5>
+<p>With Early Release ebooks, you get books in their earliest form—the author’s raw and unedited content as they write—so you can take advantage of these technologies long before the official release of these titles.</p>
+
+<p>This will be the 8th chapter of the final book. Please note that the GitHub repo will be made active later on.</p>
+
+<p>If you have comments about how we might improve the content and/or examples in this book, or if you notice missing material within this chapter, please reach out to the author at mpotter@oreilly.com.</p>
+</div></aside>
+
+<p>With<a contenteditable="false" data-primary="MySQL" data-secondary="benefits of" data-type="indexterm" id="idm45310009380536"/><a contenteditable="false" data-primary="databases" data-see="also MySQL; database queries" data-type="indexterm" id="idm45310009379128"/> well over 10 million installations, MySQL is probably the most popular database management system for web servers. Developed in the mid-1990s, it’s now a mature technology that powers many of today’s most-visited internet destinations.</p>
+
+<p>One reason for its success must be that, like PHP, it’s free to use. But it’s also extremely powerful and exceptionally fast—it can run on even the most basic of hardware, and it hardly puts a dent in system resources.</p>
+
+<p>MySQL is also highly scalable, which means that it can grow with your website (the latest benchmarks are kept <a href="http://mysql.com/why-mysql/benchmarks">up to date online</a>).</p>
+
+<section data-type="sect1" data-pdf-bookmark="MySQL Basics"><div class="sect1" id="mysql_basics">
+<h1>MySQL Basics</h1>
+
+<p>A <em>database<a contenteditable="false" data-primary="databases" data-secondary="defined" data-type="indexterm" id="idm45310009373240"/></em><a contenteditable="false" data-primary="MySQL" data-secondary="basics of" data-type="indexterm" id="idm45310009371832"/> is a structured collection of records or data stored in a computer system and organized in such a way that it can be quickly searched and information can be rapidly retrieved.</p>
+
+<p>The<a contenteditable="false" data-primary="SQL (Structured Query Language)" data-type="indexterm" id="idm45310009369752"/> <em>SQL</em> in MySQL stands for <em>Structured Query Language</em>. This language is loosely based on English and also used in other databases such as Oracle and Microsoft SQL Server. It is designed to allow simple requests from a database via commands such as:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">title</code> <code class="k">FROM</code> <code class="n">publications</code> <code class="k">WHERE</code> <code class="n">author</code> <code class="o">=</code> <code class="s1">'Charles Dickens'</code><code class="p">;</code></pre>
+
+<p>A MySQL database contains one or more<a contenteditable="false" data-primary="tables" data-secondary="defined" data-type="indexterm" id="idm45310009358088"/><a contenteditable="false" data-primary="tables" data-see="also MySQL" data-type="indexterm" id="idm45310009356456"/> <em>tables</em>, each of which contains<a contenteditable="false" data-primary="records, defined" data-type="indexterm" id="idm45310009349544"/><a contenteditable="false" data-primary="records, defined" data-see="also MySQL" data-type="indexterm" id="idm45310009348472"/> <em>records</em> or <em>rows</em>. Within<a contenteditable="false" data-primary="rows, defined" data-type="indexterm" id="idm45310009346072"/><a contenteditable="false" data-primary="rows, defined" data-see="also MySQL" data-type="indexterm" id="idm45310009344936"/> these rows are various<a contenteditable="false" data-primary="columns" data-secondary="defined" data-type="indexterm" id="idm45310009343432"/><a contenteditable="false" data-primary="columns" data-secondary="defined" data-type="indexterm" id="idm45310009342024"/> <em>columns</em> or <em>fields</em> that contain the data itself. <a data-type="xref" href="#example_of_a_simple_database">Table 8-1</a> shows the contents of an example database of five publications detailing the author, title, type, and year of publication.</p>
+
+<table id="example_of_a_simple_database">
+	<caption><span class="label">Table 8-1. </span>Example of a simple database</caption>
+	<thead>
+		<tr>
+			<th>Author</th>
+			<th>Title</th>
+			<th>Type</th>
+			<th>Year</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Mark Twain</td>
+			<td>The Adventures of Tom Sawyer</td>
+			<td>Fiction</td>
+			<td>1876</td>
+		</tr>
+		<tr>
+			<td>Jane Austen</td>
+			<td>Pride and Prejudice</td>
+			<td>Fiction</td>
+			<td>1811</td>
+		</tr>
+		<tr>
+			<td>Charles Darwin</td>
+			<td>The Origin of Species</td>
+			<td>Non-fiction</td>
+			<td>1856</td>
+		</tr>
+		<tr>
+			<td>Charles Dickens</td>
+			<td>The Old Curiosity Shop</td>
+			<td>Fiction</td>
+			<td>1841</td>
+		</tr>
+		<tr>
+			<td>William Shakespeare</td>
+			<td>Romeo and Juliet</td>
+			<td>Play</td>
+			<td>1594</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Each row in the table is the same as a row in a MySQL table, a column in the table corresponds to a column in MySQL, and each element within a row is the same as a MySQL field.</p>
+
+<p>To uniquely identify this database, I’ll refer to it as the <em>publications</em> database in the examples that follow. And, as you will have observed, all these publications are considered to be classics of literature, so I’ll call the table within the database that holds the details <em>classics</em>.</p>
+</div></section>
+
+<section data-type="sect1" data-pdf-bookmark="Summary of Database Terms"><div class="sect1" id="summary_of_database_terms">
+<h1>Summary of Database Terms</h1>
+
+<p>The<a contenteditable="false" data-primary="databases" data-secondary="terminology surrounding" data-type="indexterm" id="idm45310009301272"/><a contenteditable="false" data-primary="MySQL" data-secondary="database terms" data-type="indexterm" id="idm45310009299864"/> main terms you need to acquaint yourself with for now are as follows:</p>
+
+<dl>
+	<dt><dfn>Database</dfn></dt>
+	<dd>The overall container for a collection of MySQL data</dd>
+	<dt><dfn>Table</dfn></dt>
+	<dd>A sub-container within a database that stores the actual data</dd>
+	<dt><dfn>Row</dfn></dt>
+	<dd>A single record within a table, which may contain several fields</dd>
+	<dt><dfn>Column</dfn></dt>
+	<dd>The name of a field within a row</dd>
+</dl>
+
+<p>I should note that I’m not trying to reproduce the precise terminology used in academic literature about relational databases, but just to provide simple, everyday terms to help you quickly grasp basic concepts and get started with a database.</p>
+</div></section>
+
+<section data-type="sect1" data-pdf-bookmark="Accessing MySQL via the Command Line"><div class="sect1" id="accessing_mysql_via_the_command_line">
+<h1>Accessing MySQL via the Command Line</h1>
+
+<p>There<a contenteditable="false" data-primary="MySQL" data-secondary="command-line access by OS type" data-type="indexterm" id="MYostype08"/> are three main ways you can interact with MySQL: using a command line, via a web interface such as phpMyAdmin, and through a programming language like PHP. We’ll start doing the third of these in Chapter 11 <!--<a data-type="xref" href="#accessing_mysql_using_php">#accessing_mysql_using_php</a>-->, but for now, let’s look at the first two.</p>
+
+<section data-type="sect2" data-pdf-bookmark="Starting the Command-Line Interface"><div class="sect2" id="starting_the_command-line_interface">
+<h2>Starting the Command-Line Interface</h2>
+
+<p>The following sections describe relevant instructions for Windows, macOS, and Linux.</p>
+
+<section data-type="sect3" data-pdf-bookmark="Windows users"><div class="sect3" id="windows_users">
+<h3>Windows users</h3>
+
+<p>If<a contenteditable="false" data-primary="AMPPS server" data-secondary="MySQL access" data-type="indexterm" id="AMsql08"/> you installed AMPPS (as explained in <a data-type="xref" href="ch02.xhtml#setting_up_a_development_server">Chapter 2</a>) in the usual way, you will be able to access the MySQL executable from the following directory:</p>
+
+<pre data-programming-language="perl">
+C:\Program Files\Ampps\mysql\bin</pre>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>If you installed AMPPS in any other place, you will need to use that directory instead, such as the following for 32-bit installations of AMPPS:</p>
+
+<pre data-programming-language="perl">
+C:\Program Files (x86)\Ampps\mysql\bin</pre>
+</div>
+
+<p>By default, the initial MySQL user is <em>root</em>, and it will have a default password of <em>mysql</em>. So, to enter MySQL’s command-line interface, select Start→Run, enter <code>CMD</code> into the Run box, and press Return. This will call up a Windows command prompt. From there, enter the following (making any appropriate changes as just discussed):</p>
+
+<pre data-programming-language="perl">
+cd C:\"Program Files\Ampps\mysql\bin"
+mysql -u root -pmysql</pre>
+
+<p>The first command changes to the MySQL directory, and the second tells MySQL to log you in as user <em>root</em>, with the password <em>mysql</em>. You will now be logged into MySQL and can start entering commands.</p>
+
+<p>If you are using Windows PowerShell (rather than Command Prompt), it will not load commands from the current location as you must explicitly specify where to load a program  from, in which case you would, instead, enter the following (note the preceding <code>./</code> before the <code>mysql</code> command):</p>
+
+<pre data-programming-language="perl">
+cd C:\"Program Files\Ampps\mysql\bin"
+./mysql -u root -pmysql</pre>
+
+<p>To<a contenteditable="false" data-primary="SHOW command (MySQL)" data-type="indexterm" id="idm45310009272488"/> be sure everything is working as it should be, enter the following—the results should be similar to <a data-type="xref" href="#accessing_mysql_from_a_windows_command_p">Figure 8-1</a>:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SHOW</code> <code class="n">databases</code><code class="p">;</code></pre>
+
+<figure><div id="accessing_mysql_from_a_windows_command_p" class="figure"><img alt="" class="iimagesmysql-command-linepng" src="Images/pmj5_0801.png" width="513" height="339"/>
+<h6><span class="label">Figure 8-1. </span>Accessing MySQL from a Windows command prompt</h6>
+</div></figure>
+
+<p>You are now ready to move on to the next section, <a data-type="xref" href="#using_the_command-line_interface">“Using the Command-Line Interface”</a>.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="macOS users"><div class="sect3" id="os_x_users">
+<h3>macOS users</h3>
+
+<p>To proceed with this chapter, you should have installed AMPPS as detailed in <a data-type="xref" href="ch02.xhtml#setting_up_a_development_server">Chapter 2</a>. You should also have the web server running and the MySQL server started.</p>
+
+<p>To enter the MySQL command-line interface, start the Terminal program (which should be available in Finder→Utilities). Then call up the MySQL program, which will have been installed in the directory <em>/Applications/ampps/mysql/bin</em>.</p>
+
+<p>By default, the initial MySQL user is <em>root</em>, and it will have a password of <em>mysql</em>. So, to start the program, type the following:</p>
+
+<pre data-programming-language="perl">
+/Applications/ampps/mysql/bin/mysql -u root -pmysql</pre>
+
+<p>This command tells MySQL to log you in as user <em>root</em> using the password <em>mysql</em>. To verify that all is well, type the following (<a data-type="xref" href="#accessing_mysql_from_the_os_x_terminal_p">Figure 8-2</a> should be the result):</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SHOW</code> <code class="n">databases</code><code class="p">;</code></pre>
+
+<figure><div id="accessing_mysql_from_the_os_x_terminal_p" class="figure"><img alt="Accessing MySQL from the macOS Terminal program" src="Images/pmj5_0802.png" width="605" height="366"/>
+<h6><span class="label">Figure 8-2. </span>Accessing MySQL from the macOS Terminal program</h6>
+</div></figure>
+
+<p>If you receive an error such as <code>Can't connect to local MySQL server through socket</code>, you will need to first start the MySQL server as described in <a data-type="xref" href="ch02.xhtml#setting_up_a_development_server">Chapter 2</a>.</p>
+
+<p>You should now be ready to move on to the next section, <a data-type="xref" href="#using_the_command-line_interface">“Using the Command-Line Interface”</a>.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Linux users"><div class="sect3" id="linux_users">
+<h3>Linux users</h3>
+
+<p>On a system running a Unix-like operating system such as Linux, you will almost certainly already have PHP and MySQL installed and running, and you will be able to enter the examples in the next section (if not, you can follow the procedure outlined in <a data-type="xref" href="ch02.xhtml#setting_up_a_development_server">Chapter 2</a> to install AMPPS). First, you should type the following to log into your MySQL system:</p>
+
+<pre data-programming-language="perl">
+mysql -u root -p</pre>
+
+<p>This tells MySQL to log you in as the user <em>root</em> and to request your password. If you have a password, enter it; otherwise, just press Return.</p>
+
+<p>Once you are logged in, type the following to test the program—you should see something like <a data-type="xref" href="#accessing_mysql_using_linux">Figure 8-3</a> in response:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SHOW</code> <code class="n">databases</code><code class="p">;</code></pre>
+
+<figure><div id="accessing_mysql_using_linux" class="figure"><img alt="Accessing MySQL using Linux" src="Images/pmj5_0803.png" width="586" height="355"/>
+<h6><span class="label">Figure 8-3. </span>Accessing MySQL using Linux</h6>
+</div></figure>
+
+<p>If this procedure fails at any point, please refer to <a data-type="xref" href="ch02.xhtml#setting_up_a_development_server">Chapter 2</a> to ensure that you have MySQL properly installed. Otherwise, you should now be ready to move on to the next section, <a data-type="xref" href="#using_the_command-line_interface">“Using the Command-Line Interface”</a>.<a contenteditable="false" data-primary="" data-startref="AMsql08" data-type="indexterm" id="idm45310009208456"/></p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="MySQL on a remote server"><div class="sect3" id="mysql_on_a_remote_server">
+<h3>MySQL on a remote server</h3>
+
+<p>If<a contenteditable="false" data-primary="development server setup" data-secondary="remote access" data-type="indexterm" id="idm45310009173576"/><a contenteditable="false" data-primary="MySQL" data-secondary="remote access" data-type="indexterm" id="idm45310009189400"/> you are accessing MySQL on a remote server, it will probably be a Linux/FreeBSD/Unix type of box, and you should connect to it via the secure SSH protocol (avoid using the insecure Telnet protocol at all costs). Once in there, you might find that things are a little different, depending on how the system administrator has set the server up—especially if it’s a shared hosting server. Therefore, you need to ensure that you have been given access to MySQL and that you have your username and password. Armed with these, you can then type the following, where <em><code>username</code></em> is the name supplied:</p>
+
+<pre data-programming-language="perl">
+mysql -u <em>username</em> -p</pre>
+
+<p>Enter your password when prompted. You can then try the following command, which should result in something like <a data-type="xref" href="#accessing_mysql_using_linux">Figure 8-3</a>:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SHOW</code> <code class="n">databases</code><code class="p">;</code></pre>
+
+<p>There may be other databases already created, and the <em>test</em> database may not be there.</p>
+
+<p>Bear in mind also that system administrators have ultimate control over everything and that you can encounter some unexpected setups. For example, you may find that you are required to preface all database names that you create with a unique identifying string to ensure that your names do not conflict with those of databases created by other users.</p>
+
+<p>Therefore, if you have any problems, talk with your system administrator, who will get you sorted out. Just let the sysadmin know that you need a username and <span class="keep-together">password.</span> You should also ask for the ability to create new databases or, at a minimum, to have at least one database created for you ready to use. You can then create all the tables you require within that database.<a contenteditable="false" data-primary="" data-startref="MYostype08" data-type="indexterm" id="idm45310009138056"/></p>
+</div></section>
+</div></section>
+
+<section data-type="sect2" data-pdf-bookmark="Using the Command-Line Interface"><div class="sect2" id="using_the_command-line_interface">
+<h2>Using the Command-Line Interface</h2>
+
+<p>From<a contenteditable="false" data-primary="MySQL" data-secondary="command-line interface use" data-type="indexterm" id="idm45310009155176"/> here on out, it makes no difference whether you are using Windows, macOS, or Linux to access MySQL directly, as all the commands used (and errors you may receive) are identical.</p>
+
+<section data-type="sect3" data-pdf-bookmark="The semicolon"><div class="sect3" id="semicolon">
+<h3>The semicolon</h3>
+
+<p>Let’s start with the basics. Did you notice the<a contenteditable="false" data-primary="semicolons (;)" data-secondary="in MySQL" data-type="indexterm" id="idm45310009151288"/><a contenteditable="false" data-primary="; (semicolons)" data-secondary="in MySQL" data-type="indexterm" id="idm45310009149912"/> semicolon (<code>;</code>) at the end of the <code>SHOW databases;</code> command that you typed? The semicolon is used by MySQL to separate or end commands. If you forget to enter it, MySQL will issue a prompt and wait for you to do so. The<a contenteditable="false" data-primary="MySQL" data-secondary="multiple-line commands" data-type="indexterm" id="idm45310009147320"/><a contenteditable="false" data-primary="commands" data-secondary="in MySQL" data-type="indexterm" id="commysql08"/> required semicolon was made part of the syntax to let you enter multiple-line commands, which can be convenient because some commands get quite long. It also allows you to issue more than one command at a time by placing a semicolon after each one. The interpreter gets them all in a batch when you press the Enter (or Return) key and executes them in order.</p>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>It’s very common to receive a MySQL prompt instead of the results of your command; it means that you forgot the final semicolon. Just enter the semicolon and press the Enter key, and you’ll get what you want.</p>
+</div>
+
+<p>There are six different prompts that MySQL may present you with (see <a data-type="xref" href="#mysqlapostrophes_six_command_prompts">Table 8-2</a>), so you will always know where you are during a multiline input.<a contenteditable="false" data-primary="MySQL" data-secondary="command prompts" data-type="indexterm" id="idm45310009141224"/></p>
+
+<table id="mysqlapostrophes_six_command_prompts">
+	<caption><span class="label">Table 8-2. </span>MySQL’s six command prompts</caption>
+	<thead>
+		<tr>
+			<th>MySQL prompt</th>
+			<th>Meaning</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>mysql&gt;</code></td>
+			<td>Ready and waiting for a command</td>
+		</tr>
+		<tr>
+			<td><code>-&gt;</code></td>
+			<td>Waiting for the next line of a command</td>
+		</tr>
+		<tr>
+			<td><code>'&gt;</code></td>
+			<td>Waiting for the next line of a string started with a single quote</td>
+		</tr>
+		<tr>
+			<td><code>"&gt;</code></td>
+			<td>Waiting for the next line of a string started with a double quote</td>
+		</tr>
+		<tr>
+			<td><code>`&gt;</code></td>
+			<td>Waiting for the next line of a string started with a backtick</td>
+		</tr>
+		<tr>
+			<td><code>/*&gt;</code></td>
+			<td>Waiting for the next line of a comment started with <code>/*</code></td>
+		</tr>
+	</tbody>
+</table>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Canceling a command"><div class="sect3" id="canceling_a_command">
+<h3>Canceling a command</h3>
+
+<p>If<a contenteditable="false" data-primary="MySQL" data-secondary="cancelling commands in" data-type="indexterm" id="idm45310009105208"/><a contenteditable="false" data-primary="\c (cancel in MySQL)" data-type="indexterm" id="idm45310009103800"/> you are partway through entering a command and decide you don’t wish to execute it after all, whatever you do, <em>don’t press Ctrl-C</em>! That will close the program. Instead, you can enter <code>\c</code> and press Return. <a data-type="xref" href="#canceling_a_line_of_input">Example 8-1</a> shows how to use the command.</p>
+
+<div data-type="example" id="canceling_a_line_of_input">
+<h5><span class="label">Example 8-1. </span>Canceling a line of input</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="n">meaningless</code> <code class="n">gibberish</code> <code class="k">to</code> <code class="n">mysql</code> <code class="err">\</code><code class="k">c</code></pre>
+</div>
+
+<p>When you type that line, MySQL will ignore everything you typed and issue a new prompt. Without the <code>\c</code>, it would have displayed an error message. Be careful, though: if you have opened a string or comment, close it first before using the <code>\c</code> or MySQL will think the <code>\c</code> is just part of the string. <a data-type="xref" href="#canceling_input_from_inside_a_string">Example 8-2</a> shows the right way to do this.</p>
+
+<div data-type="example" id="canceling_input_from_inside_a_string">
+<h5><span class="label">Example 8-2. </span>Canceling input from inside a string</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="n">this</code> <code class="k">is</code> <code class="ss">"meaningless gibberish to mysql"</code> <code class="err">\</code><code class="k">c</code></pre>
+</div>
+
+<p>Also note that using <code>\c</code> after a semicolon will not cancel the preceding command, as it is then a new statement.</p>
+</div></section>
+</div></section>
+
+<section data-type="sect2" data-pdf-bookmark="MySQL Commands"><div class="sect2" id="mysql_commands">
+<h2>MySQL Commands</h2>
+
+<p>You’ve<a contenteditable="false" data-primary="MySQL" data-secondary="common commands" data-type="indexterm" id="idm45310009089160"/> already seen the <code>SHOW</code> command, which lists tables, databases, and many other items. The commands you’ll use most often are listed in <a data-type="xref" href="#selection_of_common_mysql_commands">Table 8-3</a>.</p>
+
+<table id="selection_of_common_mysql_commands">
+	<caption class="width-full"><span class="label">Table 8-3. </span>Common MySQL commands</caption>
+	<thead>
+		<tr>
+			<th>Command</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>ALTER</code></td>
+			<td>Alter a database or table</td>
+		</tr>
+		<tr>
+			<td><code>BACKUP</code></td>
+			<td>Back up a table</td>
+		</tr>
+		<tr>
+			<td><code>\c</code></td>
+			<td>Cancel input</td>
+		</tr>
+		<tr>
+			<td><code>CREATE</code></td>
+			<td>Create a database</td>
+		</tr>
+		<tr>
+			<td><code>DELETE</code></td>
+			<td>Delete a row from a table</td>
+		</tr>
+		<tr>
+			<td><code>DESCRIBE</code></td>
+			<td>Describe a table’s columns</td>
+		</tr>
+		<tr>
+			<td><code>DROP</code></td>
+			<td>Delete a database or table</td>
+		</tr>
+		<tr>
+			<td><code>EXIT</code> (Ctrl-C)</td>
+			<td>Exit</td>
+		</tr>
+		<tr>
+			<td><code>GRANT</code></td>
+			<td>Change user privileges</td>
+		</tr>
+		<tr>
+			<td><code>HELP</code> (<code>\h</code>, <code>\?</code>)</td>
+			<td>Display help</td>
+		</tr>
+		<tr>
+			<td><code>INSERT</code></td>
+			<td>Insert data</td>
+		</tr>
+		<tr>
+			<td><code>LOCK</code></td>
+			<td>Lock table(s)</td>
+		</tr>
+		<tr>
+			<td><code>QUIT <code>(</code>\q<code>)</code></code></td>
+			<td>Same as <code>EXIT</code></td>
+		</tr>
+		<tr>
+			<td><code>RENAME</code></td>
+			<td>Rename a table</td>
+		</tr>
+		<tr>
+			<td><code>SHOW</code></td>
+			<td>List details about an object</td>
+		</tr>
+		<tr>
+			<td><code>SOURCE</code></td>
+			<td>Execute a file</td>
+		</tr>
+		<tr>
+			<td><code>STATUS </code>(<code>\s</code>)</td>
+			<td>Display the current status</td>
+		</tr>
+		<tr>
+			<td><code>TRUNCATE</code></td>
+			<td>Empty a table</td>
+		</tr>
+		<tr>
+			<td><code>UNLOCK</code></td>
+			<td>Unlock table(s)</td>
+		</tr>
+		<tr>
+			<td><code>UPDATE</code></td>
+			<td>Update an existing record</td>
+		</tr>
+		<tr>
+			<td><code>USE</code></td>
+			<td>Use a database</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>I’ll cover most of these as we proceed, but first, you need to remember a couple of points about MySQL commands:</p>
+
+<ul>
+	<li>
+	<p>SQL commands<a contenteditable="false" data-primary="names and naming" data-secondary="SQL commands" data-type="indexterm" id="idm45310008997784"/> and keywords are case-insensitive. <code>CREATE</code>, <code>create</code>, and <code>CrEaTe</code> all mean the same thing. However, for the sake of clarity, you may prefer to use uppercase.</p>
+	</li>
+	<li>
+	<p>Table<a contenteditable="false" data-primary="tables" data-secondary="naming rules" data-type="indexterm" id="idm45310008993928"/><a contenteditable="false" data-primary="names and naming" data-secondary="tables" data-type="indexterm" id="idm45310008992520"/> names are case-sensitive on Linux and macOS, but case-insensitive on Windows. So, for the sake of portability, you should always choose a case and stick to it. The recommended style is to use lowercase for table names.</p>
+	</li>
+</ul>
+
+<section data-type="sect3" data-pdf-bookmark="Creating a database"><div class="sect3" id="creating_a_database">
+<h3>Creating a database</h3>
+
+<p>If<a contenteditable="false" data-primary="MySQL" data-secondary="database creation" data-type="indexterm" id="idm45310008988616"/> you are working on a remote server and have only a single user account and access to a single database that was created for you, move on to the section <a data-type="xref" href="#creating_a_table">“Creating a table”</a>. Otherwise, get the ball rolling by issuing the following command to create a new database called <em>publications</em>:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">DATABASE</code> <code class="n">publications</code><code class="p">;</code></pre>
+
+<p>A successful command will return a message that doesn’t mean much yet—<code>Query OK, 1 row affected (0.00 sec)</code>—but will make sense soon. Now that you’ve created the database, you want to work with it, so issue the following command:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="n">USE</code> <code class="n">publications</code><code class="p">;</code></pre>
+
+<p>You should now see the message <code>Database changed</code> and will then be set to proceed with the following examples.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Creating users"><div class="sect3" id="creating_users">
+<h3>Creating users</h3>
+
+<p>Now<a contenteditable="false" data-primary="MySQL" data-secondary="user creation" data-type="indexterm" id="idm45310008960792"/> that you’ve seen how easy it is to use MySQL and created your first database, it’s time to look at how you create users, as you probably won’t want to grant your PHP scripts root access to MySQL—it could cause a real headache should you get hacked.</p>
+
+<p>To<a contenteditable="false" data-primary="GRANT command (MySQL)" data-type="indexterm" id="idm45310008969400"/> create a user, issue the <code>CREATE USER</code> command, which takes the following form (don’t type this in; it’s not an actual working command):</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code><code> </code><code class="k">USER</code><code> </code><code class="s1">'</code><em><code class="s1">username</code></em><code class="s1">'</code><code class="o">@</code><code class="s1">'</code><em><code class="s1">hostname</code></em><code class="s1">'</code><code> </code><code class="n">IDENTIFIED</code><code> </code><code class="k">BY</code><code> </code><code class="s1">'</code><em><code class="s1">password</code></em><code class="s1">'</code><code class="p">;</code><code>
+</code><code class="k">GRANT</code><code> </code><em><code class="k">PRIVILEGES</code></em><code> </code><code class="k">ON</code><code> </code><em><code class="k">database</code><code class="p">.</code><code class="k">object</code></em><code> </code><code class="k">TO</code><code> </code><code class="s1">'</code><em><code class="s1">username</code></em><code class="s1">'</code><code class="o">@</code><code class="s1">'</code><em><code class="s1">hostname</code></em><code class="s1">'</code></pre>
+
+<p>This should all look pretty straightforward, with the possible exception of the <span class="keep-together"><code><em>database.object</em></code></span> part, which refers to the database itself and the objects it contains, such as tables (see <a data-type="xref" href="#example_parameters_for_the_grant_command">Table 8-4</a>).</p>
+
+<table id="example_parameters_for_the_grant_command">
+	<caption><span class="label">Table 8-4. </span>Example parameters for the GRANT command</caption>
+	<thead>
+		<tr>
+			<th>Arguments</th>
+			<th>Meaning</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>*.*</code></td>
+			<td>All databases and all their objects</td>
+		</tr>
+		<tr>
+			<td><code><em><code>database</code></em>.*</code></td>
+			<td>Only the database called <em><code>database</code></em> and all its objects</td>
+		</tr>
+		<tr>
+			<td><code><em><code>database</code></em>.<em><code>object</code></em></code></td>
+			<td>Only the database called <em><code>database</code></em> and its object called <em><code>object</code></em></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>So, let’s create a user who can access just the new <em>publications</em> database and all its objects, by entering the following commands (replacing the username <em>jim</em> and also the password <em>mypasswd</em> with ones of your choosing):</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">USER</code> <code class="s1">'jim'</code><code class="o">@</code><code class="s1">'localhost'</code> <code class="n">IDENTIFIED</code> <code class="k">BY</code> <code class="s1">'password'</code>
+<code class="k">GRANT</code> <code class="k">ALL</code> <code class="k">ON</code> <code class="n">publications</code><code class="p">.</code><code class="o">*</code> <code class="k">TO</code> <code class="s1">'jim'</code><code class="o">@</code><code class="s1">'localhost'</code>
+</pre>
+
+<p>What this does is allow the user <em>jim@localhost</em> full access to the <em>publications</em> database using the password <em>mypasswd</em>. You can test whether this step has worked by entering <code>quit</code> to exit and then rerunning MySQL the way you did before, but instead of entering <code>-u root -p</code>, type <code>-u jim -p</code>, or whatever username you created. See <a data-type="xref" href="#starting_mysql_and_logging_in_as_jimcomm">Table 8-5</a> for the correct command for your operating system. Modify it as necessary if the <em>mysql</em> client program is installed in a different directory on your system.</p>
+
+<table id="starting_mysql_and_logging_in_as_jimcomm">
+	<caption class="width-full"><span class="label">Table 8-5. </span>Starting MySQL and logging in as jim@localhost</caption>
+	<thead>
+		<tr>
+			<th>OS</th>
+			<th>Example command</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Windows</td>
+			<td><code>C:\"Program Files\Ampps\mysql\bin\mysql" -u jim -p</code></td>
+		</tr>
+		<tr>
+			<td>macOS</td>
+			<td><code>/Applications/ampps/mysql/bin/mysql -u jim -p</code></td>
+		</tr>
+		<tr>
+			<td>Linux</td>
+			<td><code>mysql -u jim –p</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>All you have to do now is enter your password when prompted and you will be logged in. If you choose to, you can place your password immediately following the <code>-p</code> (without any spaces) to avoid having to enter it when prompted, but this is considered poor practice because if other people are logged into your system, there may be ways for them to look at the command you entered and find out your password.</p>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>You can grant only privileges that you already have, and you must also have the privilege to issue <code>GRANT</code> commands. There are a whole range of privileges you can choose to grant if you are not granting all privileges. For further details on the <code>GRANT</code> command and the <code>REVOKE</code> command, which can remove privileges once granted, see the <a href="http://tinyurl.com/mysqlgrant">documentation</a>. Also be aware that if you create a new user but do not specify an <code>IDENTIFIED BY</code> clause, the user will have no password, a situation that is very insecure and should be avoided.</p>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Creating a table"><div class="sect3" id="creating_a_table">
+<h3>Creating a table</h3>
+
+<p>At<a contenteditable="false" data-primary="MySQL" data-secondary="table creation" data-type="indexterm" id="idm45310008817176"/> this point, you should now be logged into MySQL with <code>ALL</code> privileges granted for the database <em>publications</em> (or a database that was created for you), so you’re ready to create your first table. Make sure the correct database is in use by typing the following (replacing <code>publications</code> with the name of your database if it is different):</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="n">USE</code> <code class="n">publications</code><code class="p">;</code></pre>
+
+<p>Now enter the command in <a data-type="xref" href="#creating_a_table_called_classics">Example 8-3</a> one line at a time.</p>
+
+<div data-type="example" id="creating_a_table_called_classics">
+<h5><span class="label">Example 8-3. </span>Creating a table called classics</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="p">(</code>
+ <code class="n">author</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="n">title</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="k">type</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">16</code><code class="p">),</code>
+ <code class="k">year</code> <code class="nb">CHAR</code><code class="p">(</code><code class="mi">4</code><code class="p">))</code> <code class="n">ENGINE</code> <code class="n">InnoDB</code><code class="p">;</code>
+</pre>
+</div>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>The final two words in this command require a little explanation. MySQL can process queries in many different ways internally, and these different ways are supported by different <em>engines</em>. From<a contenteditable="false" data-primary="InnoDB" data-type="indexterm" id="idm45310008731480"/><a contenteditable="false" data-primary="MySQL" data-secondary="default storage engine for" data-type="indexterm" id="idm45310008730408"/> version 5.6 onwards <em>InnoDB</em> is the default storage engine for MySQL, and we use it here because it supports <code>FULLTEXT</code> searches. So long as you have a relatively up-to-date version of MySQL, you can omit the <code>ENGINE InnoDB</code> section of the command when creating a table, but I have kept it in for now to emphasize that this is the engine being used.</p>
+
+<p>If you are running a version of MySQL prior to 5.6, the InnoDB engine will not support <code>FULLTEXT</code> indexes, so you will have to replace <code>InnoDB</code> in the command with <code>MyISAM</code> to indicate that you want to use that engine (see <a data-type="xref" href="#creating_a_fulltext_index">“Creating a FULLTEXT index”</a>).</p>
+
+<p>InnoDB is generally more efficient and the recommended option. If you installed the AMPPS stack as detailed in <a data-type="xref" href="ch02.xhtml#setting_up_a_development_server">Chapter 2</a>, you should have at least version 5.6.35 of MySQL.</p>
+</div>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>You could also issue the previous command on a single line, like this:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="p">(</code><code class="n">author</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code> <code class="n">title</code>
+<code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code> <code class="k">type</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">16</code><code class="p">),</code> <code class="k">year</code> <code class="nb">CHAR</code><code class="p">(</code><code class="mi">4</code><code class="p">))</code> <code class="n">ENGINE</code>
+<code class="n">InnoDB</code><code class="p">;</code></pre>
+
+<p>But MySQL commands can be long and complicated, so I recommend using the format shown in <a data-type="xref" href="#creating_a_table_called_classics">Example 8-3</a> until you are comfortable with longer ones.</p>
+</div>
+
+<p>MySQL should then issue the response <code>Query OK, 0 rows affected</code>, along with how long it took to execute the command. If you see an error message instead, check your syntax carefully. Every parenthesis and comma counts, and typing errors are easy to make.</p>
+
+<p>To check whether your new table has been created, type the following:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">DESCRIBE</code> <code class="n">classics</code><code class="p">;</code></pre>
+
+<p>All being well, you will see the sequence of commands and responses shown in <a data-type="xref" href="#mysql_session_creating_and_checking_a">Example 8-4</a>, where you should particularly note the table format displayed.</p>
+
+<div data-type="example" id="mysql_session_creating_and_checking_a">
+<h5><span class="label">Example 8-4. </span>A MySQL session: creating and checking a new table</h5>
+
+<pre data-programming-language="perl">
+<strong>mysql&gt;</strong> USE publications;
+<strong>Database changed</strong>
+<strong>mysql&gt;</strong> CREATE TABLE classics (
+    <strong>-&gt;</strong>  author VARCHAR(128),
+    <strong>-&gt;</strong>  title VARCHAR(128),
+    <strong>-&gt;</strong>  type VARCHAR(16),
+    <strong>-&gt;</strong>  year CHAR(4)) ENGINE InnoDB;
+<strong>Query OK, 0 rows affected (0.03 sec)</strong>
+
+<strong>mysql&gt;</strong> DESCRIBE classics;
+<strong>+--------+--------------+------+-----+---------+-------+</strong>
+<strong>| Field  | Type         | Null | Key | Default | Extra |</strong>
+<strong>+--------+--------------+------+-----+---------+-------+</strong>
+<strong>| author | varchar(128) | YES  |     | NULL    |       |</strong>
+<strong>| title  | varchar(128) | YES  |     | NULL    |       |</strong>
+<strong>| type   | varchar(16)  | YES  |     | NULL    |       |</strong>
+<strong>| year   | char(4)      | YES  |     | NULL    |       |</strong>
+<strong>+--------+--------------+------+-----+---------+-------+</strong>
+<strong>4 rows in set (0.00 sec)</strong></pre>
+</div>
+
+<p>The <code>DESCRIBE</code> command is<a contenteditable="false" data-primary="DESCRIBE command (MySQL)" data-type="indexterm" id="idm45310008660616"/> an invaluable debugging aid when you need to ensure that you have correctly created a MySQL table. You can also use it to remind yourself about a table’s field or column names and the types of data in each one. Let’s look at each of the headings in detail:</p>
+
+<dl>
+	<dt><dfn><code>Field</code></dfn></dt>
+	<dd>
+	<p>The name of each field or column within a table</p>
+	</dd>
+	<dt><dfn><code>Type</code></dfn></dt>
+	<dd>
+	<p>The type of data being stored in the field</p>
+	</dd>
+	<dt><dfn><code>Null</code></dfn></dt>
+	<dd>
+	<p>Whether the field is allowed to contain a value of <code>NULL</code></p>
+	</dd>
+	<dt><dfn><code>Key</code></dfn></dt>
+	<dd>
+	<p>What type of key, if any, has been applied (<em>keys</em> or <em>indexes</em> in MySQL are quick ways to look up and search for data)</p>
+	</dd>
+	<dt><dfn><code>Default</code></dfn></dt>
+	<dd>
+	<p>The default value that will be assigned to the field if no value is specified when a new row is created</p>
+	</dd>
+	<dt><dfn><code>Extra</code></dfn></dt>
+	<dd>
+	<p>Additional information, such as whether a field is set to auto-increment<a contenteditable="false" data-primary="" data-startref="commysql08" data-type="indexterm" id="idm45310008595992"/></p>
+	</dd>
+</dl>
+</div></section>
+</div></section>
+
+<section data-type="sect2" data-pdf-bookmark="Data Types"><div class="sect2" id="data_types">
+<h2>Data Types</h2>
+
+<p>In <a data-type="xref" href="#creating_a_table_called_classics">Example 8-3</a>, you<a contenteditable="false" data-primary="MySQL" data-secondary="data types" data-type="indexterm" id="MSQLtype08"/><a contenteditable="false" data-primary="data types (MySQL)" data-secondary="VARCHAR" data-type="indexterm" id="idm45310008589640"/><a contenteditable="false" data-primary="VARCHAR data type (MySQL)" data-type="indexterm" id="idm45310008588264"/> may have noticed that three of the table’s fields were given the data type of <code>VARCHAR</code>, and one was given the type <code>CHAR</code>. The term <code>VARCHAR</code> stands for <em>VARiable length</em> <em>CHARacter string</em>, and the command takes a numeric value that tells MySQL the maximum length allowed for a string stored in this field.</p>
+
+<p>Both<a contenteditable="false" data-primary="data types (MySQL)" data-secondary="CHAR" data-type="indexterm" id="idm45310008584472"/><a contenteditable="false" data-primary="CHAR data type (MySQL)" data-type="indexterm" id="idm45310008582712"/> <code>CHAR</code> and <code>VARCHAR</code> accept text strings and impose a limit on the size of the field. The difference is that every string in a <code>CHAR</code> field has the specified size. If you put in a smaller string, it is padded with spaces. A <code>VARCHAR</code> field does not pad the text; it lets the size of the field vary to fit the text that is inserted. But <code>VARCHAR</code> requires a small amount of overhead to keep track of the size of each value. So, <code>CHAR</code> is slightly more efficient if the sizes are similar in all records, whereas <code>VARCHAR</code> is more efficient if sizes can vary a lot and get large. In addition, the overhead causes access to <code>VARCHAR</code> data to be slightly slower than to <code>CHAR</code> data.</p>
+
+<p>Another<a contenteditable="false" data-primary="character sets" data-type="indexterm" id="idm45310008576920"/> feature of character and text columns, important for today’s global web reach, is <em>character sets</em>. These assign particular binary values to particular characters. The character set you use for English is obviously different from the one you’d use for Russian. You can assign the character set to a character or text column when you create it.</p>
+
+<p><code>VARCHAR</code> is useful in our example, because it can accommodate author names and titles of different lengths, while helping MySQL plan the size of the database and perform lookups and searches more easily. Just be aware that if you ever attempt to assign a string value longer than the length allowed, it will be truncated to the maximum length declared in the table definition.</p>
+
+<p>The <code>year</code> field, however, has predictable values, so instead of <code>VARCHAR</code> we use the more efficient <code>CHAR(4)</code> data type. The parameter of <code>4</code> allows for 4 bytes of data, supporting all years from –999 to 9999; a byte comprises 8 bits and can have the values 00000000 through 11111111, which are 0 to 255 in decimal.</p>
+
+<p>You could, of course, just store two-digit values for the year, but if your data is going to still be needed in the following century, or may otherwise wrap around, it will have to be sanitized first—think of the “millennium bug” that would have caused dates beginning on January 1, 2000, to be treated as 1900 on many of the world’s biggest computer installations.</p>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>I didn’t use the <code>YEAR</code> data type in<a contenteditable="false" data-primary="YEAR data type" data-type="indexterm" id="idm45310008568984"/> the <em>classics</em> table because it supports only the years 0000 and 1901 through 2155. This is because MySQL stores the year in a single byte for reasons of efficiency, but it means that only 256 years are available, and the publication years of the titles in the <em>classics</em> table are well before 1901.</p>
+</div>
+
+<section data-type="sect3" data-pdf-bookmark="The CHAR data type"><div class="sect3" id="char_data_type">
+<h3>The CHAR data type</h3>
+
+<p><a data-type="xref" href="#mysqlapostrophes_char_data_types">Table 8-6</a> lists the <code>CHAR</code> data types. Both types offer a parameter that sets the maximum (or exact) length of the string allowed in the field. As the table shows, each type has a built-in maximum number of bytes it can occupy.</p>
+
+<table id="mysqlapostrophes_char_data_types">
+	<caption><span class="label">Table 8-6. </span>MySQL’s CHAR data types</caption>
+	<thead>
+		<tr>
+			<th>Data type</th>
+			<th>Bytes used</th>
+			<th>Examples</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>CHAR(<em><code>n</code></em>)</code></td>
+			<td>Exactly <em><code>n</code></em> (&lt;= 255)</td>
+			<td><code>CHAR(5)</code> <em>“Hello” uses 5 bytes</em><br/>
+			<code>CHAR(57)</code> <em>“Goodbye” uses 57 bytes</em></td>
+		</tr>
+		<tr>
+			<td><code>VARCHAR(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 65535)</td>
+			<td><code>VARCHAR(7)</code> <em>“Hello” uses 5</em><em> bytes</em><br/>
+			<code>VARCHAR(100)</code> <em>“Goodbye” uses 7 bytes</em></td>
+		</tr>
+	</tbody>
+</table>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="The BINARY data type"><div class="sect3" id="binary_data_type">
+<h3>The BINARY data type</h3>
+
+<p>The <code>BINARY</code> data<a contenteditable="false" data-primary="BINARY data type (MySQL)" data-type="indexterm" id="idm45310008546856"/><a contenteditable="false" data-primary="data types (MySQL)" data-secondary="BINARY" data-type="indexterm" id="idm45310008545656"/> types (see <a data-type="xref" href="#mysqlapostrophes_binary_data_types">Table 8-7</a>) store strings of bytes that do not have an associated character set. For example, you might use the <code>BINARY</code> data type to store a GIF image.</p>
+
+<table id="mysqlapostrophes_binary_data_types">
+	<caption><span class="label">Table 8-7. </span>MySQL’s BINARY data types</caption>
+	<thead>
+		<tr>
+			<th>Data type</th>
+			<th>Bytes used</th>
+			<th>Examples</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>BINARY(</code><em><code>n</code></em><code>)</code></td>
+			<td>Exactly <em><code>n</code></em> (&lt;= 255)</td>
+			<td>As <code>CHAR</code> but contains binary data</td>
+		</tr>
+		<tr>
+			<td><code>VARBINARY(</code><em><code>n</code></em><code>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 65535)</td>
+			<td>As <code>VARCHAR</code> but contains binary data</td>
+		</tr>
+	</tbody>
+</table>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="The TEXT data types"><div class="sect3" id="text_and_varchar_data_types">
+<h3>The TEXT data types</h3>
+
+<p>Character<a contenteditable="false" data-primary="TEXT data types (MySQL)" data-type="indexterm" id="idm45310008529288"/><a contenteditable="false" data-primary="data types (MySQL)" data-secondary="TEXT data types" data-type="indexterm" id="idm45310008528152"/> data can also be stored in one of the set of <code>TEXT</code> fields. The differences between these fields and <code>VARCHAR</code> fields are small:</p>
+
+<ul>
+	<li>
+	<p>Prior to version 5.0.3, MySQL would remove leading and trailing spaces from <code>VARCHAR</code> fields.</p>
+	</li>
+	<li>
+	<p><code>TEXT</code> fields cannot have default values.</p>
+	</li>
+	<li>
+	<p>MySQL indexes only the first <em>n</em> characters of a <code>TEXT</code> column (you specify <em>n</em> when you create the index).</p>
+	</li>
+</ul>
+
+<p>What this means is that <code>VARCHAR</code> is the better and faster data type to use if you need to search the entire contents of a field. If you will never search more than a certain number of leading characters in a field, you should probably use a <code>TEXT</code> data type (see <a data-type="xref" href="#mysqlapostrophes_text_data_types">Table 8-8</a>).</p>
+
+<table id="mysqlapostrophes_text_data_types">
+	<caption><span class="label">Table 8-8. </span>MySQL’s TEXT data types</caption>
+	<thead>
+		<tr>
+			<th>Data type</th>
+			<th>Bytes used</th>
+			<th>Attributes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>TINYTEXT(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 255)</td>
+			<td>Treated as a string with a character set</td>
+		</tr>
+		<tr>
+			<td><code>TEXT(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 65535)</td>
+			<td>Treated as a string with a character set</td>
+		</tr>
+		<tr>
+			<td><code>MEDIUMTEXT(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 1.67e+7)</td>
+			<td>Treated as a string with a character set</td>
+		</tr>
+		<tr>
+			<td><code>LONGTEXT(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 4.29e+9)</td>
+			<td>Treated as a string with a character set</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The data types that have smaller maximums are also more efficient; therefore, you should use the one with the smallest maximum that you know is enough for any string you will be storing in the field.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="The BLOB data types"><div class="sect3" id="blob_data_type">
+<h3>The BLOB data types</h3>
+
+<p>The<a contenteditable="false" data-primary="BLOB data types (MySQL)" data-type="indexterm" id="idm45310008499016"/><a contenteditable="false" data-primary="data types (MySQL)" data-secondary="BLOB" data-type="indexterm" id="idm45310008497912"/> term <code>BLOB</code> stands for <em>Binar Large OBject</em>, and therefore, as you would think, the <code>BLOB</code> data type is most useful for binary data in excess of 65,536 bytes in size. The main other difference between the <code>BLOB</code> and <code>BINARY</code> data types is that <code>BLOB</code>s cannot have default values. The <code>BLOB</code> data types are listed in <a data-type="xref" href="#mysqlapostrophes_blob_data_types">Table 8-9</a>.</p>
+
+<table id="mysqlapostrophes_blob_data_types">
+	<caption><span class="label">Table 8-9. </span>MySQL’s BLOB data types</caption>
+	<thead>
+		<tr>
+			<th>Data type</th>
+			<th>Bytes used</th>
+			<th>Attributes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>TINYBLOB(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 255)</td>
+			<td>Treated as binary data—no character set</td>
+		</tr>
+		<tr>
+			<td><code>BLOB(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 65535)</td>
+			<td>Treated as binary data—no character set</td>
+		</tr>
+		<tr>
+			<td><code>MEDIUMBLOB(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 1.67e+7)</td>
+			<td>Treated as binary data—no character set</td>
+		</tr>
+		<tr>
+			<td><code>LONGBLOB(<em><code>n</code></em>)</code></td>
+			<td>Up to <em><code>n</code></em> (&lt;= 4.29e+9)</td>
+			<td>Treated as binary data—no character set</td>
+		</tr>
+	</tbody>
+</table>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Numeric data types"><div class="sect3" id="numeric_data_types">
+<h3>Numeric data types</h3>
+
+<p>MySQL supports<a contenteditable="false" data-primary="data types (MySQL)" data-secondary="numeric" data-type="indexterm" id="idm45310008473704"/><a contenteditable="false" data-primary="numeric data types (MySQL)" data-type="indexterm" id="idm45310008472296"/> various numeric data types, from a single byte up to double-precision floating-point numbers. Although the most memory that a numeric field can use up is 8 bytes, you are well advised to choose the smallest data type that will adequately handle the largest value you expect. This will help keep your databases small and quickly accessible.</p>
+
+<p><a data-type="xref" href="#mysqlapostrophes_numeric_data_types">Table 8-10</a> lists the numeric data types supported by MySQL and the ranges of values they can contain. In<a contenteditable="false" data-primary="signed numbers" data-type="indexterm" id="idm45310008469272"/> case you are not acquainted with the terms, a <em>signed number</em> is one with a possible range from a minus value, through 0, to a positive one; and an<a contenteditable="false" data-primary="unsigned numbers" data-type="indexterm" id="idm45310008467592"/> <em>unsigned number</em> has a value ranging from 0 to a positive one. They can both hold the same number of values; just picture a signed number as being shifted halfway to the left so that half its values are negative and half are positive. Note that floating-point values (of any precision) may only be signed.</p>
+
+<table id="mysqlapostrophes_numeric_data_types">
+	<caption><span class="label">Table 8-10. </span>MySQL’s numeric data types</caption>
+	<thead>
+		<tr>
+			<th rowspan="2">Data type</th>
+			<th rowspan="2">Bytes<br/>
+			used</th>
+			<th colspan="2">Minimum value</th>
+			<th colspan="2">Maximum value</th>
+		</tr>
+		<tr>
+			<th>Signed</th>
+			<th>Unsigned</th>
+			<th>Signed</th>
+			<th>Unsigned</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>TINYINT</code></td>
+			<td><code>1</code></td>
+			<td><code>–128</code></td>
+			<td><code>0</code></td>
+			<td><code>127</code></td>
+			<td><code>255</code></td>
+		</tr>
+		<tr>
+			<td><code>SMALLINT</code></td>
+			<td><code>2</code></td>
+			<td><code>–32768</code></td>
+			<td><code>0</code></td>
+			<td><code>32767</code></td>
+			<td><code>65535</code></td>
+		</tr>
+		<tr>
+			<td><code>MEDIUMINT</code></td>
+			<td><code>3</code></td>
+			<td><code>–8.38e+6</code></td>
+			<td><code>0</code></td>
+			<td><code>8.38e+6</code></td>
+			<td><code>1.67e+7</code></td>
+		</tr>
+		<tr>
+			<td><code>INT</code> / <code>INTEGER</code></td>
+			<td><code>4</code></td>
+			<td><code>–2.15e+9</code></td>
+			<td><code>0</code></td>
+			<td><code>2.15e+9</code></td>
+			<td><code>4.29e+9</code></td>
+		</tr>
+		<tr>
+			<td><code>BIGINT</code></td>
+			<td><code>8</code></td>
+			<td><code>–9.22e+18</code></td>
+			<td><code>0</code></td>
+			<td><code>9.22e+18</code></td>
+			<td><code>1.84e+19</code></td>
+		</tr>
+		<tr>
+			<td><code>FLOAT</code></td>
+			<td><code>4</code></td>
+			<td><code>–3.40e+38</code></td>
+			<td><em>n/a</em></td>
+			<td><code>3.4e+38</code></td>
+			<td><em>n/a</em></td>
+		</tr>
+		<tr>
+			<td><code>DOUBLE</code> / <code>REAL</code></td>
+			<td><code>8</code></td>
+			<td><code>–1.80e+308</code></td>
+			<td><em>n/a</em></td>
+			<td><code>1.80e+308</code></td>
+			<td><em>n/a</em></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>To specify whether a data type is unsigned, use the <code>UNSIGNED</code> qualifier. The following example creates a table called <em>tablename</em> with a field in it called <em>fieldname</em> of the data type <code>UNSIGNED INTEGER</code>:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">tablename</code> <code class="p">(</code><code class="n">fieldname</code> <code class="nb">INT</code> <code class="n">UNSIGNED</code><code class="p">);</code></pre>
+
+<p>When creating a numeric field, you can also pass an optional number as a parameter, like this:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">tablename</code> <code class="p">(</code><code class="n">fieldname</code> <code class="nb">INT</code><code class="p">(</code><code class="mi">4</code><code class="p">));</code></pre>
+
+<p>But you must remember that, unlike with the <code>BINARY</code> and <code>CHAR</code> data types, this parameter does not indicate the number of bytes of storage to use. It may seem counterintuitive, but what the number actually represents is the display width of the data in the field when it is retrieved. It is<a contenteditable="false" data-primary="ZEROFILL qualifier" data-type="indexterm" id="idm45310008406360"/> commonly used with the <code>ZEROFILL</code> qualifier, like this:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">tablename</code> <code class="p">(</code><code class="n">fieldname</code> <code class="nb">INT</code><code class="p">(</code><code class="mi">4</code><code class="p">)</code> <code class="n">ZEROFILL</code><code class="p">);</code></pre>
+
+<p>What this does is cause any numbers with a width of less than four characters to be padded with one or more zeros, sufficient to make the display width of the field four characters long. When a field is already of the specified width or greater, no padding takes place.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="DATE and TIME types"><div class="sect3" id="date_and_time">
+<h3>DATE and TIME types</h3>
+
+<p>The<a contenteditable="false" data-primary="data types (MySQL)" data-secondary="DATE and TIME" data-type="indexterm" id="idm45310008367384"/><a contenteditable="false" data-primary="DATE and TIME data types (MySQL)" data-type="indexterm" id="idm45310008365976"/><a contenteditable="false" data-primary="TIME and DATE data types (MySQL)" data-type="indexterm" id="idm45310008364904"/> main remaining data types supported by MySQL relate to the date and time and can be seen in <a data-type="xref" href="#mysqlapostrophes_date_and_time_data_type">Table 8-11</a>.</p>
+
+<table id="mysqlapostrophes_date_and_time_data_type">
+	<caption class="width-full"><span class="label">Table 8-11. </span>MySQL’s DATE and TIME data types</caption>
+	<thead>
+		<tr>
+			<th>Data type</th>
+			<th>Time/date format</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>DATETIME</code></td>
+			<td><code>'0000-00-00 00:00:00'</code></td>
+		</tr>
+		<tr>
+			<td><code>DATE</code></td>
+			<td><code>'0000-00-00'</code></td>
+		</tr>
+		<tr>
+			<td><code>TIMESTAMP</code></td>
+			<td><code>'0000-00-00 00:00:00'</code></td>
+		</tr>
+		<tr>
+			<td><code>TIME</code></td>
+			<td><code>'00:00:00'</code></td>
+		</tr>
+		<tr>
+			<td><code>YEAR</code></td>
+			<td><code>0000</code> (Only years 0000 and 1901–2155)</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The <code>DATETIME</code> and <code>TIMESTAMP</code> data types display the same way. The main difference is that <code>TIMESTAMP</code> has a very narrow range (from the years 1970 through 2037), whereas <code>DATETIME</code> will hold just about any date you’re likely to specify, unless you’re interested in ancient history or science fiction.</p>
+
+<p><code>TIMESTAMP</code> is useful, however, because you can let MySQL set the value for you. If you don’t specify the value when adding a row, the current time is automatically inserted. You can also have MySQL update a <code>TIMESTAMP</code> column each time you change a row.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="The AUTO_INCREMENT attribute"><div class="sect3" id="auto_increment_data_type">
+<h3>The AUTO_INCREMENT attribute</h3>
+
+<p>Sometimes<a contenteditable="false" data-primary="AUTO_INCREMENT data type (MySQL)" data-type="indexterm" id="idm45310008305272"/><a contenteditable="false" data-primary="data types (MySQL)" data-secondary="AUTO_INCREMENT data type" data-type="indexterm" id="idm45310008304296"/> you need to ensure that every row in your database is guaranteed to be unique. You could do this in your program by carefully checking the data you enter and making sure that there is at least one value that differs in any two rows, but this approach is error-prone and works only in certain circumstances. In the <em>classics</em> table, for instance, an author may appear multiple times. Likewise, the year of publication will also be frequently duplicated, and so on. It would be hard to guarantee that you have no duplicate rows.</p>
+
+<p>The general solution is to use an extra column just for this purpose. In a while, we’ll look at using a publication’s ISBN (International Standard Book Number), but first I’d like to introduce the <code>AUTO_INCREMENT</code> data type.</p>
+
+<p>As its name implies, a column given this data type will set the value of its contents to that of the column entry in the previously inserted row, plus 1. <a data-type="xref" href="#adding_the_auto-incrementing_column_id">Example 8-5</a> shows how to add a new column called <em>id</em> to the table <em>classics</em> with auto-incrementing.</p>
+
+<div data-type="example" id="adding_the_auto-incrementing_column_id">
+<h5><span class="label">Example 8-5. </span>Adding the auto-incrementing column id</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="n">id</code> <code class="nb">INT</code> <code class="n">UNSIGNED</code> <code class="k">NOT</code> <code class="k">NULL</code> <code class="n">AUTO_INCREMENT</code> <code class="k">KEY</code><code class="p">;</code></pre>
+</div>
+
+<p>This<a contenteditable="false" data-primary="ALTER command (MySQL)" data-type="indexterm" id="altercom08"/><a contenteditable="false" data-primary="ALTER command (MySQL)" data-secondary="overview of" data-type="indexterm" id="idm45310008284984"/> is your introduction to the <code>ALTER</code> command, which is very similar to <code>CREATE</code>. <code>ALTER</code> operates on an existing table and can add, change, or delete columns. Our example adds a column named <em>id</em> with the following characteristics:</p>
+
+<dl>
+	<dt><dfn><code>INT UNSIGNED</code></dfn></dt>
+	<dd>
+	<p>Makes the column take an integer large enough for us to store more than 4 billion records in the table.</p>
+	</dd>
+	<dt><dfn><code>NOT NULL</code></dfn></dt>
+	<dd>
+	<p>Ensures that every column has a value. Many programmers use <code>NULL</code> in a field to indicate that it doesn’t have any value. But that would allow duplicates, which would violate the whole reason for this column’s existence, so we disallow <code>NULL</code> values.</p>
+	</dd>
+	<dt><dfn><code>AUTO_INCREMENT</code></dfn></dt>
+	<dd>
+	<p>Causes MySQL to set a unique value for this column in every row, as described earlier. We don’t really have control over the value that this column will take in each row, but we don’t care: all we care about is that we are guaranteed a unique value.</p>
+	</dd>
+	<dt><dfn><code>KEY</code></dfn></dt>
+	<dd>
+	<p>An auto-increment column is useful as a key, because you will tend to search for rows based on this column. This will be explained in the section <a data-type="xref" href="#indexes">“Indexes”</a>.</p>
+	</dd>
+</dl>
+
+<p>Each entry in the column <em>id</em> will now have a unique number, with the first starting at 1 and the others counting upward from there. And whenever a new row is inserted, its <em>id</em> column will automatically be given the next number in the sequence.</p>
+
+<p>Rather than applying the column retroactively, you could have included it by issuing the <code>CREATE</code> command in a slightly different format. In that case, the command in <a data-type="xref" href="#creating_a_table_called_classics">Example 8-3</a> would be replaced with <a data-type="xref" href="#adding_the_auto-incrementing_id_column_a">Example 8-6</a>. Check the final line in particular.</p>
+
+<div data-type="example" id="adding_the_auto-incrementing_id_column_a">
+<h5><span class="label">Example 8-6. </span>Adding the auto-incrementing id column at table creation</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="p">(</code>
+ <code class="n">author</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="n">title</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="k">type</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">16</code><code class="p">),</code>
+ <code class="k">year</code> <code class="nb">CHAR</code><code class="p">(</code><code class="mi">4</code><code class="p">),</code>
+ <code class="n">id</code> <code class="nb">INT</code> <code class="n">UNSIGNED</code> <code class="k">NOT</code> <code class="k">NULL</code> <code class="n">AUTO_INCREMENT</code> <code class="k">KEY</code><code class="p">)</code> <code class="n">ENGINE</code> <code class="n">InnoDB</code><code class="p">;</code></pre>
+</div>
+
+<p>If you wish to check whether the column has been added, use the following command to view the table’s columns and data types:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">DESCRIBE</code> <code class="n">classics</code><code class="p">;</code></pre>
+
+<p>Now that we’ve finished with it, the <em>id</em> column is no longer needed, so if you created it using <a data-type="xref" href="#adding_the_auto-incrementing_column_id">Example 8-5</a>, you should now remove the column using the command in <a data-type="xref" href="#removing_the_id_column">Example 8-7</a>.<a contenteditable="false" data-primary="" data-startref="MSQLtype08" data-type="indexterm" id="idm45310008179240"/></p>
+
+<div data-type="example" id="removing_the_id_column">
+<h5><span class="label">Example 8-7. </span>Removing the id column</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">DROP</code> <code class="n">id</code><code class="p">;</code></pre>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Adding data to a table"><div class="sect3" id="adding_data_to_a_table">
+<h3>Adding data to a table</h3>
+
+<p>To<a contenteditable="false" data-primary="tables" data-secondary="adding data to" data-type="indexterm" id="idm45310008191608"/><a contenteditable="false" data-primary="MySQL" data-secondary="tables, adding data to" data-type="indexterm" id="idm45310008190200"/> add data to a table, use the <code>INSERT</code> command. Let’s see this in action by populating the table <em>classics</em> with the data from <a data-type="xref" href="#example_of_a_simple_database">Table 8-1</a>, using one form of the <code>INSERT</code> command repeatedly (<a data-type="xref" href="#populating_the_classics_table">Example 8-8</a>).</p>
+
+<div data-type="example" id="populating_the_classics_table">
+<h5><span class="label">Example 8-8. </span>Populating the classics table</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">classics</code><code class="p">(</code><code class="n">author</code><code class="p">,</code> <code class="n">title</code><code class="p">,</code> <code class="k">type</code><code class="p">,</code> <code class="k">year</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Mark Twain'</code><code class="p">,</code><code class="s1">'The Adventures of Tom Sawyer'</code><code class="p">,</code><code class="s1">'Fiction'</code><code class="p">,</code><code class="s1">'1876'</code><code class="p">);</code>
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">classics</code><code class="p">(</code><code class="n">author</code><code class="p">,</code> <code class="n">title</code><code class="p">,</code> <code class="k">type</code><code class="p">,</code> <code class="k">year</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Jane Austen'</code><code class="p">,</code><code class="s1">'Pride and Prejudice'</code><code class="p">,</code><code class="s1">'Fiction'</code><code class="p">,</code><code class="s1">'1811'</code><code class="p">);</code>
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">classics</code><code class="p">(</code><code class="n">author</code><code class="p">,</code> <code class="n">title</code><code class="p">,</code> <code class="k">type</code><code class="p">,</code> <code class="k">year</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Charles Darwin'</code><code class="p">,</code><code class="s1">'The Origin of Species'</code><code class="p">,</code><code class="s1">'Non-Fiction'</code><code class="p">,</code><code class="s1">'1856'</code><code class="p">);</code>
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">classics</code><code class="p">(</code><code class="n">author</code><code class="p">,</code> <code class="n">title</code><code class="p">,</code> <code class="k">type</code><code class="p">,</code> <code class="k">year</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Charles Dickens'</code><code class="p">,</code><code class="s1">'The Old Curiosity Shop'</code><code class="p">,</code><code class="s1">'Fiction'</code><code class="p">,</code><code class="s1">'1841'</code><code class="p">);</code>
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">classics</code><code class="p">(</code><code class="n">author</code><code class="p">,</code> <code class="n">title</code><code class="p">,</code> <code class="k">type</code><code class="p">,</code> <code class="k">year</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'William Shakespeare'</code><code class="p">,</code><code class="s1">'Romeo and Juliet'</code><code class="p">,</code><code class="s1">'Play'</code><code class="p">,</code><code class="s1">'1594'</code><code class="p">);</code></pre>
+</div>
+
+<p>After every second line, you should see a <code>Query OK</code> message. Once all lines have been entered, type the following command, which will display the table’s contents. The result should look like <a data-type="xref" href="#populating_the_classics_table_and_viewin">Figure 8-4</a>:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="o">*</code> <code class="k">FROM</code> <code class="n">classics</code><code class="p">;</code></pre>
+
+<figure><div id="populating_the_classics_table_and_viewin" class="figure"><img alt="Populating the classics table and viewing its contents" src="Images/pmj5_0804.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-4. </span>Populating the classics table and viewing its contents</h6>
+</div></figure>
+
+<p>Don’t worry about the <code>SELECT</code> command for now—we’ll come to it in the section <a data-type="xref" href="#querying_a_mysql_database">“Querying a MySQL Database”</a>. Suffice it to say that, as typed, it will display all the data you just entered.</p>
+
+<p>Also, don’t worry if you see the returned results in a different order as this is normal, because the order is unspecified at this point. Later in this chapter we will learn how to use <code>ORDER BY</code> to choose the order in which we wish results to be returned, but for now, they may appear in any order.</p>
+
+<p>Let’s<a contenteditable="false" data-primary="INSERT command (MySQL)" data-type="indexterm" id="idm45310007988856"/> go back and look at how we used the <code>INSERT</code> command. The first part, <code>INSERT INTO classics</code>, tells MySQL where to insert the following data. Then, within parentheses, the four column names are listed—<em>author</em>, <em>title</em>, <em>type</em>, and <em>year</em>—all separated by commas. This tells MySQL that these are the fields into which the data is to be inserted.</p>
+
+<p>The <a contenteditable="false" data-primary="VALUES keyword (MySQL)" data-type="indexterm" id="idm45310007984456"/>second line of each <code>INSERT</code> command contains the keyword <code>VALUES</code> followed by four strings within parentheses, separated by commas. This supplies MySQL with the four values to be inserted into the four columns previously specified. (As always, my choice of where to break the lines was arbitrary.)</p>
+
+<p>Each item of data will be inserted into the corresponding column, in a one-to-one correspondence. If you accidentally listed the columns in a different order from the data, the data would go into the wrong columns. Also, the number of columns must match the number of data items. (There are safer ways of using <code>INSERT</code>, which we’ll see soon.)</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Renaming a table"><div class="sect3" id="renaming_a_table">
+<h3>Renaming a table</h3>
+
+<p>Renaming<a contenteditable="false" data-primary="tables" data-secondary="renaming" data-type="indexterm" id="idm45310007977416"/><a contenteditable="false" data-primary="MySQL" data-secondary="tables, renaming" data-type="indexterm" id="idm45310007976008"/><a contenteditable="false" data-primary="ALTER command (MySQL)" data-secondary="renaming tables" data-type="indexterm" id="idm45310007974632"/> a table, like any other change to the structure or meta-information about a table, is achieved via the <code>ALTER</code> command. So, for example, to change the name of the table <em>classics</em> to <em>pre1900</em>, you would use the following command:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">RENAME</code> <code class="n">pre1900</code><code class="p">;</code></pre>
+
+<p>If you tried that command, you should revert the table name by entering the following, so that later examples in this chapter will work as printed:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">pre1900</code> <code class="k">RENAME</code> <code class="n">classics</code><code class="p">;</code></pre>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Changing the data type of a column"><div class="sect3" id="changing_the_data_type_of_a_column">
+<h3>Changing the data type of a column</h3>
+
+<p>Changing<a contenteditable="false" data-primary="ALTER command (MySQL)" data-secondary="changing column data types" data-type="indexterm" id="idm45310007843544"/><a contenteditable="false" data-primary="columns" data-secondary="working with in MySQL" data-type="indexterm" id="Cwork08"/><a contenteditable="false" data-primary="MySQL" data-secondary="working with columns" data-type="indexterm" id="MSQcol08"/> a column’s data type also makes use of the <code>ALTER</code> command, this time in conjunction with the<a contenteditable="false" data-primary="MODIFY keyword (MySQL)" data-type="indexterm" id="idm45310007911272"/> <code>MODIFY</code> keyword. To change the data type of the column <em>year</em> from <code>CHAR(4)</code> to <code>SMALLINT</code> (which requires only 2 bytes of storage and so will save disk space), enter the following:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">MODIFY</code> <code class="k">year</code> <code class="nb">SMALLINT</code><code class="p">;</code></pre>
+
+<p>When you do this, if the conversion of data type makes sense to MySQL, it will automatically change the data while keeping the meaning. In this case, it will change each string to a comparable integer, so long as the string is recognizable as referring to an integer.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Adding a new column"><div class="sect3" id="adding_a_new_column">
+<h3>Adding a new column</h3>
+
+<p>Let’s<a contenteditable="false" data-primary="ALTER command (MySQL)" data-secondary="adding new columns" data-type="indexterm" id="idm45310007924664"/> suppose that you have created a table and populated it with plenty of data, only to discover you need an additional column. Not to worry. Here’s how to add the new column <em>pages</em>, which will be used to store the number of pages in a publication:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="n">pages</code> <code class="nb">SMALLINT</code> <code class="n">UNSIGNED</code><code class="p">;</code></pre>
+
+<p>This adds the new column with the name <em>pages</em> using the <code>UNSIGNED SMALLINT</code> data type, sufficient to hold a value of up to 65,535—hopefully that’s more than enough for any book ever published!</p>
+
+<p>And, if<a contenteditable="false" data-primary="DESCRIBE command (MySQL)" data-type="indexterm" id="idm45310007819896"/> you ask MySQL to describe the updated table by using the <code>DESCRIBE</code> command, as follows, you will see the change has been made (see <a data-type="xref" href="#adding_the_new_pages_column_and_viewing">Figure 8-5</a>):</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">DESCRIBE</code> <code class="n">classics</code><code class="p">;</code></pre>
+
+<figure><div id="adding_the_new_pages_column_and_viewing" class="figure"><img alt="Adding the new pages column and viewing the table" src="Images/pmj5_0805.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-5. </span>Adding the new pages column and viewing the table</h6>
+</div></figure>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Renaming a column"><div class="sect3" id="renaming_a_column">
+<h3>Renaming a column</h3>
+
+<p>Looking<a contenteditable="false" data-primary="ALTER command (MySQL)" data-secondary="renaming columns" data-type="indexterm" id="idm45310007811640"/> again at <a data-type="xref" href="#adding_the_new_pages_column_and_viewing">Figure 8-5</a>, you may decide that having a column named <em>type</em> is confusing, because that is the name used by MySQL to identify data types. Again, no problem—let’s change its name to <em>category</em>, like this:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="n">CHANGE</code> <code class="k">type</code> <code class="n">category</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">16</code><code class="p">);</code></pre>
+
+<p>Note the addition of <code>VARCHAR(16)</code> on the end of this command. That’s because<a contenteditable="false" data-primary="CHANGE keyword (MySQL)" data-type="indexterm" id="idm45310007751016"/> the <code>CHANGE</code> keyword requires the data type to be specified, even if you don’t intend to change it, and <code>VARCHAR(16)</code> was the data type specified when that column was initially created as <em>type</em>.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Removing a column"><div class="sect3" id="removing_a_column">
+<h3>Removing a column</h3>
+
+<p>Actually, upon<a contenteditable="false" data-primary="DROP keyword (MySQL)" data-type="indexterm" id="idm45310007746680"/><a contenteditable="false" data-primary="ALTER command (MySQL)" data-secondary="removing columns" data-type="indexterm" id="idm45310007745544"/> reflection, you might decide that the page count column <em>pages</em> isn’t actually all that useful for this particular database, so here’s how to remove that column by using the <code>DROP</code> keyword:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">DROP</code> <code class="n">pages</code><code class="p">;</code></pre>
+
+<div data-type="warning" epub:type="warning"><h6>Warning</h6>
+<p>Remember that <code>DROP</code> is irreversible. You should always use it with caution, because you could inadvertently delete entire tables (and even databases) with it if you are not careful!<a contenteditable="false" data-primary="" data-startref="MSQcol08" data-type="indexterm" id="idm45310007720248"/><a contenteditable="false" data-primary="" data-startref="Cwork08" data-type="indexterm" id="idm45310007718872"/></p>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Deleting a table"><div class="sect3" id="deleting_a_table">
+<h3>Deleting a table</h3>
+
+<p>Deleting<a contenteditable="false" data-primary="tables" data-secondary="deleting" data-type="indexterm" id="idm45310007713880"/><a contenteditable="false" data-primary="MySQL" data-secondary="tables, deleting" data-type="indexterm" id="idm45310007712472"/> a table is very easy indeed. But, because I don’t want you to have to reenter all the data for the <em>classics</em> table, let’s quickly create a new table, verify its existence, and then delete it. You can do this by typing the commands in <a data-type="xref" href="#creatingcomma_viewingcomma_and_deleting">Example 8-9</a>. The result of these four commands should look like <a data-type="xref" href="#creatingcomma_viewingcomma_and_d-id00023">Figure 8-6</a>.</p>
+
+<div data-type="example" id="creatingcomma_viewingcomma_and_deleting">
+<h5><span class="label">Example 8-9. </span>Creating, viewing, and deleting a table</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">disposable</code><code class="p">(</code><code class="n">trash</code> <code class="nb">INT</code><code class="p">);</code>
+<code class="k">DESCRIBE</code> <code class="n">disposable</code><code class="p">;</code>
+<code class="k">DROP</code> <code class="k">TABLE</code> <code class="n">disposable</code><code class="p">;</code>
+<code class="k">SHOW</code> <code class="n">tables</code><code class="p">;</code></pre>
+</div>
+
+<figure><div id="creatingcomma_viewingcomma_and_d-id00023" class="figure"><img alt="Creating, viewing, and deleting a table" src="Images/pmj5_0806.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-6. </span>Creating, viewing, and deleting a table</h6>
+</div></figure>
+</div></section>
+</div></section>
+</div></section>
+
+<section data-type="sect1" data-pdf-bookmark="Indexes"><div class="sect1" id="indexes">
+<h1>Indexes</h1>
+
+<p>As<a contenteditable="false" data-primary="MySQL" data-secondary="working with indexes" data-type="indexterm" id="MSQindex08"/><a contenteditable="false" data-primary="indexes (MySQL)" data-secondary="purpose of" data-type="indexterm" id="idm45310007632904"/> things stand, the table <em>classics</em> works and can be searched without problem by MySQL—until it grows to more than a couple of hundred rows. At that point, database accesses will get slower and slower with every new row added, because MySQL has to search through every row whenever a query is issued. This is like searching through every book in a library whenever you need to look something up.</p>
+
+<p>Of course, you don’t have to search libraries that way, because they have either a card index system or, most likely, a database of their own. And the same goes for MySQL, because at the expense of a slight overhead in memory and disk space, you can create a “card index” for a table that MySQL will use to conduct lightning-fast searches.</p>
+
+<section data-type="sect2" data-pdf-bookmark="Creating an Index"><div class="sect2" id="creating_an_index">
+<h2>Creating an Index</h2>
+
+<p>The<a contenteditable="false" data-primary="indexes (MySQL)" data-secondary="creating" data-type="indexterm" id="Icreate08"/> way to achieve fast searches is to add an <em>index</em>, either when creating a table or at any time afterward. But the decision is not so simple. For example, there are different index types, such as a regular <code>INDEX</code>, a <code>PRIMARY KEY</code>, or a <code>FULLTEXT</code> index. Also, you must decide which columns require an index, a judgment that requires you to predict whether you will be searching any of the data in each column. Indexes can get more complicated too, because you can combine multiple columns in one index. And even when you’ve decided that, you still have the option of reducing index size by limiting the amount of each column to be indexed.</p>
+
+<p>If we imagine the searches that may be made on the <em>classics</em> table, it becomes apparent that all of the columns may need to be searched. However, if the <em>pages</em> column created in the section <a data-type="xref" href="#adding_a_new_column">“Adding a new column”</a> had not been deleted, it would probably not have needed an index, as most people would be unlikely to search for books by the number of pages they have. Anyway, go ahead and add an index to each of the columns, using the commands in <a data-type="xref" href="#adding_indexes_to_the_classics_table">Example 8-10</a>.</p>
+
+<div data-type="example" id="adding_indexes_to_the_classics_table">
+<h5><span class="label">Example 8-10. </span>Adding indexes to the classics table</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="k">INDEX</code><code class="p">(</code><code class="n">author</code><code class="p">(</code><code class="mi">20</code><code class="p">));</code>
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="k">INDEX</code><code class="p">(</code><code class="n">title</code><code class="p">(</code><code class="mi">20</code><code class="p">));</code>
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="k">INDEX</code><code class="p">(</code><code class="n">category</code><code class="p">(</code><code class="mi">4</code><code class="p">));</code>
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="k">INDEX</code><code class="p">(</code><code class="k">year</code><code class="p">);</code>
+<code class="k">DESCRIBE</code> <code class="n">classics</code><code class="p">;</code></pre>
+</div>
+
+<p>The first two commands create indexes on the <em>author</em> and <em>title</em> columns, limiting each index to only the first 20 characters. For instance, when MySQL indexes the following title:</p>
+
+<pre data-programming-language="perl">
+The Adventures of Tom Sawyer</pre>
+
+<p>It will actually store in the index only the first 20 characters:</p>
+
+<pre data-programming-language="perl">
+The Adventures of To</pre>
+
+<p>This is done to minimize the size of the index, and to optimize database access speed. I chose 20 because it’s likely to be sufficient to ensure uniqueness for most strings in these columns. If MySQL finds two indexes with the same contents, it will have to waste time going to the table itself and checking the column that was indexed to find out which rows really matched.</p>
+
+<p>With the <em>category</em> column, currently only the first character is required to identify a string as unique (F for Fiction, N for Non-fiction, and P for Play), but I chose an index of four characters to allow for future categories that may share the first three characters. You can also reindex this column later, when you have a more complete set of categories. And finally, I set no limit to the <em>year</em> column’s index, because it has a clearly defined length of four characters.</p>
+
+<p>The<a contenteditable="false" data-primary="DESCRIBE command (MySQL)" data-type="indexterm" id="idm45310007549080"/> results of issuing these commands (and a <code>DESCRIBE</code> command to confirm that they worked) can be seen in <a data-type="xref" href="#adding_indexes_to_the_classics_t-id00024">Figure 8-7</a>, which shows the key <code>MUL</code> for each column. This key means that multiple occurrences of a value may occur within that column, which is exactly what we want, as authors may appear many times, the same book title could be used by multiple authors, and so on.</p>
+
+<figure><div id="adding_indexes_to_the_classics_t-id00024" class="figure"><img alt="Adding indexes to the classics table" src="Images/pmj5_0807.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-7. </span>Adding indexes to the classics table</h6>
+</div></figure>
+
+<section data-type="sect3" data-pdf-bookmark="Using CREATE INDEX"><div class="sect3" id="using_create_index">
+<h3>Using CREATE INDEX</h3>
+
+<p>An<a contenteditable="false" data-primary="CREATE INDEX command (MySQL)" data-type="indexterm" id="idm45310007541832"/> alternative to using <code>ALTER TABLE</code> to add an index is to use the <code>CREATE INDEX</code> command. They are equivalent, except that <code>CREATE INDEX</code> cannot be used for creating a <code>PRIMARY KEY</code> (see the section <a data-type="xref" href="#primary_keys">“Primary keys”</a>). The format of this command is shown in the second line of <a data-type="xref" href="#these_two_commands_are_equivalent">Example 8-11</a>.</p>
+
+<div data-type="example" id="these_two_commands_are_equivalent">
+<h5><span class="label">Example 8-11. </span>These two commands are equivalent</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="k">INDEX</code><code class="p">(</code><code class="n">author</code><code class="p">(</code><code class="mi">20</code><code class="p">));</code>
+<code class="k">CREATE</code> <code class="k">INDEX</code> <code class="n">author</code> <code class="k">ON</code> <code class="n">classics</code> <code class="p">(</code><code class="n">author</code><code class="p">(</code><code class="mi">20</code><code class="p">));</code></pre>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Adding indexes when creating tables"><div class="sect3" id="adding_indexes_when_creating_tables">
+<h3>Adding indexes when creating tables</h3>
+
+<p>You don’t have to wait until after creating a table to add indexes. In fact, doing so can be time-consuming, as adding an index to a large table can take a very long time. Therefore, let’s look at a command that creates the table <em>classics</em> with indexes already in place.</p>
+
+<p><a data-type="xref" href="#creating_the_table_classics_with_indexes">Example 8-12</a> is a reworking of <a data-type="xref" href="#creating_a_table_called_classics">Example 8-3</a> in which the indexes are created at the same time as the table. Note that to incorporate the modifications made in this chapter, this version uses the new column name <em>category</em> instead of <em>type</em> and sets the data type of <em>year</em> to <code>SMALLINT</code> instead of <code>CHAR(4)</code>. If you want to try it out without first deleting your current <em>classics</em> table, change the word <em>classics</em> in line 1 to something else like <em>classics1</em>, and then drop <em>classics1</em> after you have finished with it.</p>
+
+<div data-type="example" id="creating_the_table_classics_with_indexes">
+<h5><span class="label">Example 8-12. </span>Creating the table classics with indexes</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="p">(</code>
+ <code class="n">author</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="n">title</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="n">category</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">16</code><code class="p">),</code>
+ <code class="k">year</code> <code class="nb">SMALLINT</code><code class="p">,</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="n">author</code><code class="p">(</code><code class="mi">20</code><code class="p">)),</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="n">title</code><code class="p">(</code><code class="mi">20</code><code class="p">)),</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="n">category</code><code class="p">(</code><code class="mi">4</code><code class="p">)),</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="k">year</code><code class="p">))</code> <code class="n">ENGINE</code> <code class="n">InnoDB</code><code class="p">;</code></pre>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Primary keys"><div class="sect3" id="primary_keys">
+<h3>Primary keys</h3>
+
+<p>So<a contenteditable="false" data-primary="primary keys" data-type="indexterm" id="idm45310007403848"/> far, you’ve created the table <em>classics</em> and ensured that MySQL can search it quickly by adding indexes, but there’s still something missing. All the publications in the table can be searched, but there is no single unique key for each publication to enable instant accessing of a row. The importance of having a key with a unique value for each row will come up when we start to combine data from different tables.</p>
+
+<p>The section <a data-type="xref" href="#auto_increment_data_type">“The AUTO_INCREMENT attribute”</a> briefly introduced the idea of a primary key when creating the auto-incrementing column <em>id</em>, which could have been used as a primary key for this table. However, I wanted to reserve that task for a more appropriate column: the internationally recognized ISBN.</p>
+
+<p>So let’s go ahead and create a new column for this key. Now, bearing in mind that ISBNs are 13 characters long, you might think that the following command would do the job:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="n">isbn</code> <code class="nb">CHAR</code><code class="p">(</code><code class="mi">13</code><code class="p">)</code> <code class="k">PRIMARY</code> <code class="k">KEY</code><code class="p">;</code></pre>
+
+<p>But it doesn’t. If you try it, you’ll get the error <code>Duplicate entry</code> for key 1. The reason is that the table is already populated with some data and this command is trying to add a column with the value <code>NULL</code> to each row, which is not allowed, as all values must be unique in any column having a primary key index. However, if there were no data already in the table, this command would work just fine, as would adding the primary key index upon table creation.</p>
+
+<p>In our current situation, we have to be a bit sneaky and create the new column without an index, populate it with data, and then add the index retrospectively using the commands in <a data-type="xref" href="#populating_the_isbn_column_with_data_and">Example 8-13</a>. Luckily, each of the years is unique in the current set of data, so we can use the <em>year</em> column to identify each row for updating. Note that this example uses the <code>UPDATE</code> command and <code>WHERE</code> keyword, which are explained in more detail in the section <a data-type="xref" href="#querying_a_mysql_database">“Querying a MySQL Database”</a>.</p>
+
+<div data-type="example" id="populating_the_isbn_column_with_data_and">
+<h5><span class="label">Example 8-13. </span>Populating the isbn column with data and using a primary key</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="n">isbn</code> <code class="nb">CHAR</code><code class="p">(</code><code class="mi">13</code><code class="p">);</code>
+<code class="k">UPDATE</code> <code class="n">classics</code> <code class="k">SET</code> <code class="n">isbn</code><code class="o">=</code><code class="s1">'9781598184891'</code> <code class="k">WHERE</code> <code class="k">year</code><code class="o">=</code><code class="s1">'1876'</code><code class="p">;</code>
+<code class="k">UPDATE</code> <code class="n">classics</code> <code class="k">SET</code> <code class="n">isbn</code><code class="o">=</code><code class="s1">'9780582506206'</code> <code class="k">WHERE</code> <code class="k">year</code><code class="o">=</code><code class="s1">'1811'</code><code class="p">;</code>
+<code class="k">UPDATE</code> <code class="n">classics</code> <code class="k">SET</code> <code class="n">isbn</code><code class="o">=</code><code class="s1">'9780517123201'</code> <code class="k">WHERE</code> <code class="k">year</code><code class="o">=</code><code class="s1">'1856'</code><code class="p">;</code>
+<code class="k">UPDATE</code> <code class="n">classics</code> <code class="k">SET</code> <code class="n">isbn</code><code class="o">=</code><code class="s1">'9780099533474'</code> <code class="k">WHERE</code> <code class="k">year</code><code class="o">=</code><code class="s1">'1841'</code><code class="p">;</code>
+<code class="k">UPDATE</code> <code class="n">classics</code> <code class="k">SET</code> <code class="n">isbn</code><code class="o">=</code><code class="s1">'9780192814968'</code> <code class="k">WHERE</code> <code class="k">year</code><code class="o">=</code><code class="s1">'1594'</code><code class="p">;</code>
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="k">PRIMARY</code> <code class="k">KEY</code><code class="p">(</code><code class="n">isbn</code><code class="p">);</code>
+<code class="k">DESCRIBE</code> <code class="n">classics</code><code class="p">;</code></pre>
+</div>
+
+<p>Once you have typed these commands, the results should look like <a data-type="xref" href="#retrospectively_adding_a_primary_key_to">Figure 8-8</a>. Note that the keywords <code>PRIMARY KEY</code> replace the keyword <code>INDEX</code> in the <code>ALTER TABLE</code> syntax (compare Examples <a data-type="xref" data-xrefstyle="select:labelnumber" href="#adding_indexes_to_the_classics_table">8-10</a> and <a data-type="xref" data-xrefstyle="select:labelnumber" href="#populating_the_isbn_column_with_data_and">8-13</a>).</p>
+
+<figure><div id="retrospectively_adding_a_primary_key_to" class="figure"><img alt="Retrospectively adding a primary key to the classics table" src="Images/pmj5_0808.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-8. </span>Retrospectively adding a primary key to the classics table</h6>
+</div></figure>
+
+<p>To have created a primary key when the table <em>classics</em> was created, you could have used the commands in <a data-type="xref" href="#creating_the_table_classics_with_a_prima">Example 8-14</a>. Again, rename <em>classics</em> in line 1 to something else if you wish to try this example, and then delete the test table afterward.</p>
+
+<div data-type="example" id="creating_the_table_classics_with_a_prima">
+<h5><span class="label">Example 8-14. </span>Creating the table classics with a primary key</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="p">(</code>
+ <code class="n">author</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="n">title</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="n">category</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">16</code><code class="p">),</code>
+ <code class="k">year</code> <code class="nb">SMALLINT</code><code class="p">,</code>
+ <code class="n">isbn</code> <code class="nb">CHAR</code><code class="p">(</code><code class="mi">13</code><code class="p">),</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="n">author</code><code class="p">(</code><code class="mi">20</code><code class="p">)),</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="n">title</code><code class="p">(</code><code class="mi">20</code><code class="p">)),</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="n">category</code><code class="p">(</code><code class="mi">4</code><code class="p">)),</code>
+ <code class="k">INDEX</code><code class="p">(</code><code class="k">year</code><code class="p">),</code>
+ <code class="k">PRIMARY</code> <code class="k">KEY</code> <code class="p">(</code><code class="n">isbn</code><code class="p">))</code> <code class="n">ENGINE</code> <code class="n">InnoDB</code><code class="p">;</code></pre>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Creating a FULLTEXT index"><div class="sect3" id="creating_a_fulltext_index">
+<h3>Creating a FULLTEXT index</h3>
+
+<p>Unlike<a contenteditable="false" data-primary="FULLTEXT indexes (MySQL)" data-type="indexterm" id="idm45310007192680"/> a regular index, MySQL’s <code>FULLTEXT</code> allows super-fast searches of entire columns of text. It stores every word in every data string in a special index that you can search using “natural language,” in a similar manner to using a search engine.</p>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>It’s <a contenteditable="false" data-primary="stopwords" data-type="indexterm" id="idm45310007189608"/><a contenteditable="false" data-primary="MySQL" data-secondary="stopwords in" data-type="indexterm" id="idm45310007130328"/>not strictly true that MySQL stores <em>all</em> the words in a <code>FULLTEXT</code> index, because it has a built-in list of more than 500 words that it chooses to ignore because they are so common that they aren’t very helpful for searching anyway—so-called <em>stopwords</em>. This list includes <em>the</em>, <em>as</em>, <em>is</em>, <em>of</em>, and so on. The list helps MySQL run much more quickly when performing a <code>FULLTEXT</code> search and keeps database sizes down.</p>
+</div>
+
+<p>Here are some things that you should know about <code>FULLTEXT</code> indexes:</p>
+
+<ul>
+	<li>
+	<p>Since MySQL 5.6, InnoDB tables can use <code>FULLTEXT</code> indexes, but prior to that <span class="keep-together"><code>FULLTEXT</code></span> indexes could be used only with MyISAM tables. If you need to convert a table to MyISAM, you can usually use the MySQL command <code>ALTER TABLE <span class="keep-together">tablename</span> ENGINE = MyISAM;</code>.</p>
+	</li>
+	<li>
+	<p><code>FULLTEXT</code> indexes can be created for <code>CHAR</code>, <code>VARCHAR</code>, and <code>TEXT</code> columns only.</p>
+	</li>
+	<li>
+	<p>A <code>FULLTEXT</code> index definition can be given in the <code>CREATE TABLE</code> statement when a table is created, or added later using <code>ALTER TABLE</code> (or <code>CREATE INDEX</code>).</p>
+	</li>
+	<li>
+	<p>For large data sets, it is <em>much</em> faster to load your data into a table that has no <code>FULLTEXT</code> index and then create the index than to load data into a table that has an existing <code>FULLTEXT</code> index.</p>
+	</li>
+</ul>
+
+<p>To create a <code>FULLTEXT</code> index, apply it to one or more records as in <a data-type="xref" href="#adding_a_fulltext_index_to_the_table_cla">Example 8-15</a>, which adds a <code>FULLTEXT</code> index to the pair of columns <em>author</em> and <em>title</em> in the <em>classics</em> table (this index is in addition to the ones already created and does not affect them).</p>
+
+<div data-type="example" id="adding_a_fulltext_index_to_the_table_cla">
+<h5><span class="label">Example 8-15. </span>Adding a FULLTEXT index to the table classics</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">ALTER</code> <code class="k">TABLE</code> <code class="n">classics</code> <code class="k">ADD</code> <code class="n">FULLTEXT</code><code class="p">(</code><code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">);</code></pre>
+</div>
+
+<p>You can now perform <code>FULLTEXT</code> searches across this pair of columns. This feature could really come into its own if you could now add the entire text of these publications to the database (particularly as they’re out of copyright protection) and they would be fully searchable. See the section <a data-type="xref" href="#match_dotdotdot_against">“MATCH...AGAINST”</a> for a description of searches using <code>FULLTEXT</code>.<a contenteditable="false" data-primary="" data-startref="altercom08" data-type="indexterm" id="idm45310007096024"/></p>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>If you find that MySQL is running slower than you think it should be when accessing your database, the problem is usually related to your indexes. Either you don’t have an index where you need one, or the indexes are not optimally designed. Tweaking a table’s indexes will often solve such a problem. Performance is beyond the scope of this book, but in <a data-type="xref" href="ch09.xhtml#mastering_mysql">Chapter 9</a> I’ll give you a few tips so you know what to look for.<a contenteditable="false" data-primary="" data-startref="Icreate08" data-type="indexterm" id="idm45310007092216"/></p>
+</div>
+</div></section>
+</div></section>
+
+<section data-type="sect2" data-pdf-bookmark="Querying a MySQL Database"><div class="sect2" id="querying_a_mysql_database">
+<h2>Querying a MySQL Database</h2>
+
+<p>So<a contenteditable="false" data-primary="indexes (MySQL)" data-secondary="querying databases" data-type="indexterm" id="INquery08"/> far, we’ve created a MySQL database and tables, populated them with data, and added indexes to make them fast to search. Now it’s time to look at how these searches are performed, and the various commands and qualifiers available.</p>
+
+<section data-type="sect3" data-pdf-bookmark="SELECT"><div class="sect3" id="select">
+<h3>SELECT</h3>
+
+<p>As<a contenteditable="false" data-primary="SELECT command (MySQL)" data-type="indexterm" id="idm45310007050264"/> you saw in <a data-type="xref" href="#populating_the_classics_table_and_viewin">Figure 8-4</a>, the <code>SELECT</code> command is used to extract data from a table. In that section, I used its simplest form to select all data and display it—something you will never want to do on anything but the smallest tables, because all the data will scroll by at an unreadable pace. Alternatively, on Unix/Linux computers, you can tell MySQL to page output a screen at a time by issuing the command:</p>
+
+<pre data-type="programlisting">
+pager less;
+</pre>
+
+<p>This pipes output to the <code>less</code> program. To restore standard output and turn paging off, you can issue this command:</p>
+
+<pre data-type="programlisting">
+nopager;
+</pre>
+
+<p>Let’s now examine <code>SELECT</code> in more detail. The basic syntax is:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code><code> </code><em><code class="n">something</code></em><code> </code><code class="k">FROM</code><code> </code><em><code class="n">tablename</code></em><code class="p">;</code></pre>
+
+<p>The <em><code>something</code></em> can be an <code>*</code> (asterisk) as<a contenteditable="false" data-primary="* (asterisk)" data-secondary="in MySQL" data-type="indexterm" id="idm45310007012024"/><a contenteditable="false" data-primary="asterisk (*)" data-secondary="in MySQL" data-type="indexterm" id="idm45310007010728"/> you saw before, which means <em>every column</em>, or you can choose to select only certain columns. For instance, <a data-type="xref" href="#two_different_select_statements">Example 8-16</a> shows how to select just the <em>author</em> and <em>title</em> and just the <em>title</em> and <em>isbn</em>. The result of typing these commands can be seen in <a data-type="xref" href="#output_from_two_different_select_sta">Figure 8-9</a>.</p>
+
+<div data-type="example" id="two_different_select_statements">
+<h5><span class="label">Example 8-16. </span>Two different SELECT statements</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">title</code><code class="p">,</code><code class="n">isbn</code> <code class="k">FROM</code> <code class="n">classics</code><code class="p">;</code></pre>
+</div>
+
+<figure><div id="output_from_two_different_select_sta" class="figure"><img alt="The output from two different SELECT statements" src="Images/pmj5_0809.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-9. </span>The output from two different SELECT statements</h6>
+</div></figure>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="SELECT COUNT"><div class="sect3" id="select_count">
+<h3>SELECT COUNT</h3>
+
+<p>Another<a contenteditable="false" data-primary="SELECT COUNT command (MySQL)" data-type="indexterm" id="idm45310006962408"/><a contenteditable="false" data-primary="COUNT parameter (MySQL)" data-type="indexterm" id="idm45310006961304"/> replacement for the <em><code>something</code></em> parameter is <code>COUNT</code>, which can be used in many ways. In <a data-type="xref" href="#counting_rows">Example 8-17</a>, it displays the number of rows in the table by passing <code>*</code> as a parameter, which means <em>all rows</em>. As you’d expect, the result returned is <code>5</code>, as there are five publications in the table.</p>
+
+<div data-type="example" id="counting_rows">
+<h5><span class="label">Example 8-17. </span>Counting rows</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="k">COUNT</code><code class="p">(</code><code class="o">*</code><code class="p">)</code> <code class="k">FROM</code> <code class="n">classics</code><code class="p">;</code></pre>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="SELECT DISTINCT"><div class="sect3" id="select_distinct">
+<h3>SELECT DISTINCT</h3>
+
+<p>The <code>DISTINCT</code> qualifier<a contenteditable="false" data-primary="SELECT DISTINCT command (MySQL)" data-type="indexterm" id="idm45310006945880"/><a contenteditable="false" data-primary="DISTINCT parameter (MySQL)" data-type="indexterm" id="idm45310006944776"/> (and its synonym <code>DISTINCTROW</code>) allows you to weed out multiple entries when they contain the same data. For instance, suppose that you want a list of all authors in the table. If you select just the <em>author</em> column from a table containing multiple books by the same author, you’ll normally see a long list with the same author names over and over. But by adding the <code>DISTINCT</code> keyword, you can show each author just once. So, let’s test that out by adding another row that repeats one of our existing authors (<a data-type="xref" href="#duplicating_data">Example 8-18</a>).</p>
+
+<div data-type="example" id="duplicating_data">
+<h5><span class="label">Example 8-18. </span>Duplicating data</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">classics</code><code class="p">(</code><code class="n">author</code><code class="p">,</code> <code class="n">title</code><code class="p">,</code> <code class="n">category</code><code class="p">,</code> <code class="k">year</code><code class="p">,</code> <code class="n">isbn</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Charles Dickens'</code><code class="p">,</code><code class="s1">'Little Dorrit'</code><code class="p">,</code><code class="s1">'Fiction'</code><code class="p">,</code><code class="s1">'1857'</code><code class="p">,</code> <code class="s1">'9780141439969'</code><code class="p">);</code></pre>
+</div>
+
+<p>Now that Charles Dickens appears twice in the table, we can compare the results of using <code>SELECT</code> with and without the <code>DISTINCT</code> qualifier. <a data-type="xref" href="#with_and_without_the_distinct_qualifier">Example 8-19</a> and <a data-type="xref" href="#selecting_data_with_and_without_distinct">Figure 8-10</a> show that the simple <code>SELECT</code> lists Dickens twice, and the command with the <code>DISTINCT</code> qualifier shows him only once.</p>
+
+<div data-type="example" id="with_and_without_the_distinct_qualifier">
+<h5><span class="label">Example 8-19. </span>With and without the DISTINCT qualifier</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code> <code class="k">FROM</code> <code class="n">classics</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="k">DISTINCT</code> <code class="n">author</code> <code class="k">FROM</code> <code class="n">classics</code><code class="p">;</code></pre>
+</div>
+
+<figure><div id="selecting_data_with_and_without_distinct" class="figure"><img alt="Selecting data with and without DISTINCT" src="Images/pmj5_0810.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-10. </span>Selecting data with and without DISTINCT</h6>
+</div></figure>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="DELETE"><div class="sect3" id="delete">
+<h3>DELETE</h3>
+
+<p>When<a contenteditable="false" data-primary="DELETE command (MySQL)" data-type="indexterm" id="idm45310006852040"/> you need to remove a row from a table, use the <code>DELETE</code> command. Its syntax is similar to the <code>SELECT</code> command and allows you to narrow down the exact row or rows to delete using qualifiers such as <code>WHERE</code> and <code>LIMIT</code>.</p>
+
+<p>Now that you’ve seen the effects of the <code>DISTINCT</code> qualifier, if you typed <a data-type="xref" href="#duplicating_data">Example 8-18</a>, you should remove <em>Little Dorrit</em> by entering the commands in <a data-type="xref" href="#removing_the_new_entry">Example 8-20</a>.</p>
+
+<div data-type="example" id="removing_the_new_entry">
+<h5><span class="label">Example 8-20. </span>Removing the new entry</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">DELETE</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code> <code class="n">title</code><code class="o">=</code><code class="s1">'Little Dorrit'</code><code class="p">;</code></pre>
+</div>
+
+<p>This example issues a <code>DELETE</code> command for all rows whose <em>title</em> column contains the string <code>Little Dorrit</code>.</p>
+
+<p>The <code>WHERE</code> keyword is very powerful, and important to enter correctly; an error could lead a command to the wrong rows (or have no effect in cases where nothing matches the <code>WHERE</code> clause). So now we’ll spend some time on that clause, which is the heart and soul of SQL.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="WHERE"><div class="sect3" id="where">
+<h3>WHERE</h3>
+
+<p>The <code>WHERE</code> keyword enables<a contenteditable="false" data-primary="WHERE keyword (MySQL)" data-type="indexterm" id="idm45310006813160"/> you to narrow down queries by returning only those where a certain expression is true. <a data-type="xref" href="#removing_the_new_entry">Example 8-20</a> returns only the rows where the column exactly matches the string <code>Little Dorrit</code>, using the equality operator <code>=</code>. <a data-type="xref" href="#using_the_where_keyword">Example 8-21</a> shows a couple more examples of using <code>WHERE</code> with <code>=</code>.</p>
+
+<div data-type="example" id="using_the_where_keyword">
+<h5><span class="label">Example 8-21. </span>Using the WHERE keyword</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code> <code class="n">author</code><code class="o">=</code><code class="ss">"Mark Twain"</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code> <code class="n">isbn</code><code class="o">=</code><code class="ss">"9781598184891"</code><code class="p">;</code></pre>
+</div>
+
+<p>Given our current table, the two commands in <a data-type="xref" href="#using_the_where_keyword">Example 8-21</a> display the same results. But we could easily add more books by Mark Twain, in which case the first line would display all the titles he wrote and the second line would continue (because we know the ISBN is unique) to display <code>The Adventures of Tom Sawyer</code>. In other words, searches using a unique key are more predictable, and you’ll see further evidence later of the value of unique and primary keys.</p>
+
+<p>You can also do pattern matching for your searches using the <code>LIKE</code> qualifier, which allows searches on parts of strings. This qualifier should be used with a <code>%</code> character before or after some text. When placed before a keyword, <code>%</code> means <em>anything before</em>. After a keyword, it means <em>anything after</em>. <a data-type="xref" href="#using_the_like_qualifier">Example 8-22</a> performs three different queries, one for the start of a string, one for the end, and one for anywhere in a string.</p>
+
+<div data-type="example" id="using_the_like_qualifier">
+<h5><span class="label">Example 8-22. </span>Using the LIKE qualifier</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code> <code class="n">author</code> <code class="k">LIKE</code> <code class="ss">"Charles%"</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code> <code class="n">title</code> <code class="k">LIKE</code> <code class="ss">"%Species"</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code> <code class="n">title</code> <code class="k">LIKE</code> <code class="ss">"%and%"</code><code class="p">;</code></pre>
+</div>
+
+<p>You can see the results of these commands in <a data-type="xref" href="#using_where_with_the_like_qualifier">Figure 8-11</a>. The first command outputs the publications by both Charles Darwin and Charles Dickens because the <code>LIKE</code> qualifier was set to return anything matching the string <code>Charles</code> followed by any other text. Then just <code>The Origin of Species</code> is returned, because it’s the only row whose column ends with the string <code>Species</code>. Last, both <code>Pride and Prejudice</code> and <code>Romeo and Juliet</code> are returned, because they both matched the string <code>and</code> anywhere in the column. The <code>%</code> will also match if there is nothing in the position it occupies; in other words, it can match an empty string.</p>
+
+<figure><div id="using_where_with_the_like_qualifier" class="figure"><img alt="Using WHERE with the LIKE qualifier" src="Images/pmj5_0811.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-11. </span>Using WHERE with the LIKE qualifier</h6>
+</div></figure>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="LIMIT"><div class="sect3" id="limit">
+<h3>LIMIT</h3>
+
+<p>The <code>LIMIT</code> qualifier enables<a contenteditable="false" data-primary="LIMIT keyword (MySQL)" data-type="indexterm" id="idm45310006646424"/> you to choose how many rows to return in a query, and where in the table to start returning them. When passed a single parameter, it tells MySQL to start at the beginning of the results and just return the number of rows given in that parameter. If you pass it two parameters, the first indicates the offset from the start of the results where MySQL should start the display, and the second indicates how many to return. You can think of the first parameter as saying, “Skip this number of results at the start.”</p>
+
+<p><a data-type="xref" href="#limiting_the_number_of_results_returned">Example 8-23</a> includes three commands. The first returns the first three rows from the table. The second returns two rows starting at position 1 (skipping the first row). The last command returns a single row starting at position 3 (skipping the first three rows). <a data-type="xref" href="#restricting_the_rows_returned_with_limit">Figure 8-12</a> shows the results of issuing these three commands.</p>
+
+<div data-type="example" id="limiting_the_number_of_results_returned">
+<h5><span class="label">Example 8-23. </span>Limiting the number of results returned</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">LIMIT</code> <code class="mi">3</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">LIMIT</code> <code class="mi">1</code><code class="p">,</code><code class="mi">2</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">LIMIT</code> <code class="mi">3</code><code class="p">,</code><code class="mi">1</code><code class="p">;</code></pre>
+</div>
+
+<div data-type="warning" epub:type="warning"><h6>Warning</h6>
+<p>Be careful with the <code>LIMIT</code> keyword, because offsets start at 0, but the number of rows to return starts at 1. So, <code>LIMIT 1,3</code> means return <em>three</em> rows starting from the <em>second</em> row. You could look at the first argument as stating how many rows to skip, so that in English the instruction would be “Return 3 rows, skipping the first 1.”</p>
+</div>
+
+<figure><div id="restricting_the_rows_returned_with_limit" class="figure"><img alt="Restricting the rows returned with LIMIT" src="Images/pmj5_0812.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-12. </span>Restricting the rows returned with LIMIT</h6>
+</div></figure>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="MATCH...AGAINST"><div class="sect3" id="match_dotdotdot_against">
+<h3>MATCH...AGAINST</h3>
+
+<p>The <code>MATCH...AGAINST</code> construct can<a contenteditable="false" data-primary="MATCH...AGAINST construct (MySQL)" data-type="indexterm" id="match08"/> be used on columns that have been given a <code>FULLTEXT</code> index (see the section <a data-type="xref" href="#creating_a_fulltext_index">“Creating a FULLTEXT index”</a>). With it, you can make natural-language searches as you would in an internet search engine. Unlike the use of <code>WHERE...=</code> or <code>WHERE...LIKE</code>, <code>MATCH...AGAINST</code> lets you enter multiple words in a search query and checks them against all words in the <code>FULLTEXT</code> columns. <code>FULLTEXT</code> indexes are case-insensitive, so it makes no difference what case is used in your queries.</p>
+
+<p>Assuming that you have added a <code>FULLTEXT</code> index to the <em>author</em> and <em>title</em> columns, enter the three queries shown in <a data-type="xref" href="#using_match_dotdotdot_against_on_fulltex">Example 8-24</a>. The first asks for any rows that contain the word <em>and</em> to be returned. If you are using the MyISAM storage engine, then because <em>and</em> is a stopword in that engine, MySQL will ignore it and the query will always produce an empty set—no matter what is stored in the column. Otherwise, if you are using InnoDB <em>and</em> is an allowed word. The second query asks for any rows that contain both of the words <em>curiosity</em> and <em>shop</em> anywhere in them, in any order, to be returned. And the last query applies the same kind of search for the words <em>tom</em> and <em>sawyer</em>. <a data-type="xref" href="#using_match_dotdotdot_against_on_a_fullt">Figure 8-13</a> shows the results of these queries.</p>
+
+<div data-type="example" id="using_match_dotdotdot_against_on_fulltex">
+<h5><span class="label">Example 8-24. </span>Using MATCH...AGAINST on FULLTEXT indexes</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code>
+ <code class="k">WHERE</code> <code class="k">MATCH</code><code class="p">(</code><code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">)</code> <code class="n">AGAINST</code><code class="p">(</code><code class="s1">'and'</code><code class="p">);</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code>
+ <code class="k">WHERE</code> <code class="k">MATCH</code><code class="p">(</code><code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">)</code> <code class="n">AGAINST</code><code class="p">(</code><code class="s1">'curiosity shop'</code><code class="p">);</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code>
+ <code class="k">WHERE</code> <code class="k">MATCH</code><code class="p">(</code><code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">)</code> <code class="n">AGAINST</code><code class="p">(</code><code class="s1">'tom sawyer'</code><code class="p">);</code></pre>
+</div>
+
+<figure><div id="using_match_dotdotdot_against_on_a_fullt" class="figure"><img alt="Using MATCH ... AGAINST on FULLTEXT indexes" src="Images/pmj5_0813.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-13. </span>Using MATCH...AGAINST on FULLTEXT indexes</h6>
+</div></figure>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="MATCH...AGAINST in Boolean mode"><div class="sect3" id="match_dotdotdot_against_dotdotdot_in_boo">
+<h3>MATCH...AGAINST in Boolean mode</h3>
+
+<p>If you wish to give your <code>MATCH...AGAINST</code> queries even more power, use <em>Boolean mode</em>. This changes the effect of the standard <code>FULLTEXT</code> query so that it searches for any combination of search words, instead of requiring all search words to be in the text. The presence of a single word in a column causes the search to return the row.</p>
+
+<p>Boolean mode also allows you to preface search words with a <code>+</code> or <code>-</code> sign to indicate whether they must be included or excluded. If normal Boolean mode says, “Any of these words will do,” a plus sign means, “This word must be present; otherwise, don’t return the row.” A minus sign means, “This word must not be present; its presence disqualifies the row from being returned.”</p>
+
+<p><a data-type="xref" href="#using_match_dotdotdot_against">Example 8-25</a> illustrates Boolean mode through two queries. The first asks for all rows containing the word <em>charles</em> and not the word <em>species</em> to be returned. The second uses double quotes to request that all rows containing the exact phrase <em>origin of</em> be returned. <a data-type="xref" href="#using_match_dotdotdot_against-id00025">Figure 8-14</a> shows the results of these queries.</p>
+
+<div data-type="example" id="using_match_dotdotdot_against">
+<h5><span class="label">Example 8-25. </span>Using MATCH...AGAINST in Boolean mode</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code>
+ <code class="k">WHERE</code> <code class="k">MATCH</code><code class="p">(</code><code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">)</code>
+ <code class="n">AGAINST</code><code class="p">(</code><code class="s1">'+charles -species'</code> <code class="k">IN</code> <code class="nb">BOOLEAN</code> <code class="k">MODE</code><code class="p">);</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code>
+ <code class="k">WHERE</code> <code class="k">MATCH</code><code class="p">(</code><code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">)</code>
+ <code class="n">AGAINST</code><code class="p">(</code><code class="s1">'"origin of"'</code> <code class="k">IN</code> <code class="nb">BOOLEAN</code> <code class="k">MODE</code><code class="p">);</code></pre>
+</div>
+
+<figure><div id="using_match_dotdotdot_against-id00025" class="figure"><img alt="Using MATCH...AGAINST in Boolean mode" src="Images/pmj5_0814.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-14. </span>Using MATCH...AGAINST in Boolean mode</h6>
+</div></figure>
+
+<p>As you would expect, the first request returns only <code>The Old Curiosity Shop</code> by Charles Dickens; any rows containing the word <em>species</em> have been excluded, so Charles Darwin’s publication is ignored.</p>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>There is something of interest to note in the second query: the stopword <em>of</em> is part of the search string, but it is still used by the search because the double quotation marks override stopwords.<a contenteditable="false" data-primary="" data-startref="match08match08" data-type="indexterm" id="idm45310006397224"/></p>
+</div>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="UPDATE...SET"><div class="sect3" id="update_dotdotdot_set">
+<h3>UPDATE...SET</h3>
+
+<p>This<a contenteditable="false" data-primary="UPDATE...SET construct (MySQL)" data-type="indexterm" id="idm45310006393528"/> construct allows you to update the contents of a field. If you wish to change the contents of one or more fields, you need to first narrow in on just the field or fields to be changed, in much the same way you use the <code>SELECT</code> command. <a data-type="xref" href="#using_update_dotdotdot_set">Example 8-26</a> shows the use of <code>UPDATE...SET</code> in two different ways. You can see the results in <a data-type="xref" href="#updating_columns_in_the_classics_table">Figure 8-15</a>.</p>
+
+<div data-type="example" id="using_update_dotdotdot_set">
+<h5><span class="label">Example 8-26. </span>Using UPDATE...SET</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">UPDATE</code> <code class="n">classics</code> <code class="k">SET</code> <code class="n">author</code><code class="o">=</code><code class="s1">'Mark Twain (Samuel Langhorne Clemens)'</code>
+ <code class="k">WHERE</code> <code class="n">author</code><code class="o">=</code><code class="s1">'Mark Twain'</code><code class="p">;</code>
+<code class="k">UPDATE</code> <code class="n">classics</code> <code class="k">SET</code> <code class="n">category</code><code class="o">=</code><code class="s1">'Classic Fiction'</code>
+ <code class="k">WHERE</code> <code class="n">category</code><code class="o">=</code><code class="s1">'Fiction'</code><code class="p">;</code></pre>
+</div>
+
+<figure><div id="updating_columns_in_the_classics_table" class="figure"><img alt="Updating columns in the classics table" src="Images/pmj5_0815.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-15. </span>Updating columns in the classics table</h6>
+</div></figure>
+
+<p>In the first query, Mark Twain’s real name of Samuel Langhorne Clemens was appended to his pen name in parentheses, which affected only one row. The second query, however, affected three rows, because it changed all occurrences of the word <em>Fiction</em> in the <em>category</em> column to the term <em>Classic Fiction</em>.</p>
+
+<p>When performing an update, you can also make use of the qualifiers you have already seen, such as <code>LIMIT</code>, and the following <code>ORDER BY</code> and <code>GROUP BY</code> keywords.</p>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="ORDER BY"><div class="sect3" id="order_by">
+<h3>ORDER BY</h3>
+
+<p><code>ORDER BY</code> sorts<a contenteditable="false" data-primary="ORDER BY keyword (MySQL)" data-type="indexterm" id="idm45310006363000"/> returned results by one or more columns in ascending or descending order. <a data-type="xref" href="#using_order_by">Example 8-27</a> shows two such queries, the results of which can be seen in <a data-type="xref" href="#sorting_the_results_of_requests">Figure 8-16</a>.</p>
+
+<div data-type="example" id="using_order_by">
+<h5><span class="label">Example 8-27. </span>Using ORDER BY</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">ORDER</code> <code class="k">BY</code> <code class="n">author</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">ORDER</code> <code class="k">BY</code> <code class="n">title</code> <code class="k">DESC</code><code class="p">;</code></pre>
+</div>
+
+<figure><div id="sorting_the_results_of_requests" class="figure"><img alt="Sorting the results of requests" src="Images/pmj5_0816.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-16. </span>Sorting the results of requests</h6>
+</div></figure>
+
+<p>As you can see, the first query returns the publications by <em>author</em> in ascending alphabetical order (the default), and the second returns them by <em>title</em> in descending order.</p>
+
+<p>If you wanted to sort all the rows by <em>author</em> and then by descending <em>year</em> of publication (to view the most recent first), you would issue the following query:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">,</code><code class="k">year</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">ORDER</code> <code class="k">BY</code> <code class="n">author</code><code class="p">,</code><code class="k">year</code> <code class="k">DESC</code><code class="p">;</code></pre>
+
+<p>This<a contenteditable="false" data-primary="DESC keyword (MySQL)" data-type="indexterm" id="idm45310006252312"/> shows that each ascending and descending qualifier applies to a single column. The <code>DESC</code> keyword applies only to the preceding column, <em>year</em>. Because you allow <em>author</em> to use the default sort order, it is sorted in ascending order. You could also have explicitly specified ascending order for that column, with the same results:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code><code class="p">,</code><code class="k">year</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">ORDER</code> <code class="k">BY</code> <code class="n">author</code> <code class="k">ASC</code><code class="p">,</code><code class="k">year</code> <code class="k">DESC</code><code class="p">;</code></pre>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="GROUP BY"><div class="sect3" id="group_by">
+<h3>GROUP BY</h3>
+
+<p>In<a contenteditable="false" data-primary="GROUP BY keyword (MySQL)" data-type="indexterm" id="idm45310006217688"/> a similar fashion to <code>ORDER BY</code>, you can group results returned from queries using <code>GROUP BY</code>, which is good for retrieving information about a group of data. For example, if you want to know how many publications there are of each category in the <em>classics</em> table, you can issue the following query:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">category</code><code class="p">,</code><code class="k">COUNT</code><code class="p">(</code><code class="n">author</code><code class="p">)</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">GROUP</code> <code class="k">BY</code> <code class="n">category</code><code class="p">;</code></pre>
+
+<p>which<a contenteditable="false" data-primary="" data-startref="INquery08" data-type="indexterm" id="idm45310006173704"/> returns the following output:</p>
+
+<pre class="pagebreak-before" data-programming-language="perl">
+<strong>+-----------------+---------------+
+| category        | COUNT(author) |
++-----------------+---------------+
+| Classic Fiction |             3 |
+| Non-Fiction     |             1 |
+| Play            |             1 |
++-----------------+---------------+
+3 rows in set (0.00 sec)</strong></pre>
+</div></section>
+</div></section>
+
+<section data-type="sect2" data-pdf-bookmark="Joining Tables Together"><div class="sect2" id="joining_tables_together">
+<h2>Joining Tables Together</h2>
+
+<p>It<a contenteditable="false" data-primary="indexes (MySQL)" data-secondary="joining tables together" data-type="indexterm" id="INjoing08"/><a contenteditable="false" data-primary="tables" data-secondary="joining" data-type="indexterm" id="Tjoin08"/><a contenteditable="false" data-primary="MySQL" data-secondary="tables, joining" data-type="indexterm" id="MSQjoin08"/> is quite normal to maintain multiple tables within a database, each holding a different type of information. For example, consider the case of a <em>customers</em> table that needs to be able to be cross-referenced with publications purchased from the <em>classics</em> table. Enter the commands in <a data-type="xref" href="#creating_and_populating_the_customers_ta">Example 8-28</a> to create this new table and populate it with three customers and their purchases. <a data-type="xref" href="#creating_the_customers_table">Figure 8-17</a> shows the result.</p>
+
+<div data-type="example" id="creating_and_populating_the_customers_ta">
+<h5><span class="label">Example 8-28. </span>Creating and populating the customers table</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">CREATE</code> <code class="k">TABLE</code> <code class="n">customers</code> <code class="p">(</code>
+ <code class="n">name</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">128</code><code class="p">),</code>
+ <code class="n">isbn</code> <code class="nb">VARCHAR</code><code class="p">(</code><code class="mi">13</code><code class="p">),</code>
+ <code class="k">PRIMARY</code> <code class="k">KEY</code> <code class="p">(</code><code class="n">isbn</code><code class="p">))</code> <code class="n">ENGINE</code> <code class="n">InnoDB</code><code class="p">;</code>
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">customers</code><code class="p">(</code><code class="n">name</code><code class="p">,</code><code class="n">isbn</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Joe Bloggs'</code><code class="p">,</code><code class="s1">'9780099533474'</code><code class="p">);</code>
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">customers</code><code class="p">(</code><code class="n">name</code><code class="p">,</code><code class="n">isbn</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Mary Smith'</code><code class="p">,</code><code class="s1">'9780582506206'</code><code class="p">);</code>
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">customers</code><code class="p">(</code><code class="n">name</code><code class="p">,</code><code class="n">isbn</code><code class="p">)</code>
+ <code class="k">VALUES</code><code class="p">(</code><code class="s1">'Jack Wilson'</code><code class="p">,</code><code class="s1">'9780517123201'</code><code class="p">);</code>
+<code class="k">SELECT</code> <code class="o">*</code> <code class="k">FROM</code> <code class="n">customers</code><code class="p">;</code></pre>
+</div>
+
+<figure><div id="creating_the_customers_table" class="figure"><img alt="Creating the customers table" src="Images/pmj5_0817.png" width="669" height="332"/>
+<h6><span class="label">Figure 8-17. </span>Creating the customers table</h6>
+</div></figure>
+
+<div data-type="note" epub:type="note"><h6>Note</h6>
+<p>There’s also a shortcut for inserting multiple rows of data, as in <a data-type="xref" href="#creating_and_populating_the_customers_ta">Example 8-28</a>, in which you can replace the three separate <code>INSERT INTO</code> queries with a single one listing the data to be inserted, separated by commas, like this:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">INSERT</code> <code class="k">INTO</code> <code class="n">customers</code><code class="p">(</code><code class="n">name</code><code class="p">,</code><code class="n">isbn</code><code class="p">)</code> <code class="k">VALUES</code>
+ <code class="p">(</code><code class="s1">'Joe Bloggs'</code><code class="p">,</code><code class="s1">'9780099533474'</code><code class="p">),</code>
+ <code class="p">(</code><code class="s1">'Mary Smith'</code><code class="p">,</code><code class="s1">'9780582506206'</code><code class="p">),</code>
+ <code class="p">(</code><code class="s1">'Jack Wilson'</code><code class="p">,</code><code class="s1">'9780517123201'</code><code class="p">);</code></pre>
+</div>
+
+<p>Of course, in a proper table containing customers’ details there would also be addresses, phone numbers, email addresses, and so on, but they aren’t necessary for this explanation. While creating the new table, you should have noticed that it has something in common with the <em>classics</em> table: a column called <em>isbn</em>. Because it has the same meaning in both tables (an ISBN refers to a book, and always the same book), we can use this column to tie the two tables together into a single query, as in <a data-type="xref" href="#joining_two_tables_into_a_single_select">Example 8-29</a>.</p>
+
+<div data-type="example" id="joining_two_tables_into_a_single_select">
+<h5><span class="label">Example 8-29. </span>Joining two tables into a single SELECT</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">name</code><code class="p">,</code><code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">customers</code><code class="p">,</code><code class="n">classics</code>
+ <code class="k">WHERE</code> <code class="n">customers</code><code class="p">.</code><code class="n">isbn</code><code class="o">=</code><code class="n">classics</code><code class="p">.</code><code class="n">isbn</code><code class="p">;</code></pre>
+</div>
+
+<p>The result of this operation is the following:</p>
+
+<pre data-programming-language="perl">
+<strong>+-------------+-----------------+------------------------+
+| name        | author          | title                  |
++-------------+-----------------+------------------------+
+| Joe Bloggs  | Charles Dickens | The Old Curiosity Shop |
+| Mary Smith  | Jane Austen     | Pride and Prejudice    |
+| Jack Wilson | Charles Darwin  | The Origin of Species  |
++-------------+-----------------+------------------------+
+3 rows in set (0.00 sec)</strong></pre>
+
+<p>See how this query has neatly linked the tables together to show the publications purchased from the <em>classics</em> table by the people in the <em>customers</em> table?</p>
+
+<section data-type="sect3" data-pdf-bookmark="NATURAL JOIN"><div class="sect3" id="natural_join">
+<h3>NATURAL JOIN</h3>
+
+<p>Using <code>NATURAL JOIN</code>, you<a contenteditable="false" data-primary="NATURAL JOIN keyword (MySQL)" data-type="indexterm" id="idm45310005919160"/> can save yourself some typing and make queries a little clearer. This kind of join takes two tables and automatically joins columns that have the same name. So, to achieve the same results as from <a data-type="xref" href="#joining_two_tables_into_a_single_select">Example 8-29</a>, you would enter the following:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">name</code><code class="p">,</code><code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">customers</code> <code class="k">NATURAL</code> <code class="k">JOIN</code> <code class="n">classics</code><code class="p">;</code></pre>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="JOIN...ON"><div class="sect3" id="joindotdotdoton">
+<h3>JOIN...ON</h3>
+
+<p>If<a contenteditable="false" data-primary="JOIN...ON construct (MySQL)" data-type="indexterm" id="idm45310005906440"/> you wish to specify the column on which to join two tables, use the <code>JOIN...ON</code> construct, as follows, to achieve results identical to those of <a data-type="xref" href="#joining_two_tables_into_a_single_select">Example 8-29</a>:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">name</code><code class="p">,</code><code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">customers</code>
+ <code class="k">JOIN</code> <code class="n">classics</code> <code class="k">ON</code> <code class="n">customers</code><code class="p">.</code><code class="n">isbn</code><code class="o">=</code><code class="n">classics</code><code class="p">.</code><code class="n">isbn</code><code class="p">;</code></pre>
+</div></section>
+
+<section data-type="sect3" data-pdf-bookmark="Using AS"><div class="sect3" id="using_as">
+<h3>Using AS</h3>
+
+<p>You<a contenteditable="false" data-primary="AS keyword (MySQL)" data-type="indexterm" id="idm45310005833960"/> can also save yourself some typing and improve query readability by creating aliases using the <code>AS</code> keyword. Simply follow a table name with <code>AS</code> and the alias to use. The following code, therefore, is also identical in action to <a data-type="xref" href="#joining_two_tables_into_a_single_select">Example 8-29</a>:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">name</code><code class="p">,</code><code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">from</code>
+ <code class="n">customers</code> <code class="k">AS</code> <code class="n">cust</code><code class="p">,</code> <code class="n">classics</code> <code class="k">AS</code> <code class="k">class</code> <code class="k">WHERE</code> <code class="n">cust</code><code class="p">.</code><code class="n">isbn</code><code class="o">=</code><code class="k">class</code><code class="p">.</code><code class="n">isbn</code><code class="p">;</code></pre>
+
+<p>The result of this operation is the following:</p>
+
+<pre data-programming-language="perl">
+<strong>+-------------+-----------------+------------------------+
+| name        | author          | title                  |
++-------------+-----------------+------------------------+
+| Joe Bloggs  | Charles Dickens | The Old Curiosity Shop |
+| Mary Smith  | Jane Austen     | Pride and Prejudice    |
+| Jack Wilson | Charles Darwin  | The Origin of Species  |
++-------------+-----------------+------------------------+
+3 rows in set (0.00 sec)</strong></pre>
+
+<p>You can also use <code>AS</code> to rename a column (whether or not joining tables), like this:</p>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">name</code> <code class="k">AS</code> <code class="n">customer</code> <code class="k">FROM</code> <code class="n">customers</code> <code class="k">ORDER</code> <code class="k">BY</code> <code class="n">customer</code><code class="p">;</code></pre>
+
+<p>Which results in the following output:</p>
+
+<pre data-programming-language="perl">
+<strong>+-------------+
+| customer    |
++-------------+
+| Jack Wilson |
+| Joe Bloggs  |
+| Mary Smith  |
++-------------+
+3 rows in set (0.00 sec)</strong></pre>
+
+<p>Aliases can be particularly useful when you have long queries that reference the same table names many times.<a contenteditable="false" data-primary="" data-startref="INjoing08" data-type="indexterm" id="idm45310005782984"/><a contenteditable="false" data-primary="" data-startref="MSQjoin08" data-type="indexterm" id="idm45310005780328"/><a contenteditable="false" data-primary="" data-startref="Tjoin08" data-type="indexterm" id="idm45310005778952"/></p>
+</div></section>
+</div></section>
+
+<section data-type="sect2" data-pdf-bookmark="Using Logical Operators"><div class="sect2" id="using_logical_operators">
+<h2>Using Logical Operators</h2>
+
+<p>You<a contenteditable="false" data-primary="indexes (MySQL)" data-secondary="using logical operators" data-type="indexterm" id="idm45310005775784"/><a contenteditable="false" data-primary="logical operators" data-secondary="in MySQL" data-type="indexterm" id="idm45310005731032"/> can also use the logical operators <code>AND</code>, <code>OR</code>, and <code>NOT</code> in your MySQL <code>WHERE</code> queries to further narrow down your selections. <a data-type="xref" href="#using_logical_operators-id00026">Example 8-30</a> shows one instance of each, but you can mix and match them in any way you need.</p>
+
+<div data-type="example" id="using_logical_operators-id00026">
+<h5><span class="label">Example 8-30. </span>Using logical operators</h5>
+
+<pre data-code-language="sql" data-programming-language="perl">
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code>
+ <code class="n">author</code> <code class="k">LIKE</code> <code class="ss">"Charles%"</code> <code class="k">AND</code> <code class="n">author</code> <code class="k">LIKE</code> <code class="ss">"%Darwin"</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code>
+ <code class="n">author</code> <code class="k">LIKE</code> <code class="ss">"%Mark Twain%"</code> <code class="k">OR</code> <code class="n">author</code> <code class="k">LIKE</code> <code class="ss">"%Samuel Langhorne Clemens%"</code><code class="p">;</code>
+<code class="k">SELECT</code> <code class="n">author</code><code class="p">,</code><code class="n">title</code> <code class="k">FROM</code> <code class="n">classics</code> <code class="k">WHERE</code>
+ <code class="n">author</code> <code class="k">LIKE</code> <code class="ss">"Charles%"</code> <code class="k">AND</code> <code class="n">author</code> <code class="k">NOT</code> <code class="k">LIKE</code> <code class="ss">"%Darwin"</code><code class="p">;</code></pre>
+</div>
+
+<p>I’ve chosen the first query because Charles Darwin might be listed in some rows by his full name, Charles Robert Darwin. The query returns any publications for which the <em>author</em> column starts with <em>Charles</em> and ends with <em>Darwin</em>. The second query searches for publications written using either Mark Twain’s pen name or his real name, Samuel Langhorne Clemens. The third query returns publications written by authors with the first name Charles but not the surname Darwin.<a contenteditable="false" data-primary="" data-startref="MSQindex08" data-type="indexterm" id="idm45310005656360"/></p>
+</div></section>
+</div></section>
+
+<section data-type="sect1" data-pdf-bookmark="MySQL Functions"><div class="sect1" id="mysql_functions">
+<h1>MySQL Functions</h1>
+
+<p>You<a contenteditable="false" data-primary="MySQL" data-secondary="built-in functions" data-type="indexterm" id="idm45310005653256"/><a contenteditable="false" data-primary="functions (MySQL)" data-secondary="benefits of" data-type="indexterm" id="idm45310005651848"/> might wonder why anyone would want to use MySQL functions when PHP comes with a whole bunch of powerful functions of its own. The answer is very simple: the MySQL functions work on the data right there in the database. If you were to use PHP, you would first have to extract raw data from MySQL, manipulate it, and then perform the database query you wanted.</p>
+
+<p>Having functions built into MySQL substantially reduces the time needed for performing complex queries, as well as their complexity. You can learn more about all the available <a href="http://tinyurl.com/mysqlstrings">string</a> and <a href="http://tinyurl.com/mysqldates">date/time</a> functions from the documentation.</p>
+</div></section>
+
+<section data-type="sect1" data-pdf-bookmark="Accessing MySQL via phpMyAdmin"><div class="sect1" id="accessing_mysql_via_phpmyadmin">
+<h1>Accessing MySQL via phpMyAdmin</h1>
+
+<p>Although<a contenteditable="false" data-primary="MySQL" data-secondary="phpMyAdmin access" data-type="indexterm" id="idm45310005645832"/><a contenteditable="false" data-primary="phpMyAdmin, accessing MySQL via" data-type="indexterm" id="idm45310005644424"/> to use MySQL you have to learn these main commands and how they work, once you understand them, it can be much quicker and simpler to use a program such as <em>phpMyAdmin</em> to manage your databases and tables.</p>
+
+<p>To do this, assuming you have installed AMPPS as described in <a data-type="xref" href="ch02.xhtml#setting_up_a_development_server">Chapter 2</a>, type the following to open up the program (see <a data-type="xref" href="#phpmyadmin_main_screen">Figure 8-18</a>):</p>
+
+<pre data-programming-language="perl">
+http://localhost/phpmyadmin</pre>
+
+<figure><div id="phpmyadmin_main_screen" class="figure"><img alt="" class="iimagesampps-phpmyadminpng" src="Images/pmj5_0818.png" width="1042" height="595"/>
+<h6><span class="label">Figure 8-18. </span>The phpMyAdmin main screen</h6>
+</div></figure>
+
+<p>In the left-hand pane of the main phpMyAdmin screen, you can click to select any tables you wish to work with (although none will be available until created). You can also click New to create a new database.</p>
+
+<p>From here, you can perform all the main operations, such as creating new databases, adding tables, creating indexes, and much more. To find out more about phpMyAdmin, consult the <a href="https://docs.phpmyadmin.net">documentation</a>.</p>
+
+<p>If you worked with me through the examples in this chapter, congratulations—it has been quite a long journey. You’ve come all the way from learning how to create a MySQL database, through issuing complex queries that combine multiple tables, to using Boolean operators and leveraging MySQL’s various qualifiers.</p>
+
+<p>In the next chapter, we’ll start looking at how to approach efficient database design, advanced SQL techniques, and MySQL functions and transactions.</p>
+</div></section>
+
+<section data-type="sect1" data-pdf-bookmark="Questions"><div class="sect1" id="questions-id00027">
+<h1>Questions</h1>
+
+<ol>
+	<li>
+	<p>What is the purpose of the semicolon in MySQL queries?</p>
+	</li>
+	<li>
+	<p>Which command would you use to view the available databases or tables?</p>
+	</li>
+	<li>
+	<p>How would you create a new MySQL user on the local host called <em>newuser</em> with a password of <em>newpass</em> and with access to everything in the database <em>newdatabase</em>?</p>
+	</li>
+	<li>
+	<p>How can you view the structure of a table?</p>
+	</li>
+	<li>
+	<p>What is the purpose of a MySQL index?</p>
+	</li>
+	<li>
+	<p>What benefit does a <code>FULLTEXT</code> index provide?</p>
+	</li>
+	<li>
+	<p>What is a stopword?</p>
+	</li>
+	<li>
+	<p>Both <code>SELECT DISTINCT</code> and <code>GROUP BY</code> cause the display to show only one output row for each value in a column, even if multiple rows contain that value. What are the main differences between <code>SELECT DISTINCT</code> and <code>GROUP BY</code>?</p>
+	</li>
+	<li>
+	<p>Using the <code>SELECT...WHERE</code> construct, how would you return only rows containing the word <em>Langhorne</em> somewhere in the <em>author</em> column of the <em>classics</em> table used in this chapter?</p>
+	</li>
+	<li>
+	<p>What needs to be defined in two tables to make it possible for you to join them together?</p>
+	</li>
+</ol>
+
+<p>See <a data-type="xref" href="app01.xhtml#chapter_8_answers">“Chapter 8 Answers”</a> in <a data-type="xref" href="app01.xhtml#solutions_to_the_chapter_questions">Appendix A</a> for the answers to these <span class="keep-together">questions</span>.</p>
+</div></section>
+</div></section></div></body>
+</html>
