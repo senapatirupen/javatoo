@@ -1,0 +1,2 @@
+Chain of responsibility pattern: An object submits a request to multiple objects
+withoutknowing which object will handle the request
