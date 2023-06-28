@@ -1,3 +1,27 @@
+node --version
+npm --version
+git --version
+npm install --global typescript@4.2.2
+tsc --version
+cd todo
+npm init --yes
+The npm init command creates a package.json
+
+Creating the Compiler Configuration File
+The Contents of the tsconfig.json File in the todo Folder {
+"compilerOptions": { "target": "es2018", "outDir": "./dist", "rootDir": "./src", "module": "commonjs"
+} }
+
+todo/src/index.ts
+The Contents of the index.ts File in the src Folder console.clear();
+console.log("Adam's Todo List");
+
+tsc (to run the file)
+It will create the dist/index.js file
+node dist/index.js
+This will give you the output
+
+
 tsc writeValue("ok)";
 tsc --all
 tsc --init

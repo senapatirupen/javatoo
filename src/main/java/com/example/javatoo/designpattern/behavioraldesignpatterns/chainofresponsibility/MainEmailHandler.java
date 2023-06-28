@@ -25,7 +25,7 @@ public abstract class MainEmailHandler implements UniversityEmailHandler {
         // check to see if email can be processed by the current
         // email handler based on keyword match
         if (keyWordFound) {
-            processEmailHandler(emailText);
+            processEmailFinal(emailText);
         } else {
             // pass along the chain if the email is not processed
             // by the current email handler

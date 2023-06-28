@@ -2,8 +2,8 @@ package com.example.javatoo.designpattern.behavioraldesignpatterns.chainofrespon
 
 public class TestEmailHandler {
     public static void main(String[] args) {
-        MainEmailHandler mainEmailHandler = new AcademicEmailHandler();
+//        MainEmailHandler mainEmailHandler = new AcademicEmailHandler();
 //        mainEmailHandler.theNextHandlerInTheChain = new AlumniEmailHandler();
-        mainEmailHandler.handleEmail("academic");
+        AcademicEmailHandler.handleEmail("advising");
     }
 }
