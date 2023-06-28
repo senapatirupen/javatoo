@@ -1,0 +1,69 @@
+listing 1
+class RecordQDemo {      
+  public static void main(String[] args) { 
+    // Create a queue for Item records.
+    Item[] items = new Item[4]; 
+    GenQueue<Item> q = new GenQueue<Item>(items); 
+ 
+    // Create some Item records.
+    items[0] = new Item("Hammer", 257, 10.99);
+    items[1] = new Item("Wrench", 18, 19.29);
+    items[2] = new Item("Drill", 903, 22.25);
+    items[3] = new Item("Saw", 27, 34.59);
+ 
+    // Put records into the queue.
+    try {   
+      for(int i=0; i < items.length; i++) {  
+        System.out.println("Adding " + items[i].name() + " to queue."); 
+        q.put(items[i]); // add record to q 
+ 
+      }  
+    }  
+    catch (QueueFullException exc) {  
+      System.out.println(exc);  
+    }  
+    System.out.println();  
+
+    // Retrieve records from the queue.     
+    try {  
+      Item r;
+
+      for(int i=0; i < items.length; i++) {       
+        System.out.print("Getting next record from queue: ");  
+        r = q.get();      
+        System.out.println(r.name() + ", Item Number " + r.itemNum() +
+                           ", " + " Price: " +  r.price());
+      }  
+    }  
+    catch (QueueEmptyException exc) {  
+      System.out.println(exc);  
+    }   
+  }  
+}
+
+listing 2
+// Demonstrate a switch expression that yields a record.
+class SwitchWithRecord { 
+
+  enum ShipMethod { STANDARD, TRUCK, AIR, OVERNIGHT } 
+
+  record ShippingInfo (ShipMethod how, boolean extraCharge) { }
+
+  public static void main(String[] args) { 
+ 
+    int productID = 5099;
+
+    // Here, the switch expression uses a record to efficiently
+    // yield two values.
+    ShippingInfo shipInfo = switch(productID) {
+      case 1774, 8708, 6709 -> new ShippingInfo(ShipMethod.TRUCK, true);
+      case 4657, 2195, 1887, 3621 -> new ShippingInfo(ShipMethod.AIR, true);
+      case 2907, 5099 -> new ShippingInfo(ShipMethod.OVERNIGHT, true);
+      default-> new ShippingInfo(ShipMethod.STANDARD, false);
+    };  
+
+    System.out.println("Shipping method for product number " +
+                       productID + " is " + shipInfo.how());
+    if(shipInfo.extraCharge()) System.out.println("Extra charge required.");
+  }
+}

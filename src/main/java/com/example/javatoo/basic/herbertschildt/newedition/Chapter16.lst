@@ -1,0 +1,330 @@
+listing 1
+// Use a traditional switch to obtain the shipping method 
+// associated with a product ID. Most products use standard
+// shipping, but a few require special handling.
+class TraditionalSwitch { 
+
+  enum ShipMethod { STANDARD, TRUCK, AIR, OVERNIGHT } 
+
+  public static void main(String[] args) { 
+    ShipMethod shipBy;
+ 
+    int productID = 5099;
+
+    // Here, a traditional switch is used to obtain the
+    // shipping method. Notice that case stacking is used.
+    switch(productID) {
+      case 1774:  
+      case 8708:
+      case 6709: 
+        shipBy = ShipMethod.TRUCK;
+        break;
+      case 4657:
+      case 2195:
+      case 3621:
+      case 1887:
+        shipBy = ShipMethod.AIR;
+        break;
+      case 2907:
+      case 5099:
+        shipBy = ShipMethod.OVERNIGHT;
+        break;
+      default: 
+        shipBy = ShipMethod.STANDARD; 
+    }
+
+    System.out.println("Shipping method for product number " +
+                       productID + " is " + shipBy);
+  }
+}
+
+listing 2
+// Convert a switch statement into a switch expression.
+class SwitchExprDemo { 
+
+  enum ShipMethod { STANDARD, TRUCK, AIR, OVERNIGHT } 
+
+  public static void main(String[] args) { 
+ 
+    int productID = 5099;
+
+    // This is a switch expression. The value produced by
+    // the yield statement in the case that matches productID
+    // is assigned to the shipBy variable.
+    ShipMethod shipBy = switch(productID) {
+      case 1774, 8708, 6709: 
+        yield ShipMethod.TRUCK;
+      case 4657, 2195, 1887, 3621:
+        yield ShipMethod.AIR;
+      case 2907, 5099:
+        yield ShipMethod.OVERNIGHT;
+      default: 
+        yield ShipMethod.STANDARD; 
+    };  // Notice that a semicolon is required here.
+
+    System.out.println("Shipping method for product number " +
+                       productID + " is " + shipBy);
+  }
+}
+
+listing 3
+// Use the arrow case "shorthand" to supply the shipping method.
+class SwitchExprDemo2 { 
+
+  enum ShipMethod { STANDARD, TRUCK, AIR, OVERNIGHT } 
+
+  public static void main(String[] args) { 
+ 
+    int productID = 5099;
+
+    // In this switch expression, the value is supplied
+    // by use of an arrow case, rather than a yield statement.
+    // Notice that no break statements are required because
+    // arrow cases do not fall through.
+    ShipMethod shipBy = switch(productID) {
+      case 1774, 8708, 6709 -> ShipMethod.TRUCK;
+      case 4657, 2195, 1887, 3621-> ShipMethod.AIR;
+      case 2907, 5099 -> ShipMethod.OVERNIGHT;
+      default-> ShipMethod.STANDARD; 
+    };  
+
+    System.out.println("Shipping method for product number " +
+                       productID + " is " + shipBy);
+  }
+}
+
+listing 4
+// Use blocks with the arrow case.
+class BlockArrowCaseDemo { 
+
+  enum ShipMethod { STANDARD, TRUCK, AIR, OVERNIGHT } 
+
+  public static void main(String[] args) { 
+ 
+    int productID = 5099;
+
+    boolean extraCharge;
+
+    // Use code blocks with an arrow case. Because
+    // the target of the arrow is a block, yield must
+    // be used to supply the value. As before, no break
+    // statements are needed (or legal) because no fall
+    // through occurs with the arrow.
+    ShipMethod shipBy = switch(productID) {
+      case 1774, 8708, 6709 -> {
+             extraCharge = true;
+             yield ShipMethod.TRUCK;
+          }
+      case 4657, 2195, 1887, 3621-> {
+             extraCharge = false;
+             yield ShipMethod.AIR;
+           }
+      case 2907, 5099 -> {
+             extraCharge = true;
+             yield ShipMethod.OVERNIGHT;
+           }
+      default-> {
+             extraCharge = false;
+             yield ShipMethod.STANDARD; 
+           }
+    };  
+
+    System.out.println("Shipping method for product number " +
+                       productID + " is " + shipBy);
+    if(extraCharge) System.out.println("Extra charge required.");
+  }
+}
+
+listing 5
+// Use case arrows with a switch statement. This example
+// uses a switch to count the number of units produced
+// by three simulated production lines.
+class StatementSwitchWithArrows { 
+ 
+  public static void main(String[] args) { 
+    // Production line counters.
+    int line1count = 0;
+    int line2count = 0;
+    int line3count = 0;
+
+    // Production line number.
+   int productionLine;
+
+    for(int i=1; i < 10; i++) {
+      // Simulate production line output.
+      productionLine = (i % 3) + 1;
+    
+      // Use arrows with a switch statement. Notice that
+      // no value is yielded. Instead, a line counter
+      // is updated based on which line produced the unit and
+      // a message indicating the unit is displayed.
+      switch(productionLine) {
+        case 1 -> { line1count++;
+                    System.out.println("Line 1 produced a unit.");
+                  }
+        case 2 -> { line2count++;
+                    System.out.println("Line 2 produced a unit.");
+                  }
+        case 3 -> { line3count++;
+                    System.out.println("Line 3 produced a unit.");
+                  }
+      }
+    }
+
+    System.out.println("Total counts for Lines 1, 2, and 3: " + line1count + 
+                       ", " + line2count + ", " + line3count);
+  }
+}
+
+listing 6
+// Use a switch expression to obtain the time zone for selected
+// cities in continental US.
+class CityTZDemo { 
+ 
+  // Use an enumeration to describe the time zones.
+  enum TZ { Eastern, Central, Mountain, Pacific, Other }
+ 
+  public static void main(String[] args) { 
+
+    // An array of various cities in North America.
+    String[] cities = {
+                        "New York", "Boston", "Miami", "Chicago",
+                        "St. Louis", "Des Moines", "Denver",
+                        "Albuquerque", "Seattle", "San Francisco",
+                        "Los Angeles", "Portland"
+                      };
+
+    // Display the time zone for each city in the array.
+    for(String city: cities) {
+
+      // This switch expression yields an enumeration value
+      // that indicates the time zone of a city.
+      TZ zone = switch(city) {
+        case "New York", "Boston", "Miami" -> TZ.Eastern;  
+
+        case "Chicago", "St. Louis", "Des Moines" -> TZ.Central;
+
+        case "Albuquerque", "Denver" -> TZ.Mountain;
+
+        case "Seattle", "San Francisco", "Los Angeles",
+             "Portland" -> TZ.Pacific;
+
+        default -> TZ.Other;
+      };
+
+      if(zone == TZ.Other)
+        System.out.println(city + " is outside the Continental US");
+      else
+        System.out.println(city + " is in the " + zone + " time zone");
+    }
+  }
+}
+
+listing 7
+// A simple Record example.
+
+// Declare an Item record. This automatically creates
+// a record class with private, final fields called name, itemNum,
+// and price, and with read-only accessors called name(), itemNum(),
+// and price().
+record Item(String name, int itemNum, double price) {}
+
+class RecordDemo { 
+  public static void main(String[] args) { 
+    // Create an array of Item records.
+    Item[] items = new Item[4];
+
+    // Fill the array with items.
+    // Notice how each record is constructed. The arguments
+    // are automatically assigned to the name, itemNum, and
+    // price fields in the record that is being created.
+    items[0] = new Item("Hammer", 257, 10.99);
+    items[1] = new Item("Wrench", 18, 19.29);
+    items[2] = new Item("Drill", 903, 22.25);
+    items[3] = new Item("Saw", 27, 34.59);
+
+    // Use the record accessors to display the list of items
+    for(Item i: items) {
+      System.out.println(i.name() + ", Item Number " + i.itemNum() + ", " +
+                         " Price: " +  i.price());
+    }
+  }
+}
+
+listing 8
+// Use a compact canonical constructor for Item.
+record Item(String name, int itemNum, double price) {
+
+  public Item {
+    // Remove leading and trailing spaces by use of the 
+    // trim() method defined by the String class.
+    name = name.trim();
+
+    // The name, itemNum, and price fields are automatically
+    // assigned the values of their corresponding parameters when
+    // the constructor ends.
+  }
+}
+
+class RecordDemo2 { 
+  public static void main(String[] args) { 
+    // Create an array of Item records.
+    Item[] items = new Item[4];
+
+    // Notice how each record is constructed. Here, no leading
+    // or trailing spaces are present in the name.
+    items[0] = new Item("Hammer", 257, 10.99);
+
+    // These entries have leading and/or trailing spaces in their
+    // names. The canonical constructor will remove the spaces.
+    items[1] = new Item("  Wrench", 18, 19.29);
+    items[2] = new Item("Drill  ", 903, 22.25);
+    items[3] = new Item("  Saw  ", 27, 34.59);
+
+    // Use the record accessors to display the list of items
+    for(Item i: items) {
+      System.out.println(i.name() + ", Item Number " + i.itemNum() + ", " +
+                         " Price: " +  i.price());
+    }
+  }
+}
+
+listing 9
+// Use a non-canonical constructor.
+
+// Declare a record that holds items.
+record Item(String name, int itemNum, double price) {
+  // Use a static field in a record.
+  static double pricePending = -1;
+
+  // This is a non-canonical constructor.
+  // It creates a record in which the price of the item
+  // is passed as a string instead of a double. Thus, it
+  // must be converted to a double when passed to the
+  // canonical constructor.
+  public Item(String name, int itemNum, String price) {
+    this(name, itemNum, Double.parseDouble(price)); 
+  }
+}
+
+class RecordDemo3 { 
+  public static void main(String[] args) { 
+    // Create an array of Item records.
+    Item[] items = new Item[4];
+
+    // Create some item entries. These will use the implicit
+    // canonical constructor.
+    items[0] = new Item("Hammer", 257, 10.99);
+    items[1] = new Item("Wrench", 18, 19.29);
+
+    // These will use the non-canonical constructor because
+    // the price is passed as a string, not a double.
+    items[2] = new Item("Drill", 903, "22.25");
+    items[3] = new Item("Saw", 27, "34.59");
+
+    // Use the record accessors to display the list of items
+    for(Item i: items) 
+      System.out.println(i.name() + ", Item Number " + i.itemNum() + ", " +
+                         " Price: " +  i.price());
+  }
+}
