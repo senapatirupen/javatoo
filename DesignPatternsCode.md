@@ -5345,3 +5345,2575 @@ This chapter focuses on identifying and avoiding bad practices. The "examples" a
 - **Explanation:** Unused methods clutter the interface, making it harder to understand and maintain. The presence of `initRadio` and `initCassettePlayer` while the actual logic is in `initMediaSystem` indicates continuous obsolescence.
 
 This comprehensive extraction and explanation covers all the examples in the book, providing clarity on each design pattern and its application in Java.
+
+# Practical Design Patterns for Java Developers - Interview Preparation Guide
+
+## Part 1: Core Concepts
+
+### 1. Object-Oriented Programming Pillars (APIE)
+
+**Interview Focus:**
+- **Encapsulation**: Hiding internal state and exposing only necessary methods. Keep fields private and provide public getters/setters or behavior methods.
+- **Inheritance**: Creating parent-child class hierarchies for code reuse. **Potential interview trap**: Prefer composition over inheritance.
+- **Polymorphism**: 
+  - **Method Overloading (Static)**: Multiple methods with same name but different parameters - resolved at compile time.
+  - **Method Overriding (Dynamic)**: Subclass provides specific implementation of parent method - resolved at runtime.
+- **Abstraction**: Using abstract classes and interfaces to define contracts without implementation details.
+
+**Key Interview Question**: "Explain polymorphism with examples of overloading vs overriding."
+
+### 2. SOLID Principles
+
+| Principle | Meaning | Interview Focus |
+|-----------|---------|-----------------|
+| **S**ingle Responsibility | One class = one responsibility | "What's wrong with a God class?" |
+| **O**pen-Closed | Open for extension, closed for modification | "How do you add new features without changing existing code?" |
+| **L**iskov Substitution | Subtypes must be substitutable for base types | "Can a Square inherit from Rectangle?" (No - violates LSP) |
+| **I**nterface Segregation | Don't force clients to depend on unused methods | "Why are fat interfaces bad?" |
+| **D**ependency Inversion | Depend on abstractions, not concretions | "What's the difference between DIP and Dependency Injection?" |
+
+**Key Interview Question**: "How does the Singleton pattern violate the Single Responsibility Principle?"
+
+---
+
+## Part 2: Creational Design Patterns
+
+### Factory Method Pattern
+
+**Definition**: Defines an interface for creating an object, but lets subclasses decide which class to instantiate.
+
+**When to use**: When a class can't anticipate the type of objects it needs to create.
+
+**Key implementation details**:
+- Single factory method (usually static)
+- Returns product interface type
+- Subclasses determine concrete type
+
+**Interview Question**: "Difference between Factory Method and Abstract Factory?"
+
+**Answer**: Factory Method creates one type of product; Abstract Factory creates families of related products.
+
+---
+
+### Abstract Factory Pattern
+
+**Definition**: Provides an interface for creating families of related or dependent objects without specifying their concrete classes.
+
+**When to use**: When the system needs to be independent of how its products are created.
+
+**Key implementation details**:
+- Factory interface with multiple creation methods
+- Concrete factories for each product family
+- Client uses factory interface
+
+**Interview Question**: "When would you use Abstract Factory over Factory Method?"
+
+---
+
+### Builder Pattern
+
+**Definition**: Separates construction of a complex object from its representation.
+
+**When to use**: When an object has many optional parameters or complex construction logic.
+
+**Key implementation details**:
+- Inner static Builder class
+- Fluent interface (method chaining)
+- Build() method returns final product
+
+**Interview Question**: "How does the Builder pattern differ from using multiple constructors?"
+
+**Answer**: Builder handles many optional parameters without telescoping constructors and is more readable.
+
+---
+
+### Prototype Pattern
+
+**Definition**: Creates new objects by copying an existing object (prototype).
+
+**When to use**: When object creation is expensive and you need many similar objects.
+
+**Key implementation details**:
+- Implement Cloneable interface
+- Override clone() method
+- Use shallow vs deep copy carefully
+
+**Interview Question**: "What's the difference between shallow and deep copy? Which does clone() use?"
+
+---
+
+### Singleton Pattern
+
+**Definition**: Ensures only one instance of a class exists.
+
+**Thread-safety considerations**:
+1. **Lazy initialization** (not thread-safe without synchronization)
+2. **Eager initialization** (thread-safe but creates instance upfront)
+3. **Double-checked locking** (thread-safe with volatile)
+4. **Enum Singleton** (most robust)
+
+**Interview Question**: "Implement a thread-safe Singleton without using synchronized keyword."
+
+**Answer**: Use Enum or static inner class approach.
+
+---
+
+### Object Pool Pattern
+
+**Definition**: Maintains a pool of reusable objects to avoid expensive creation/destruction.
+
+**When to use**: For objects that are expensive to create (database connections, threads).
+
+**Key implementation details**:
+- Pool of reusable objects
+- acquire() and release() methods
+- Synchronization for thread-safety
+
+**Interview Question**: "How does Object Pool differ from Connection Pool?"
+
+---
+
+### Lazy Initialization Pattern
+
+**Definition**: Defers object creation until first use.
+
+**When to use**: When object creation is expensive and might not be needed.
+
+**Interview Question**: "Is Lazy Initialization the same as Singleton?"
+
+**Answer**: No, Lazy Initialization is a technique; Singleton ensures one instance.
+
+---
+
+### Dependency Injection Pattern
+
+**Definition**: Injects dependencies from outside rather than having objects create them.
+
+**Types**:
+- Constructor injection (preferred)
+- Setter injection
+- Field injection
+
+**Benefits**:
+- Loose coupling
+- Testability
+- Single responsibility
+
+**Interview Question**: "What's the difference between Dependency Injection and Inversion of Control?"
+
+**Answer**: Inversion of Control is a principle; Dependency Injection is a way to achieve it.
+
+---
+
+## Part 3: Structural Design Patterns
+
+### Adapter Pattern
+
+**Definition**: Allows incompatible interfaces to work together.
+
+**When to use**: When you need to use an existing class with an incompatible interface.
+
+**Key implementation details**:
+- Target interface
+- Adaptee (existing class)
+- Adapter implements Target and uses Adaptee
+
+**Interview Question**: "Difference between Adapter and Bridge patterns?"
+
+---
+
+### Bridge Pattern
+
+**Definition**: Decouples abstraction from implementation so both can vary independently.
+
+**When to use**: When you want to avoid permanent binding between abstraction and implementation.
+
+**Key implementation details**:
+- Abstraction with reference to Implementor
+- RefinedAbstraction extends Abstraction
+- ConcreteImplementor implements Implementor
+
+**Interview Question**: "Why use Bridge over inheritance?"
+
+---
+
+### Composite Pattern
+
+**Definition**: Composes objects into tree structures to represent part-whole hierarchies.
+
+**When to use**: When you need to treat individual objects and compositions uniformly.
+
+**Key implementation details**:
+- Component interface
+- Leaf (individual object)
+- Composite (contains children)
+
+**Interview Question**: "Real-world example of Composite pattern?"
+
+**Answer**: File system directories (Composite) and files (Leaf).
+
+---
+
+### Decorator Pattern
+
+**Definition**: Attaches additional responsibilities dynamically.
+
+**When to use**: When you need to add functionality without subclassing.
+
+**Key implementation details**:
+- Component interface
+- ConcreteComponent (original)
+- Decorator (abstract wrapper)
+- ConcreteDecorator (adds functionality)
+
+**Interview Question**: "Difference between Decorator and Proxy patterns?"
+
+**Answer**: Decorator adds behavior; Proxy controls access.
+
+---
+
+### Facade Pattern
+
+**Definition**: Provides a simplified interface to a complex subsystem.
+
+**When to use**: When you need a simple interface to a complex system.
+
+**Interview Question**: "Is Facade just about simplifying or does it have other benefits?"
+
+**Answer**: Also reduces coupling and improves maintainability.
+
+---
+
+### Proxy Pattern
+
+**Definition**: Provides a placeholder or surrogate for another object.
+
+**Types**:
+- Virtual Proxy (lazy initialization)
+- Remote Proxy (local representation of remote object)
+- Protection Proxy (access control)
+
+**Interview Question**: "When would you use a Proxy vs a Decorator?"
+
+---
+
+### Flyweight Pattern
+
+**Definition**: Shares objects to minimize memory usage.
+
+**When to use**: Many objects with shared intrinsic state.
+
+**Key implementation details**:
+- Intrinsic state (shared)
+- Extrinsic state (context-specific)
+- Flyweight Factory
+
+**Interview Question**: "How does String Pool use the Flyweight pattern?"
+
+---
+
+### Front-Controller Pattern
+
+**Definition**: Centralizes request handling.
+
+**When to use**: Web applications need centralized control.
+
+**Benefits**:
+- Centralized logging
+- Authentication/authorization
+- Request routing
+
+**Interview Question**: "How does Front Controller relate to MVC?"
+
+---
+
+### Marker Pattern
+
+**Definition**: Uses empty interface to mark classes.
+
+**Examples in JDK**:
+- Serializable
+- Cloneable
+- Remote
+
+**Interview Question**: "What's the difference between Marker Interface and Annotation?"
+
+**Answer**: Annotations can have values; marker interfaces are type-level.
+
+---
+
+### Module Pattern
+
+**Definition**: Encapsulates groups of related classes into modules.
+
+**When to use**: Large applications needing strong encapsulation.
+
+**JPMS features**:
+- module-info.java
+- exports
+- requires
+- provides/uses
+
+**Interview Question**: "What problems does JPMS solve over classpath?"
+
+**Answer**: Strong encapsulation, explicit dependencies, no classpath collisions.
+
+---
+
+### Twin Pattern
+
+**Definition**: Simulates multiple inheritance.
+
+**When to use**: When you need functionality from multiple parents.
+
+**Interview Question**: "Why doesn't Java support multiple inheritance?"
+
+**Answer**: Diamond problem with method overriding.
+
+---
+
+## Part 4: Behavioral Design Patterns
+
+### Caching Pattern
+
+**Definition**: Stores frequently used data for faster access.
+
+**Considerations**:
+- Cache invalidation
+- Cache size limits
+- Eviction policies (LRU, FIFO)
+
+**Interview Question**: "What's the difference between Cache and Object Pool?"
+
+**Answer**: Cache stores data; Object Pool stores objects for reuse.
+
+---
+
+### Chain of Responsibility Pattern
+
+**Definition**: Passes request along chain of handlers.
+
+**When to use**: When multiple handlers can process a request.
+
+**Key implementation details**:
+- Handler interface
+- Concrete handlers with next reference
+- Each handler decides to process or pass
+
+**Interview Question**: "How is CoR different from Command pattern?"
+
+---
+
+### Command Pattern
+
+**Definition**: Encapsulates a request as an object.
+
+**When to use**: When you need to parameterize clients with operations.
+
+**Key implementation details**:
+- Command interface
+- ConcreteCommand (couples Receiver and action)
+- Invoker (stores command)
+- Receiver (performs action)
+
+**Interview Question**: "How does Command pattern support Undo operations?"
+
+**Answer**: Store inverse operations in history.
+
+---
+
+### Interpreter Pattern
+
+**Definition**: Defines a language grammar and interpreter.
+
+**When to use**: When you need to parse and evaluate expressions.
+
+**Key implementation details**:
+- AbstractExpression
+- TerminalExpression
+- NonterminalExpression
+
+**Interview Question**: "When would you use Interpreter over writing custom parser?"
+
+---
+
+### Iterator Pattern
+
+**Definition**: Provides sequential access to elements without exposing internal structure.
+
+**When to use**: When you need to traverse a collection.
+
+**JDK Example**: Iterator interface, for-each loop.
+
+**Interview Question**: "What's the difference between Iterator and ListIterator?"
+
+---
+
+### Mediator Pattern
+
+**Definition**: Encapsulates how objects interact.
+
+**When to use**: When objects have complex, direct communication.
+
+**Benefits**:
+- Loose coupling
+- Centralized control
+- Reduced complexity
+
+**Interview Question**: "How is Mediator different from Observer?"
+
+**Answer**: Mediator centralizes communication; Observer is one-to-many.
+
+---
+
+### Memento Pattern
+
+**Definition**: Captures and restores object state.
+
+**When to use**: Need undo/redo functionality.
+
+**Key implementation details**:
+- Originator (creates memento)
+- Memento (stores state)
+- Caretaker (manages mementos)
+
+**Interview Question**: "How does Memento maintain encapsulation?"
+
+**Answer**: Memento is only accessible to Originator.
+
+---
+
+### Null Object Pattern
+
+**Definition**: Provides do-nothing implementation.
+
+**Benefits**:
+- Avoids null checks
+- Prevents NullPointerException
+- Cleaner code
+
+**Interview Question**: "When should you use Null Object vs Optional?"
+
+**Answer**: Null Object is an actual instance; Optional is a container.
+
+---
+
+### Observer Pattern
+
+**Definition**: One-to-many dependency where state changes notify dependents.
+
+**When to use**: When one object's state changes affect many others.
+
+**Key implementation details**:
+- Subject (maintains observers)
+- Observer (update method)
+- ConcreteSubject and ConcreteObserver
+
+**Interview Question**: "How is Observer different from Publish-Subscribe?"
+
+---
+
+### Pipeline Pattern
+
+**Definition**: Processes data through sequential stages.
+
+**When to use**: When data undergoes multiple transformations.
+
+**Interview Question**: "How does Pipeline relate to Java Stream API?"
+
+**Answer**: Stream operations (filter, map, etc.) form a pipeline.
+
+---
+
+### State Pattern
+
+**Definition**: Allows object to change behavior when state changes.
+
+**When to use**: When object behavior depends on its state.
+
+**Key implementation details**:
+- Context (maintains state)
+- State interface
+- ConcreteState implementations
+
+**Interview Question**: "Difference between State and Strategy patterns?"
+
+**Answer**: State changes behavior based on internal state; Strategy is externally selected.
+
+---
+
+### Strategy Pattern
+
+**Definition**: Defines family of interchangeable algorithms.
+
+**When to use**: When you need different algorithms for the same task.
+
+**Key implementation details**:
+- Strategy interface
+- ConcreteStrategy implementations
+- Context (uses strategy)
+
+**Interview Question**: "How is Strategy different from State?"
+
+---
+
+### Template Method Pattern
+
+**Definition**: Defines skeleton of algorithm, deferring steps to subclasses.
+
+**When to use**: When you have invariant algorithm parts.
+
+**Key implementation details**:
+- Abstract class with template method (final)
+- Abstract methods (overridden by subclasses)
+- Hook methods (optional overrides)
+
+**Interview Question**: "What's the difference between Template Method and Strategy?"
+
+**Answer**: Template Method uses inheritance; Strategy uses composition.
+
+---
+
+### Visitor Pattern
+
+**Definition**: Adds operations to object structure without modifying classes.
+
+**When to use**: When you need to perform operations on many object types.
+
+**Key implementation details**:
+- Visitor interface with visit methods
+- Element interface with accept method
+- ConcreteVisitors and ConcreteElements
+
+**Interview Question**: "What's the main drawback of the Visitor pattern?"
+
+**Answer**: Adding new Element types requires changing all Visitors.
+
+---
+
+## Part 5: Concurrency Design Patterns
+
+### Active Object Pattern
+
+**Definition**: Decouples method invocation from execution using separate thread.
+
+**Key implementation details**:
+- Blocking queue for commands
+- Internal thread
+- Commands are processed sequentially
+
+**Interview Question**: "How does Active Object relate to Producer-Consumer?"
+
+---
+
+### Async Method Invocation
+
+**Definition**: Executes method asynchronously with callback.
+
+**Java implementations**:
+- Callable/Future
+- CompletableFuture
+- ExecutorService
+
+**Interview Question**: "What are the benefits of async vs blocking calls?"
+
+---
+
+### Balking Pattern
+
+**Definition**: Skips action if object is in inappropriate state.
+
+**When to use**: When state determines if action should proceed.
+
+**Interview Question**: "How is Balking different from Guarded Suspension?"
+
+---
+
+### Double-Checked Locking
+
+**Definition**: Thread-safe lazy initialization with minimal synchronization.
+
+**Key implementation details**:
+- volatile instance variable
+- Two null checks
+- Synchronized block only on first null
+
+**Interview Question**: "What problem does double-checked locking solve?"
+
+**Answer**: Prevents race conditions in lazy initialization while minimizing synchronization overhead.
+
+---
+
+### Read-Write Lock Pattern
+
+**Definition**: Allows multiple readers, exclusive writer.
+
+**When to use**: When reads are more frequent than writes.
+
+**Java implementation**: ReentrantReadWriteLock
+
+**Interview Question**: "Could you implement your own ReadWriteLock?"
+
+---
+
+### Producer-Consumer Pattern
+
+**Definition**: Decouples production and consumption via shared buffer.
+
+**Java implementations**:
+- BlockingQueue
+- ArrayBlockingQueue
+- LinkedBlockingQueue
+
+**Interview Question**: "What happens if producer is faster than consumer?"
+
+**Answer**: Queue fills up; producer blocks or throws exception.
+
+---
+
+### Scheduler Pattern
+
+**Definition**: Executes tasks at specific times.
+
+**Java implementations**:
+- ScheduledExecutorService
+- Timer/TimerTask
+
+**Interview Question**: "How does ScheduledThreadPoolExecutor work?"
+
+---
+
+### Thread-Pool Pattern
+
+**Definition**: Reuses threads to execute multiple tasks.
+
+**Java implementations**:
+- Executors.newFixedThreadPool()
+- Executors.newCachedThreadPool()
+- Executors.newSingleThreadExecutor()
+
+**Interview Question**: "What are the trade-offs of different thread pools?"
+
+---
+
+## Part 6: Anti-Patterns (What NOT to do)
+
+### Code-Level Anti-Patterns
+
+| Anti-Pattern | Description | Solution |
+|--------------|-------------|----------|
+| Spaghetti Code | Unstructured, tangled code | Refactor into clear, modular structure |
+| Cut and Paste | Duplicated code | Extract common logic |
+| Blob/God Class | Single class doing everything | Apply SRP, break into multiple classes |
+| Lava Flow | Dead code left in place | Remove unused code |
+| Boat Anchor | Unused abstractions | Remove or refactor |
+| Input Kludge | Ad-hoc input handling | Design proper input validation |
+
+### Architecture Anti-Patterns
+
+| Anti-Pattern | Description | Solution |
+|--------------|-------------|----------|
+| Golden Hammer | Over-reliance on one solution | Consider alternatives |
+| Continuous Obsolescence | Outdated code/design | Regular updates and refactoring |
+| Ambiguous Viewpoint | Unclear system perspective | Use modeling like UML |
+| Dead End | Platform/dependency lock-in | Use standard interfaces, plan migration |
+| Poltergeists | Mysterious side effects | Understand class hierarchy |
+
+---
+
+## Key Interview Questions by Category
+
+### OOP & SOLID
+1. "Explain the four pillars of OOP."
+2. "What is the Liskov Substitution Principle and why is it important?"
+3. "How do you design a class following the Open-Closed Principle?"
+
+### Creational Patterns
+1. "When would you use Factory Method instead of Abstract Factory?"
+2. "Implement a thread-safe Singleton in Java."
+3. "What's the difference between Builder and Factory patterns?"
+
+### Structural Patterns
+1. "When would you use Decorator over inheritance?"
+2. "What's the difference between Proxy and Adapter?"
+3. "How would you implement a caching system using Flyweight?"
+
+### Behavioral Patterns
+1. "How does the Observer pattern differ from Mediator?"
+2. "When would you use Strategy vs State?"
+3. "What problem does the Visitor pattern solve?"
+
+### Concurrency Patterns
+1. "What's the difference between a Callable and a Runnable?"
+2. "How do you implement a thread-safe Singleton?"
+3. "When would you use ReadWriteLock over synchronized?"
+
+### Anti-Patterns
+1. "What is a God class and how do you refactor it?"
+2. "How do you identify and fix Spaghetti Code?"
+3. "What are common architectural anti-patterns?"
+
+# Complete Design Patterns Guide: Why, When, Advantages, and Real-World Examples
+
+## Part 1: OOP Fundamentals
+
+### Encapsulation
+
+**Definition**: Bundling data and methods that operate on that data, hiding internal state.
+
+**Why Use It?**
+- Protects data integrity
+- Reduces system complexity
+- Allows internal changes without affecting external code
+
+**When to Use**: Always! It's a fundamental principle of OOP.
+
+**Advantages**:
+- Maintainability: Change internal implementation without breaking clients
+- Security: Prevent unauthorized access
+- Flexibility: Add validation/logic in setters
+
+**Real-World Example**:
+```java
+// Bank Account with encapsulation
+public class BankAccount {
+    private double balance;  // Hidden from direct access
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            logTransaction("DEPOSIT", amount);
+        }
+    }
+    
+    public void withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            logTransaction("WITHDRAW", amount);
+        }
+    }
+    
+    private void logTransaction(String type, double amount) {
+        // Internal logging - hidden from client
+    }
+}
+```
+
+---
+
+### Inheritance
+
+**Definition**: Creating new classes based on existing ones, reusing code and establishing relationships.
+
+**Why Use It?**
+- Code reuse
+- Method overriding for specific behavior
+- Establishes "is-a" relationships
+
+**When to Use**: When you have a true "is-a" relationship and need to share common behavior.
+
+**Advantages**:
+- Code reuse reduces duplication
+- Polymorphism enables flexible code
+- Hierarchical organization of classes
+
+**Real-World Example**:
+```java
+// Vehicle hierarchy
+public abstract class Vehicle {
+    protected String registrationNumber;
+    protected int wheels;
+    
+    public abstract void startEngine();
+    public abstract void stopEngine();
+    
+    public void displayRegistration() {
+        System.out.println("Registration: " + registrationNumber);
+    }
+}
+
+public class Car extends Vehicle {
+    private int doors;
+    
+    @Override
+    public void startEngine() {
+        System.out.println("Car engine started with key");
+    }
+    
+    @Override
+    public void stopEngine() {
+        System.out.println("Car engine stopped");
+    }
+}
+
+public class ElectricCar extends Car {
+    private int batteryCapacity;
+    
+    @Override
+    public void startEngine() {
+        System.out.println("Electric car started silently");
+    }
+}
+```
+
+---
+
+### Polymorphism
+
+**Definition**: Ability to present the same interface for different underlying forms.
+
+**Why Use It?**
+- Write more flexible, generic code
+- Reduce conditional logic
+- Enable pluggable architectures
+
+**When to Use**: When you have different types that should respond to the same message.
+
+**Advantages**:
+- Code flexibility
+- Extensibility without modification
+- Cleaner, more maintainable code
+
+**Real-World Example**:
+```java
+// Payment processing with polymorphism
+public interface PaymentMethod {
+    void pay(double amount);
+    String getPaymentType();
+}
+
+public class CreditCardPayment implements PaymentMethod {
+    private String cardNumber;
+    
+    @Override
+    public void pay(double amount) {
+        System.out.println("Processing credit card: " + amount);
+        // Process credit card transaction
+    }
+    
+    @Override
+    public String getPaymentType() {
+        return "CREDIT_CARD";
+    }
+}
+
+public class PayPalPayment implements PaymentMethod {
+    private String email;
+    
+    @Override
+    public void pay(double amount) {
+        System.out.println("Processing PayPal: " + amount);
+        // Process PayPal transaction
+    }
+    
+    @Override
+    public String getPaymentType() {
+        return "PAYPAL";
+    }
+}
+
+public class PaymentProcessor {
+    public void processPayment(PaymentMethod payment, double amount) {
+        payment.pay(amount);  // Polymorphic call
+        System.out.println("Payment of " + amount + " completed via " + payment.getPaymentType());
+    }
+}
+```
+
+---
+
+## Part 2: Creational Patterns
+
+### Factory Method Pattern
+
+**Why Use It?**
+- Centralizes object creation logic
+- Decouples client code from concrete classes
+- Enables extensibility through inheritance
+
+**When to Use It?**
+- When class can't anticipate object types it needs to create
+- When subclasses should decide which object to instantiate
+- When you want to localize creation logic
+
+**Advantages**:
+- Loose coupling between client and product classes
+- Easy to add new product types
+- Promotes single responsibility
+
+**Real-World Implementation**:
+```java
+// Logging system with Factory Method
+public interface Logger {
+    void log(String message);
+    void error(String message);
+    void debug(String message);
+}
+
+// Concrete Loggers
+public class FileLogger implements Logger {
+    private String filePath;
+    
+    public FileLogger(String filePath) {
+        this.filePath = filePath;
+        // Open file for writing
+    }
+    
+    @Override
+    public void log(String message) {
+        // Write to file
+        System.out.println("FileLogger: " + message);
+    }
+    
+    @Override
+    public void error(String message) {
+        // Write error to file with timestamp
+        System.out.println("FileLogger ERROR: " + message);
+    }
+    
+    @Override
+    public void debug(String message) {
+        // Write debug to file
+        System.out.println("FileLogger DEBUG: " + message);
+    }
+}
+
+public class ConsoleLogger implements Logger {
+    @Override
+    public void log(String message) {
+        System.out.println("ConsoleLogger: " + message);
+    }
+    
+    @Override
+    public void error(String message) {
+        System.err.println("ConsoleLogger ERROR: " + message);
+    }
+    
+    @Override
+    public void debug(String message) {
+        System.out.println("ConsoleLogger DEBUG: " + message);
+    }
+}
+
+// Abstract Creator
+public abstract class LoggerFactory {
+    public abstract Logger createLogger();
+    
+    public void logMessage(String message, String level) {
+        Logger logger = createLogger();
+        switch (level) {
+            case "ERROR":
+                logger.error(message);
+                break;
+            case "DEBUG":
+                logger.debug(message);
+                break;
+            default:
+                logger.log(message);
+        }
+    }
+}
+
+// Concrete Creators
+public class FileLoggerFactory extends LoggerFactory {
+    private String filePath;
+    
+    public FileLoggerFactory(String filePath) {
+        this.filePath = filePath;
+    }
+    
+    @Override
+    public Logger createLogger() {
+        return new FileLogger(filePath);
+    }
+}
+
+public class ConsoleLoggerFactory extends LoggerFactory {
+    @Override
+    public Logger createLogger() {
+        return new ConsoleLogger();
+    }
+}
+
+// Usage
+LoggerFactory factory = new ConsoleLoggerFactory();
+factory.logMessage("Application started", "INFO");
+```
+
+---
+
+### Abstract Factory Pattern
+
+**Why Use It?**
+- Creates families of related products
+- Ensures product compatibility
+- Separates product creation from usage
+
+**When to Use It?**
+- When system needs to be independent from product creation
+- When products are designed to work together
+- When you need to provide multiple product families
+
+**Advantages**:
+- Guarantees product compatibility
+- Easy to switch entire product families
+- Enforces consistency across products
+
+**Real-World Implementation**:
+```java
+// UI Component Factory for different operating systems
+public interface Button {
+    void render();
+    void onClick();
+}
+
+public interface TextBox {
+    void render();
+    void setText(String text);
+    String getText();
+}
+
+// Windows UI Components
+public class WindowsButton implements Button {
+    @Override
+    public void render() {
+        System.out.println("Rendering Windows-style button");
+        // Windows-specific rendering code
+    }
+    
+    @Override
+    public void onClick() {
+        System.out.println("Windows button clicked");
+    }
+}
+
+public class WindowsTextBox implements TextBox {
+    private String text;
+    
+    @Override
+    public void render() {
+        System.out.println("Rendering Windows-style text box");
+    }
+    
+    @Override
+    public void setText(String text) {
+        this.text = text;
+    }
+    
+    @Override
+    public String getText() {
+        return text;
+    }
+}
+
+// Mac UI Components
+public class MacButton implements Button {
+    @Override
+    public void render() {
+        System.out.println("Rendering Mac-style button");
+    }
+    
+    @Override
+    public void onClick() {
+        System.out.println("Mac button clicked");
+    }
+}
+
+public class MacTextBox implements TextBox {
+    private String text;
+    
+    @Override
+    public void render() {
+        System.out.println("Rendering Mac-style text box");
+    }
+    
+    @Override
+    public void setText(String text) {
+        this.text = text;
+    }
+    
+    @Override
+    public String getText() {
+        return text;
+    }
+}
+
+// Abstract Factory
+public interface UIFactory {
+    Button createButton();
+    TextBox createTextBox();
+}
+
+// Concrete Factories
+public class WindowsUIFactory implements UIFactory {
+    @Override
+    public Button createButton() {
+        return new WindowsButton();
+    }
+    
+    @Override
+    public TextBox createTextBox() {
+        return new WindowsTextBox();
+    }
+}
+
+public class MacUIFactory implements UIFactory {
+    @Override
+    public Button createButton() {
+        return new MacButton();
+    }
+    
+    @Override
+    public TextBox createTextBox() {
+        return new MacTextBox();
+    }
+}
+
+// Usage
+public class Application {
+    private Button button;
+    private TextBox textBox;
+    private UIFactory factory;
+    
+    public Application(UIFactory factory) {
+        this.factory = factory;
+        this.button = factory.createButton();
+        this.textBox = factory.createTextBox();
+    }
+    
+    public void initUI() {
+        button.render();
+        textBox.render();
+        textBox.setText("Hello World");
+        System.out.println("Text: " + textBox.getText());
+    }
+}
+
+// Client code
+Application windowsApp = new Application(new WindowsUIFactory());
+windowsApp.initUI();
+
+Application macApp = new Application(new MacUIFactory());
+macApp.initUI();
+```
+
+---
+
+### Builder Pattern
+
+**Why Use It?**
+- Handles complex object construction
+- Reduces constructor overload
+- Creates immutable objects with many parameters
+
+**When to Use It?**
+- When object has many optional parameters
+- When construction logic is complex
+- When you need different representations of the same object
+
+**Advantages**:
+- Readable and maintainable code
+- Immutable objects
+- Validation can be centralized
+- Fluent interface
+
+**Real-World Implementation**:
+```java
+// Email builder with many optional fields
+public class Email {
+    private final String to;
+    private final String from;
+    private final String subject;
+    private final String body;
+    private final List<String> cc;
+    private final List<String> bcc;
+    private final boolean isHtml;
+    private final int priority;
+    private final String replyTo;
+    
+    private Email(Builder builder) {
+        this.to = builder.to;
+        this.from = builder.from;
+        this.subject = builder.subject;
+        this.body = builder.body;
+        this.cc = builder.cc;
+        this.bcc = builder.bcc;
+        this.isHtml = builder.isHtml;
+        this.priority = builder.priority;
+        this.replyTo = builder.replyTo;
+    }
+    
+    // Getters (no setters - immutable)
+    
+    public static class Builder {
+        private final String to;      // Required
+        private final String from;    // Required
+        private String subject;
+        private String body;
+        private List<String> cc = new ArrayList<>();
+        private List<String> bcc = new ArrayList<>();
+        private boolean isHtml = false;
+        private int priority = 1;
+        private String replyTo;
+        
+        // Required parameters in constructor
+        public Builder(String to, String from) {
+            this.to = to;
+            this.from = from;
+        }
+        
+        // Optional parameters as methods
+        public Builder subject(String subject) {
+            this.subject = subject;
+            return this;
+        }
+        
+        public Builder body(String body) {
+            this.body = body;
+            return this;
+        }
+        
+        public Builder cc(List<String> cc) {
+            this.cc = cc;
+            return this;
+        }
+        
+        public Builder cc(String cc) {
+            this.cc.add(cc);
+            return this;
+        }
+        
+        public Builder bcc(List<String> bcc) {
+            this.bcc = bcc;
+            return this;
+        }
+        
+        public Builder isHtml(boolean isHtml) {
+            this.isHtml = isHtml;
+            return this;
+        }
+        
+        public Builder priority(int priority) {
+            if (priority < 1 || priority > 5) {
+                throw new IllegalArgumentException("Priority must be between 1 and 5");
+            }
+            this.priority = priority;
+            return this;
+        }
+        
+        public Builder replyTo(String replyTo) {
+            this.replyTo = replyTo;
+            return this;
+        }
+        
+        public Email build() {
+            if (to == null || to.isEmpty()) {
+                throw new IllegalStateException("To address is required");
+            }
+            if (from == null || from.isEmpty()) {
+                throw new IllegalStateException("From address is required");
+            }
+            return new Email(this);
+        }
+    }
+}
+
+// Usage
+Email email = new Email.Builder("recipient@example.com", "sender@example.com")
+    .subject("Meeting Agenda")
+    .body("Here is the agenda for tomorrow's meeting...")
+    .cc("team-lead@example.com")
+    .cc("project-manager@example.com")
+    .priority(3)
+    .isHtml(true)
+    .replyTo("no-reply@example.com")
+    .build();
+```
+
+---
+
+## Part 3: Structural Patterns
+
+### Adapter Pattern
+
+**Why Use It?**
+- Makes incompatible interfaces work together
+- Reuses existing components
+- Wraps legacy code
+
+**When to Use It?**
+- When you need to use a class that doesn't match your interface
+- When integrating with third-party libraries
+- When working with legacy systems
+
+**Advantages**:
+- Reuses existing code
+- Provides abstraction between client and adaptee
+- Makes system more maintainable
+
+**Real-World Implementation**:
+```java
+// Payment gateway integration with different APIs
+// Existing PayPal integration
+public class PayPalGateway {
+    public boolean processPayment(String apiKey, double amount, String currency) {
+        System.out.println("Processing PayPal payment: " + amount + " " + currency);
+        return true;
+    }
+}
+
+// Existing Stripe integration
+public class StripeGateway {
+    public void charge(String secretKey, PaymentRequest request) {
+        System.out.println("Processing Stripe payment: " + request.getAmount());
+    }
+    
+    public static class PaymentRequest {
+        private double amount;
+        private String currency;
+        private String description;
+        // getters and setters
+    }
+}
+
+// Target interface (our application's expected interface)
+public interface PaymentProcessor {
+    boolean processPayment(double amount, String currency);
+}
+
+// PayPal Adapter
+public class PayPalAdapter implements PaymentProcessor {
+    private PayPalGateway payPal;
+    private String apiKey;
+    
+    public PayPalAdapter(String apiKey) {
+        this.payPal = new PayPalGateway();
+        this.apiKey = apiKey;
+    }
+    
+    @Override
+    public boolean processPayment(double amount, String currency) {
+        // Adapt the interface
+        return payPal.processPayment(apiKey, amount, currency);
+    }
+}
+
+// Stripe Adapter
+public class StripeAdapter implements PaymentProcessor {
+    private StripeGateway stripe;
+    private String secretKey;
+    
+    public StripeAdapter(String secretKey) {
+        this.stripe = new StripeGateway();
+        this.secretKey = secretKey;
+    }
+    
+    @Override
+    public boolean processPayment(double amount, String currency) {
+        // Adapt the interface
+        StripeGateway.PaymentRequest request = new StripeGateway.PaymentRequest();
+        request.setAmount(amount);
+        request.setCurrency(currency);
+        request.setDescription("Payment from system");
+        
+        stripe.charge(secretKey, request);
+        return true; // For simplicity
+    }
+}
+
+// Usage
+public class ShoppingCart {
+    private PaymentProcessor paymentProcessor;
+    
+    public void checkout(double amount, String currency) {
+        if (paymentProcessor.processPayment(amount, currency)) {
+            System.out.println("Payment successful!");
+        }
+    }
+}
+
+// Client code
+ShoppingCart cart = new ShoppingCart();
+cart.setPaymentProcessor(new PayPalAdapter("your-api-key"));
+cart.checkout(99.99, "USD");
+
+// Switch to Stripe without changing ShoppingCart
+cart.setPaymentProcessor(new StripeAdapter("your-secret-key"));
+cart.checkout(149.99, "EUR");
+```
+
+---
+
+### Decorator Pattern
+
+**Why Use It?**
+- Adds behavior dynamically
+- Avoids subclass explosion
+- Provides flexible extension
+
+**When to Use It?**
+- When you need to add responsibilities to objects at runtime
+- When subclassing would create too many combinations
+- When you want to add or remove behavior
+
+**Advantages**:
+- Alternative to subclassing
+- Runtime flexibility
+- Single Responsibility Principle
+- Open/Closed Principle
+
+**Real-World Implementation**:
+```java
+// Coffee shop ordering system
+public interface Coffee {
+    String getDescription();
+    double getCost();
+    String getIngredients();
+}
+
+// Base implementation
+public class SimpleCoffee implements Coffee {
+    @Override
+    public String getDescription() {
+        return "Simple Coffee";
+    }
+    
+    @Override
+    public double getCost() {
+        return 2.50;
+    }
+    
+    @Override
+    public String getIngredients() {
+        return "Coffee beans, hot water";
+    }
+}
+
+// Decorator base class
+public abstract class CoffeeDecorator implements Coffee {
+    protected Coffee decoratedCoffee;
+    
+    public CoffeeDecorator(Coffee coffee) {
+        this.decoratedCoffee = coffee;
+    }
+    
+    @Override
+    public String getDescription() {
+        return decoratedCoffee.getDescription();
+    }
+    
+    @Override
+    public double getCost() {
+        return decoratedCoffee.getCost();
+    }
+    
+    @Override
+    public String getIngredients() {
+        return decoratedCoffee.getIngredients();
+    }
+}
+
+// Concrete Decorators
+public class MilkDecorator extends CoffeeDecorator {
+    public MilkDecorator(Coffee coffee) {
+        super(coffee);
+    }
+    
+    @Override
+    public String getDescription() {
+        return decoratedCoffee.getDescription() + " + Milk";
+    }
+    
+    @Override
+    public double getCost() {
+        return decoratedCoffee.getCost() + 0.75;
+    }
+    
+    @Override
+    public String getIngredients() {
+        return decoratedCoffee.getIngredients() + ", steamed milk";
+    }
+}
+
+public class SugarDecorator extends CoffeeDecorator {
+    private int sugarAmount;
+    
+    public SugarDecorator(Coffee coffee, int sugarAmount) {
+        super(coffee);
+        this.sugarAmount = sugarAmount;
+    }
+    
+    @Override
+    public String getDescription() {
+        return decoratedCoffee.getDescription() + " + " + sugarAmount + " sugar(s)";
+    }
+    
+    @Override
+    public double getCost() {
+        return decoratedCoffee.getCost() + (sugarAmount * 0.10);
+    }
+    
+    @Override
+    public String getIngredients() {
+        return decoratedCoffee.getIngredients() + ", " + sugarAmount + " sugar cubes";
+    }
+}
+
+public class WhipDecorator extends CoffeeDecorator {
+    public WhipDecorator(Coffee coffee) {
+        super(coffee);
+    }
+    
+    @Override
+    public String getDescription() {
+        return decoratedCoffee.getDescription() + " + Whipped Cream";
+    }
+    
+    @Override
+    public double getCost() {
+        return decoratedCoffee.getCost() + 1.25;
+    }
+    
+    @Override
+    public String getIngredients() {
+        return decoratedCoffee.getIngredients() + ", whipped cream";
+    }
+}
+
+// Usage
+public class CoffeeShop {
+    public static void main(String[] args) {
+        // Simple coffee
+        Coffee coffee = new SimpleCoffee();
+        System.out.println(coffee.getDescription() + " = $" + coffee.getCost());
+        
+        // Coffee with milk and sugar
+        Coffee milkCoffee = new MilkDecorator(coffee);
+        Coffee milkSugarCoffee = new SugarDecorator(milkCoffee, 2);
+        System.out.println(milkSugarCoffee.getDescription() + " = $" + milkSugarCoffee.getCost());
+        
+        // Coffee with everything
+        Coffee everythingCoffee = new WhipDecorator(
+                                    new MilkDecorator(
+                                        new SugarDecorator(
+                                            new SimpleCoffee(), 3
+                                        )
+                                    )
+                                );
+        System.out.println(everythingCoffee.getDescription() + " = $" + everythingCoffee.getCost());
+        System.out.println("Ingredients: " + everythingCoffee.getIngredients());
+    }
+}
+```
+
+---
+
+### Proxy Pattern
+
+**Why Use It?**
+- Controls access to objects
+- Adds security checks
+- Implements lazy loading
+- Provides remote access
+
+**When to Use It?**
+- When you need to control access to an object
+- When you want to add functionality transparently
+- When object creation is expensive
+
+**Advantages**:
+- Access control
+- Lazy initialization
+- Logging/Auditing
+- Caching
+
+**Real-World Implementation**:
+```java
+// Image viewer with lazy loading and caching
+public interface Image {
+    void display();
+    String getName();
+    long getSize();
+}
+
+// Real image - expensive to load
+public class RealImage implements Image {
+    private String filename;
+    private long size;
+    private byte[] imageData;
+    private long loadTime;
+    
+    public RealImage(String filename) {
+        this.filename = filename;
+        loadImageFromDisk();
+    }
+    
+    private void loadImageFromDisk() {
+        System.out.println("Loading image: " + filename);
+        // Simulate expensive disk I/O
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // ignore
+        }
+        this.size = 1024 * 1024 * 5; // 5MB
+        this.imageData = new byte[1024]; // Simulate data
+        this.loadTime = System.currentTimeMillis();
+        System.out.println("Image loaded: " + filename + " (Size: " + size + " bytes)");
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("Displaying: " + filename);
+        // Display image data...
+    }
+    
+    @Override
+    public String getName() {
+        return filename;
+    }
+    
+    @Override
+    public long getSize() {
+        return size;
+    }
+}
+
+// Proxy with lazy loading and caching
+public class ImageProxy implements Image {
+    private String filename;
+    private Image realImage;
+    private static Map<String, Image> cache = new HashMap<>();
+    private static Set<String> loading = new HashSet<>();
+    
+    public ImageProxy(String filename) {
+        this.filename = filename;
+    }
+    
+    @Override
+    public void display() {
+        // Check cache first
+        if (cache.containsKey(filename)) {
+            System.out.println("Loading from cache: " + filename);
+            cache.get(filename).display();
+            return;
+        }
+        
+        // Check if currently loading
+        if (loading.contains(filename)) {
+            System.out.println("Image " + filename + " is already loading, please wait...");
+            return;
+        }
+        
+        // Load the image
+        synchronized (this) {
+            if (!cache.containsKey(filename)) {
+                System.out.println("First time loading image: " + filename);
+                loading.add(filename);
+                realImage = new RealImage(filename);
+                cache.put(filename, realImage);
+                loading.remove(filename);
+            }
+        }
+        
+        realImage.display();
+    }
+    
+    @Override
+    public String getName() {
+        return filename;
+    }
+    
+    @Override
+    public long getSize() {
+        if (realImage != null) {
+            return realImage.getSize();
+        } else {
+            // Return placeholder size
+            return 0;
+        }
+    }
+    
+    // Clear cache method
+    public static void clearCache() {
+        cache.clear();
+        System.out.println("Cache cleared");
+    }
+}
+
+// Usage
+public class ImageViewer {
+    public static void main(String[] args) {
+        // Create image proxies
+        List<Image> images = new ArrayList<>();
+        images.add(new ImageProxy("photo1.jpg"));
+        images.add(new ImageProxy("photo2.jpg"));
+        images.add(new ImageProxy("photo3.jpg"));
+        
+        // Display images
+        System.out.println("=== First display (loading) ===");
+        for (Image image : images) {
+            image.display();
+        }
+        
+        System.out.println("\n=== Second display (cached) ===");
+        for (Image image : images) {
+            image.display();
+        }
+        
+        // Access image metadata without loading
+        System.out.println("\n=== Image Info (without loading) ===");
+        Image proxy = new ImageProxy("photo4.jpg");
+        System.out.println("Image: " + proxy.getName() + ", Size: " + proxy.getSize() + " bytes");
+        
+        // Proxy with additional features
+        class ImageProxyWithLogging extends ImageProxy {
+            public ImageProxyWithLogging(String filename) {
+                super(filename);
+            }
+            
+            @Override
+            public void display() {
+                System.out.println("Access control: User has access to " + getName());
+                super.display();
+                System.out.println("Audit log: Image " + getName() + " displayed at " + new Date());
+            }
+        }
+        
+        System.out.println("\n=== Proxy with logging ===");
+        Image loggingProxy = new ImageProxyWithLogging("logging.jpg");
+        loggingProxy.display();
+    }
+}
+```
+
+---
+
+## Part 4: Behavioral Patterns
+
+### Strategy Pattern
+
+**Why Use It?**
+- Defines family of interchangeable algorithms
+- Avoids complex if-else/switch statements
+- Makes algorithm selection easy
+
+**When to Use It?**
+- When you have multiple algorithms for the same task
+- When algorithm behavior varies independently
+- When you want to select algorithm at runtime
+
+**Advantages**:
+- Avoids conditional statements
+- Provides pluggable algorithms
+- Single Responsibility Principle
+- Open/Closed Principle
+
+**Real-World Implementation**:
+```java
+// Payment processing with different payment strategies
+public interface PaymentStrategy {
+    void pay(double amount);
+    String getPaymentType();
+    boolean validate();
+}
+
+// Credit Card Strategy
+public class CreditCardPaymentStrategy implements PaymentStrategy {
+    private String cardNumber;
+    private String expiryDate;
+    private String cvv;
+    private String nameOnCard;
+    
+    public CreditCardPaymentStrategy(String cardNumber, String expiryDate, String cvv, String nameOnCard) {
+        this.cardNumber = cardNumber;
+        this.expiryDate = expiryDate;
+        this.cvv = cvv;
+        this.nameOnCard = nameOnCard;
+    }
+    
+    @Override
+    public void pay(double amount) {
+        // Validate before payment
+        if (!validate()) {
+            throw new IllegalStateException("Invalid credit card details");
+        }
+        
+        System.out.println("Processing credit card payment: $" + amount);
+        System.out.println("Card: " + maskCardNumber(cardNumber));
+        System.out.println("Name on card: " + nameOnCard);
+        
+        // Actual credit card processing logic
+        // Call payment gateway API
+        // Handle response
+    }
+    
+    @Override
+    public String getPaymentType() {
+        return "Credit Card";
+    }
+    
+    @Override
+    public boolean validate() {
+        // Simple validation - in real app, do more comprehensive checks
+        return cardNumber != null && cardNumber.matches("\\d{16}") &&
+               expiryDate != null && expiryDate.matches("\\d{2}/\\d{2}") &&
+               cvv != null && cvv.matches("\\d{3,4}");
+    }
+    
+    private String maskCardNumber(String cardNumber) {
+        return "****-****-****-" + cardNumber.substring(cardNumber.length() - 4);
+    }
+}
+
+// PayPal Strategy
+public class PayPalPaymentStrategy implements PaymentStrategy {
+    private String email;
+    private String password;
+    
+    public PayPalPaymentStrategy(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+    
+    @Override
+    public void pay(double amount) {
+        if (!validate()) {
+            throw new IllegalStateException("Invalid PayPal credentials");
+        }
+        
+        System.out.println("Processing PayPal payment: $" + amount);
+        System.out.println("Email: " + email);
+        
+        // Actual PayPal processing
+        // Call PayPal API
+    }
+    
+    @Override
+    public String getPaymentType() {
+        return "PayPal";
+    }
+    
+    @Override
+    public boolean validate() {
+        return email != null && email.contains("@") &&
+               password != null && password.length() >= 8;
+    }
+}
+
+// Cryptocurrency Strategy
+public class CryptoPaymentStrategy implements PaymentStrategy {
+    private String walletAddress;
+    private String currency;
+    
+    public CryptoPaymentStrategy(String walletAddress, String currency) {
+        this.walletAddress = walletAddress;
+        this.currency = currency;
+    }
+    
+    @Override
+    public void pay(double amount) {
+        if (!validate()) {
+            throw new IllegalStateException("Invalid wallet address");
+        }
+        
+        System.out.println("Processing cryptocurrency payment: $" + amount);
+        System.out.println("Currency: " + currency);
+        System.out.println("Wallet: " + walletAddress);
+        
+        // Actual crypto processing
+        // Blockchain transaction
+    }
+    
+    @Override
+    public String getPaymentType() {
+        return "Cryptocurrency (" + currency + ")";
+    }
+    
+    @Override
+    public boolean validate() {
+        return walletAddress != null && walletAddress.length() >= 30 &&
+               currency != null && !currency.isEmpty();
+    }
+}
+
+// Shopping Cart that uses strategies
+public class ShoppingCart {
+    private List<Item> items = new ArrayList<>();
+    private PaymentStrategy paymentStrategy;
+    
+    public void addItem(Item item) {
+        items.add(item);
+    }
+    
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+    
+    public double calculateTotal() {
+        return items.stream()
+                   .mapToDouble(Item::getPrice)
+                   .sum();
+    }
+    
+    public void setPaymentStrategy(PaymentStrategy strategy) {
+        this.paymentStrategy = strategy;
+    }
+    
+    public void checkout() {
+        if (paymentStrategy == null) {
+            throw new IllegalStateException("Payment strategy not set");
+        }
+        
+        double total = calculateTotal();
+        System.out.println("\n=== CHECKOUT ===");
+        System.out.println("Items: " + items.size());
+        System.out.println("Total amount: $" + total);
+        System.out.println("Payment method: " + paymentStrategy.getPaymentType());
+        System.out.println("---");
+        
+        paymentStrategy.pay(total);
+        System.out.println("Checkout completed successfully!");
+    }
+}
+
+class Item {
+    private String name;
+    private double price;
+    
+    public Item(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+    
+    public String getName() { return name; }
+    public double getPrice() { return price; }
+}
+
+// Usage
+public class OnlineStore {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        
+        // Add items
+        cart.addItem(new Item("Laptop", 999.99));
+        cart.addItem(new Item("Headphones", 149.99));
+        cart.addItem(new Item("Mouse", 29.99));
+        
+        // Choose payment strategy
+        System.out.println("=== Credit Card Payment ===");
+        cart.setPaymentStrategy(
+            new CreditCardPaymentStrategy(
+                "1234567890123456", "12/25", "123", "John Doe"
+            )
+        );
+        cart.checkout();
+        
+        // Switch strategy
+        System.out.println("\n=== PayPal Payment ===");
+        cart.setPaymentStrategy(
+            new PayPalPaymentStrategy("john.doe@example.com", "securePassword123")
+        );
+        cart.checkout();
+        
+        // Switch strategy again
+        System.out.println("\n=== Cryptocurrency Payment ===");
+        cart.setPaymentStrategy(
+            new CryptoPaymentStrategy(
+                "1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V", "BTC"
+            )
+        );
+        cart.checkout();
+    }
+}
+```
+
+---
+
+### Observer Pattern
+
+**Why Use It?**
+- Defines one-to-many dependency
+- Automatically updates dependents
+- Enables decoupled communication
+
+**When to Use It?**
+- When one object's state changes need to reflect in others
+- When you have a publish-subscribe model
+- When you need to maintain consistency between related objects
+
+**Advantages**:
+- Loose coupling
+- Broadcast communication
+- Easy to add/remove observers
+- Open/Closed Principle
+
+**Real-World Implementation**:
+```java
+// Stock market monitoring system
+public interface StockObserver {
+    void update(String stockSymbol, double price, double changePercent);
+    String getObserverName();
+}
+
+public interface StockSubject {
+    void registerObserver(StockObserver observer);
+    void unregisterObserver(StockObserver observer);
+    void notifyObservers();
+}
+
+// Stock data
+public class Stock {
+    private String symbol;
+    private String companyName;
+    private double price;
+    private double previousPrice;
+    private double changePercent;
+    
+    public Stock(String symbol, String companyName, double initialPrice) {
+        this.symbol = symbol;
+        this.companyName = companyName;
+        this.price = initialPrice;
+        this.previousPrice = initialPrice;
+        this.changePercent = 0;
+    }
+    
+    public void setPrice(double newPrice) {
+        this.previousPrice = this.price;
+        this.price = newPrice;
+        this.changePercent = ((newPrice - previousPrice) / previousPrice) * 100;
+    }
+    
+    public String getSymbol() { return symbol; }
+    public String getCompanyName() { return companyName; }
+    public double getPrice() { return price; }
+    public double getPreviousPrice() { return previousPrice; }
+    public double getChangePercent() { return changePercent; }
+}
+
+// Stock market that tracks multiple stocks
+public class StockMarket implements StockSubject {
+    private Map<String, Stock> stocks = new HashMap<>();
+    private List<StockObserver> observers = new ArrayList<>();
+    private Random random = new Random();
+    private boolean isRunning = true;
+    
+    public StockMarket() {
+        // Initialize with some stocks
+        stocks.put("AAPL", new Stock("AAPL", "Apple Inc.", 175.30));
+        stocks.put("GOOGL", new Stock("GOOGL", "Alphabet Inc.", 2850.50));
+        stocks.put("MSFT", new Stock("MSFT", "Microsoft Corp.", 330.75));
+        stocks.put("TSLA", new Stock("TSLA", "Tesla Inc.", 720.80));
+    }
+    
+    @Override
+    public void registerObserver(StockObserver observer) {
+        observers.add(observer);
+        System.out.println(observer.getObserverName() + " registered");
+    }
+    
+    @Override
+    public void unregisterObserver(StockObserver observer) {
+        observers.remove(observer);
+        System.out.println(observer.getObserverName() + " unregistered");
+    }
+    
+    @Override
+    public void notifyObservers() {
+        for (StockObserver observer : observers) {
+            for (Stock stock : stocks.values()) {
+                observer.update(stock.getSymbol(), stock.getPrice(), stock.getChangePercent());
+            }
+        }
+    }
+    
+    // Simulate price changes
+    public void startSimulation() {
+        isRunning = true;
+        new Thread(() -> {
+            while (isRunning) {
+                // Update random stock prices
+                List<String> symbols = new ArrayList<>(stocks.keySet());
+                int numUpdates = 3 + random.nextInt(5); // 3-7 updates per cycle
+                
+                for (int i = 0; i < numUpdates; i++) {
+                    String symbol = symbols.get(random.nextInt(symbols.size()));
+                    Stock stock = stocks.get(symbol);
+                    double change = (random.nextDouble() * 10) - 5; // -5 to +5
+                    double newPrice = stock.getPrice() + change;
+                    if (newPrice > 0) {
+                        stock.setPrice(newPrice);
+                    }
+                }
+                
+                // Notify all observers
+                notifyObservers();
+                
+                try {
+                    Thread.sleep(2000); // Update every 2 seconds
+                } catch (InterruptedException e) {
+                    isRunning = false;
+                }
+            }
+        }).start();
+    }
+    
+    public void stopSimulation() {
+        isRunning = false;
+    }
+}
+
+// Concrete Observers
+public class MobileAlertObserver implements StockObserver {
+    private String name;
+    private double threshold;
+    
+    public MobileAlertObserver(String name, double threshold) {
+        this.name = name;
+        this.threshold = threshold;
+    }
+    
+    @Override
+    public void update(String stockSymbol, double price, double changePercent) {
+        double absChange = Math.abs(changePercent);
+        if (absChange >= threshold) {
+            System.out.println("🔔 " + name + " ALERT: " + stockSymbol + 
+                             " moved " + String.format("%.2f", changePercent) + 
+                             "% to $" + String.format("%.2f", price));
+            // In real app, send push notification
+        }
+    }
+    
+    @Override
+    public String getObserverName() {
+        return name;
+    }
+}
+
+public class PortfolioDisplayObserver implements StockObserver {
+    private String name;
+    private Map<String, Double> holdings;
+    
+    public PortfolioDisplayObserver(String name) {
+        this.name = name;
+        this.holdings = new HashMap<>();
+        // Simulate portfolio
+        holdings.put("AAPL", 50.0);
+        holdings.put("GOOGL", 10.0);
+        holdings.put("MSFT", 30.0);
+        holdings.put("TSLA", 5.0);
+    }
+    
+    @Override
+    public void update(String stockSymbol, double price, double changePercent) {
+        if (holdings.containsKey(stockSymbol)) {
+            double shares = holdings.get(stockSymbol);
+            double value = shares * price;
+            System.out.println("📊 " + name + " - " + stockSymbol + 
+                             ": " + shares + " shares @ $" + String.format("%.2f", price) + 
+                             " = $" + String.format("%.2f", value));
+        }
+    }
+    
+    @Override
+    public String getObserverName() {
+        return name;
+    }
+}
+
+public class StatisticalDisplayObserver implements StockObserver {
+    private String name;
+    private Map<String, List<Double>> priceHistory = new HashMap<>();
+    
+    public StatisticalDisplayObserver(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void update(String stockSymbol, double price, double changePercent) {
+        priceHistory.computeIfAbsent(stockSymbol, k -> new ArrayList<>()).add(price);
+        List<Double> prices = priceHistory.get(stockSymbol);
+        
+        if (prices.size() >= 5) {
+            double average = prices.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+            double min = prices.stream().mapToDouble(Double::doubleValue).min().orElse(0);
+            double max = prices.stream().mapToDouble(Double::doubleValue).max().orElse(0);
+            
+            System.out.println("📈 " + name + " - " + stockSymbol + 
+                             " Avg: $" + String.format("%.2f", average) + 
+                             " | Min: $" + String.format("%.2f", min) + 
+                             " | Max: $" + String.format("%.2f", max));
+        }
+    }
+    
+    @Override
+    public String getObserverName() {
+        return name;
+    }
+}
+
+// Usage
+public class StockMarketApp {
+    public static void main(String[] args) throws InterruptedException {
+        System.out.println("=== STOCK MARKET MONITORING SYSTEM ===\n");
+        
+        // Create subject
+        StockMarket market = new StockMarket();
+        
+        // Create observers
+        StockObserver mobileAlert = new MobileAlertObserver("Mobile Alert", 2.0);
+        StockObserver portfolioDisplay = new PortfolioDisplayObserver("Portfolio");
+        StockObserver statsDisplay = new StatisticalDisplayObserver("Statistics");
+        
+        // Register observers
+        market.registerObserver(mobileAlert);
+        market.registerObserver(portfolioDisplay);
+        market.registerObserver(statsDisplay);
+        
+        // Start simulation
+        System.out.println("\n=== SIMULATION STARTED ===");
+        market.startSimulation();
+        
+        // Run for 10 seconds
+        Thread.sleep(10000);
+        
+        // Stop simulation
+        market.stopSimulation();
+        System.out.println("\n=== SIMULATION STOPPED ===");
+    }
+}
+```
+
+---
+
+## Part 5: Concurrency Patterns
+
+### Producer-Consumer Pattern
+
+**Why Use It?**
+- Decouples production from consumption
+- Handles different processing speeds
+- Manages resource contention
+
+**When to Use It?**
+- When producers and consumers work at different rates
+- When you need to buffer data
+- When you want to decouple tasks
+
+**Advantages**:
+- Loose coupling
+- Load balancing
+- Resource optimization
+- Thread safety (when implemented correctly)
+
+**Real-World Implementation**:
+```java
+// Order processing system with producers (order intake) and consumers (order processing)
+public class Order {
+    private final String orderId;
+    private final String customerId;
+    private final List<OrderItem> items;
+    private final LocalDateTime orderTime;
+    private OrderStatus status;
+    
+    public Order(String orderId, String customerId, List<OrderItem> items) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.items = items;
+        this.orderTime = LocalDateTime.now();
+        this.status = OrderStatus.RECEIVED;
+    }
+    
+    // Getters and setters
+    public String getOrderId() { return orderId; }
+    public String getCustomerId() { return customerId; }
+    public List<OrderItem> getItems() { return items; }
+    public LocalDateTime getOrderTime() { return orderTime; }
+    public OrderStatus getStatus() { return status; }
+    public void setStatus(OrderStatus status) { this.status = status; }
+    
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId='" + orderId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", items=" + items.size() +
+                ", status=" + status +
+                '}';
+    }
+}
+
+class OrderItem {
+    private String productId;
+    private int quantity;
+    private double price;
+    
+    public OrderItem(String productId, int quantity, double price) {
+        this.productId = productId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    // Getters
+}
+
+enum OrderStatus {
+    RECEIVED, PROCESSING, SHIPPED, DELIVERED, CANCELLED
+}
+
+// Order Queue with bounded capacity
+public class OrderQueue {
+    private final BlockingQueue<Order> queue;
+    private final int maxCapacity;
+    private final AtomicInteger orderCounter = new AtomicInteger(0);
+    private final Map<String, Order> orderCache = new ConcurrentHashMap<>();
+    
+    public OrderQueue(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+        this.queue = new LinkedBlockingQueue<>(maxCapacity);
+    }
+    
+    public boolean addOrder(Order order) {
+        orderCounter.incrementAndGet();
+        boolean added = queue.offer(order);
+        if (added) {
+            orderCache.put(order.getOrderId(), order);
+            System.out.println("✅ Order added to queue: " + order.getOrderId() + 
+                             " | Queue size: " + queue.size());
+        } else {
+            System.out.println("❌ Queue is full! Cannot add order: " + order.getOrderId());
+        }
+        return added;
+    }
+    
+    public Order takeOrder() throws InterruptedException {
+        Order order = queue.poll(500, TimeUnit.MILLISECONDS);
+        if (order != null) {
+            System.out.println("📦 Order taken for processing: " + order.getOrderId() + 
+                             " | Queue size: " + queue.size());
+        }
+        return order;
+    }
+    
+    public Order getOrder(String orderId) {
+        return orderCache.get(orderId);
+    }
+    
+    public int getQueueSize() {
+        return queue.size();
+    }
+    
+    public int getTotalOrdersProcessed() {
+        return orderCounter.get();
+    }
+}
+
+// Producer - Generates orders
+public class OrderProducer implements Runnable {
+    private final OrderQueue orderQueue;
+    private final String name;
+    private final Random random = new Random();
+    private boolean running = true;
+    
+    public OrderProducer(OrderQueue orderQueue, String name) {
+        this.orderQueue = orderQueue;
+        this.name = name;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("🛒 Producer " + name + " started");
+        while (running) {
+            try {
+                // Create random order
+                String orderId = "ORD-" + System.currentTimeMillis() + "-" + random.nextInt(100);
+                String customerId = "CUST-" + (1000 + random.nextInt(1000));
+                List<OrderItem> items = generateItems();
+                
+                Order order = new Order(orderId, customerId, items);
+                orderQueue.addOrder(order);
+                
+                // Simulate variable production speed
+                Thread.sleep(100 + random.nextInt(900));
+            } catch (InterruptedException e) {
+                running = false;
+            }
+        }
+        System.out.println("🛒 Producer " + name + " stopped");
+    }
+    
+    private List<OrderItem> generateItems() {
+        List<OrderItem> items = new ArrayList<>();
+        int numItems = 1 + random.nextInt(5);
+        String[] products = {"LAPTOP", "PHONE", "TABLET", "HEADPHONES", "MOUSE", "KEYBOARD"};
+        double[] prices = {899.99, 699.99, 349.99, 149.99, 29.99, 59.99};
+        
+        for (int i = 0; i < numItems; i++) {
+            int productIndex = random.nextInt(products.length);
+            items.add(new OrderItem(
+                products[productIndex] + "-" + System.currentTimeMillis(),
+                1 + random.nextInt(3),
+                prices[productIndex]
+            ));
+        }
+        return items;
+    }
+    
+    public void stop() {
+        this.running = false;
+    }
+}
+
+// Consumer - Processes orders
+public class OrderConsumer implements Runnable {
+    private final OrderQueue orderQueue;
+    private final String name;
+    private final Random random = new Random();
+    private boolean running = true;
+    private long processingTime;
+    private int ordersProcessed = 0;
+    
+    public OrderConsumer(OrderQueue orderQueue, String name) {
+        this.orderQueue = orderQueue;
+        this.name = name;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("📦 Consumer " + name + " started");
+        while (running) {
+            try {
+                Order order = orderQueue.takeOrder();
+                if (order == null) {
+                    // No orders available
+                    continue;
+                }
+                
+                processOrder(order);
+                ordersProcessed++;
+                
+                // Random processing time based on order complexity
+                processingTime = 200 + random.nextInt(800);
+                Thread.sleep(processingTime);
+                
+            } catch (InterruptedException e) {
+                running = false;
+            }
+        }
+        System.out.println("📦 Consumer " + name + " stopped. Processed: " + ordersProcessed + " orders");
+    }
+    
+    private void processOrder(Order order) {
+        order.setStatus(OrderStatus.PROCESSING);
+        System.out.println("📝 Consumer " + name + " processing order: " + order.getOrderId());
+        System.out.println("   Customer: " + order.getCustomerId());
+        System.out.println("   Items: " + order.getItems().size());
+        
+        // Simulate complex processing
+        double total = order.getItems().stream()
+                           .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                           .sum();
+        System.out.println("   Total: $" + String.format("%.2f", total));
+        
+        // Update order status
+        order.setStatus(OrderStatus.SHIPPED);
+        System.out.println("✅ Order " + order.getOrderId() + " processed by " + name);
+    }
+    
+    public void stop() {
+        this.running = false;
+    }
+    
+    public int getOrdersProcessed() {
+        return ordersProcessed;
+    }
+}
+
+// Usage
+public class OrderProcessingSystem {
+    public static void main(String[] args) throws InterruptedException {
+        System.out.println("=== ORDER PROCESSING SYSTEM ===\n");
+        
+        OrderQueue orderQueue = new OrderQueue(10);
+        
+        // Create producers
+        OrderProducer producer1 = new OrderProducer(orderQueue, "Producer-1");
+        OrderProducer producer2 = new OrderProducer(orderQueue, "Producer-2");
+        OrderProducer producer3 = new OrderProducer(orderQueue, "Producer-3");
+        
+        // Create consumers
+        OrderConsumer consumer1 = new OrderConsumer(orderQueue, "Consumer-1");
+        OrderConsumer consumer2 = new OrderConsumer(orderQueue, "Consumer-2");
+        OrderConsumer consumer3 = new OrderConsumer(orderQueue, "Consumer-3");
+        
+        // Start producers
+        Thread producerThread1 = new Thread(producer1);
+        Thread producerThread2 = new Thread(producer2);
+        Thread producerThread3 = new Thread(producer3);
+        producerThread1.start();
+        producerThread2.start();
+        producerThread3.start();
+        
+        // Start consumers
+        Thread consumerThread1 = new Thread(consumer1);
+        Thread consumerThread2 = new Thread(consumer2);
+        Thread consumerThread3 = new Thread(consumer3);
+        consumerThread1.start();
+        consumerThread2.start();
+        consumerThread3.start();
+        
+        // Run for 10 seconds
+        System.out.println("\n=== SYSTEM RUNNING ===");
+        Thread.sleep(10000);
+        
+        // Stop everything
+        System.out.println("\n=== SHUTTING DOWN ===");
+        producer1.stop();
+        producer2.stop();
+        producer3.stop();
+        consumer1.stop();
+        consumer2.stop();
+        consumer3.stop();
+        
+        producerThread1.join();
+        producerThread2.join();
+        producerThread3.join();
+        consumerThread1.join();
+        consumerThread2.join();
+        consumerThread3.join();
+        
+        System.out.println("\n=== SUMMARY ===");
+        System.out.println("Total orders produced: " + orderQueue.getTotalOrdersProcessed());
+        System.out.println("Orders processed by Consumer-1: " + consumer1.getOrdersProcessed());
+        System.out.println("Orders processed by Consumer-2: " + consumer2.getOrdersProcessed());
+        System.out.println("Orders processed by Consumer-3: " + consumer3.getOrdersProcessed());
+        System.out.println("Orders remaining in queue: " + orderQueue.getQueueSize());
+    }
+}
+```
+
+---
+
+## Summary: Decision Matrix for Design Patterns
+
+| Pattern | Primary Use | Complexity | Common In |
+|---------|------------|------------|-----------|
+| **Factory Method** | Object creation | Low | JDK (Iterator, Collection) |
+| **Abstract Factory** | Families of objects | Medium | UI Libraries |
+| **Builder** | Complex objects | Medium | Configuration objects |
+| **Prototype** | Cloning expensive objects | Low | Prototype-based systems |
+| **Singleton** | Single instance | Low | Loggers, Managers |
+| **Object Pool** | Reusing expensive objects | Medium | Connection Pools |
+| **Adapter** | Interface compatibility | Low | Legacy integration |
+| **Decorator** | Dynamic behavior addition | Medium | I/O Streams |
+| **Proxy** | Access control/Lazy loading | Medium | Security, Caching |
+| **Strategy** | Pluggable algorithms | Low | Payment processing |
+| **Observer** | Event notification | Medium | Event handling systems |
+| **Chain of Responsibility** | Request handling | Medium | Filter chains |
+| **Command** | Request encapsulation | Medium | Undo/Redo operations |
+| **Template Method** | Algorithm skeleton | Low | Framework base classes |
+
+**When to NOT use patterns:**
+- When the problem is simple
+- When the pattern adds unnecessary complexity
+- When you don't have experience with the pattern
+- When requirements are unclear and changing frequently
