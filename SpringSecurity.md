@@ -1962,3 +1962,786 @@ This comprehensive Q&A covers the most important concepts from "Spring Security 
 5. **Authentication Methods** - HTTP Basic vs. Form Login
 6. **Security Vulnerabilities** - CSRF protection and mitigation
 7. **Best Practices** - Comprehensive security implementation guidelines
+
+# Spring Security in Action - Comprehensive Image Flow Analysis
+
+Based on the book "Spring Security in Action, 2nd Edition", I'll analyze and explain each image/screenshot from the book in detail. The explanations are crafted so that anyone, even without technical background, can understand the concepts.
+
+---
+
+## Image 1: Security Layers in a Software System
+
+**What the image shows:**
+A layered diagram showing security applied at multiple levels of a software system, with application-level security at the top.
+
+**Concept Explained:**
+
+Imagine your software application is like a medieval castle with multiple defense walls. This image shows that security isn't just one wall—it's many layers of protection working together.
+
+Think of it this way:
+
+**Layer 1: Network Security (The Outer Wall)** - This is like the castle's main outer wall. It controls who can even reach your application. If you don't have the right network permissions, you can't even knock on the door.
+
+**Layer 2: Infrastructure Security (The Inner Wall)** - Once past the outer wall, there's a second layer. This is like the castle's inner courtyard. It protects the servers and databases where your application lives.
+
+**Layer 3: Application Security (The Keep)** - This is the most important part—the castle's main tower where the treasure is kept. Spring Security works at this level. It's the final defense that decides who gets access to your application's features and data.
+
+**Real-World Analogy:**
+- Network Security = Your front gate with a lock
+- Infrastructure Security = Your security alarm system
+- Application Security = Your front door lock that only specific keys can open
+
+**Why it matters:** A hacker can bypass weak network security, but if your application security is strong, they still can't access your data. However, you shouldn't rely on just one layer—a good defense has multiple layers.
+
+---
+
+## Image 2: Microservices Security Architecture
+
+**What the image shows:**
+A diagram of two microservices deployed in different availability zones, with communication between them, and potential vulnerabilities highlighted.
+
+**Concept Explained:**
+
+Picture a company with two separate office buildings (these are your microservices). Each building has its own security guards. But there's also communication between the buildings—employees travel back and forth.
+
+**The problem shown in this image:**
+
+1. **Hacker gets into Building A**: Imagine a hacker manages to sneak into the first office building. They pretend to be a legitimate employee.
+
+2. **No verification between buildings**: Building B doesn't check whether people coming from Building A are actually authorized. It just trusts them.
+
+3. **Hacker moves to Building B**: The hacker walks from Building A to Building B, and since there's no security check between the buildings, they can now access all of Building B's confidential files.
+
+4. **Communication across public networks**: The two buildings are connected by a public road (like the internet). Anyone can intercept messages traveling between them.
+
+**Real-Life Example:**
+You have two bank branches in different cities. Branch A processes deposits, and Branch B processes withdrawals. A hacker gets into Branch A's system and, because Branch B blindly trusts Branch A, the hacker can now make fraudulent withdrawals from Branch B.
+
+**The Solution:**
+Each microservice should independently verify who is making a request, just like every bank branch should verify ID before processing any transaction, regardless of which branch "sent" the customer.
+
+---
+
+## Image 3: Spring Security Architecture Diagram
+
+**What the image shows:**
+A flowchart showing the main components of Spring Security's authentication architecture and how they interact.
+
+**Concept Explained:**
+
+This is like an airport security process, which most people understand. Let's use this analogy throughout the diagram.
+
+```
+Airport Security (Request comes in)
+    ↓
+TICKET CHECK - Authentication Filter
+    ↓
+SECURITY COORDINATOR - Authentication Manager
+    ↓
+PASSPORT VERIFICATION - Authentication Provider
+    ↓
+DATABASE LOOKUP - UserDetails Service
+    ↓
+PASSWORD VERIFICATION - Password Encoder
+    ↓
+BOARDING PASS - Security Context
+    ↓
+GATE ACCESS - Authorization
+```
+
+**Component-by-Component Explanation:**
+
+**1. Authentication Filter (The Ticket Checker):**
+When you arrive at the airport, the first person you meet checks your ticket. Similarly, when someone makes a request to your application, the Authentication Filter is the first to check if they've included their "ticket" (username and password). If they don't have one, they're immediately turned away.
+
+**2. Authentication Manager (The Security Coordinator):**
+At the airport, there's a central security coordinator who directs you to the right checkpoint. The Authentication Manager does the same thing—it takes your request and directs it to the appropriate security check.
+
+**3. Authentication Provider (The Passport Verifier):**
+This is where the real verification happens. The passport verifier looks at your passport and checks if it's genuine. Similarly, the Authentication Provider examines the credentials you provided and determines if they're valid.
+
+**4. UserDetails Service (The Database Lookup):**
+The passport verifier doesn't have a list of all valid passports memorized—they look it up in a database. The UserDetails Service is like that database—it stores information about all users. When someone provides a username, this component finds that user's information.
+
+**5. Password Encoder (The Password Verifier):**
+When you check your luggage, the security officer checks if your baggage matches the information on your boarding pass. The Password Encoder checks if the password you provided matches what's stored in the system—but it does this securely without actually "remembering" your password.
+
+**6. Security Context (The Boarding Pass):**
+Once you've passed all checks, you get a boarding pass. Similarly, once authentication is successful, the Security Context stores your "boarding pass" (authentication information) for the rest of your journey through the application.
+
+**7. Authorization (The Gate Access):**
+Your boarding pass doesn't let you board every plane—only your specific flight. Authorization does the same: even though you're authenticated, you can only access specific parts of the application based on your permissions.
+
+---
+
+## Image 4: DelegatingPasswordEncoder Diagram
+
+**What the image shows:**
+A diagram showing how DelegatingPasswordEncoder uses different password encoding algorithms based on prefixes in the stored password.
+
+**Concept Explained:**
+
+Imagine you're a hotel receptionist, and guests arrive with different types of room keys. Some keys are magnetic cards, some are actual metal keys, and others are digital codes on phones. You need to verify each type of key differently.
+
+DelegatingPasswordEncoder works the same way—it can handle passwords encoded with different algorithms.
+
+**How it works:**
+
+```
+Stored Password: "{bcrypt}$2a$10$..."
+                  ↑
+                  |
+          This is like a label telling
+          you which key type to use
+
+DelegatingPasswordEncoder sees the label:
+    ↓
+"{bcrypt}" → Uses BCrypt algorithm
+"{noop}" → Uses NoOp (plain text)
+"{scrypt}" → Uses SCrypt algorithm
+"{pbkdf2}" → Uses PBKDF2 algorithm
+```
+
+**Real-World Analogy:**
+
+You own a gym that has been open for 20 years. Over the years, you've changed your security system:
+- 2000-2010: You used physical keys (like {noop} - no encryption)
+- 2010-2018: You used PIN codes (like {pbkdf2})
+- 2018-Present: You use biometric fingerprint scanning (like {bcrypt})
+
+Members from all three periods need to be able to access the gym. How does your system handle this?
+
+With DelegatingPasswordEncoder, the system sees the label:
+- Older member with a key → recognizes {noop} and knows how to verify it
+- Middle-age member with PIN → recognizes {pbkdf2} and knows how to verify it
+- New member with fingerprint → recognizes {bcrypt} and knows how to verify it
+
+**Why this is important:**
+
+When upgrading your security system, you can't just force all existing users to change their password format immediately. DelegatingPasswordEncoder allows you to:
+1. Keep supporting old password formats
+2. Use new, more secure formats for new users
+3. Gradually upgrade existing passwords when users log in
+
+This is like upgrading your gym's security system gradually without turning away any existing members.
+
+---
+
+## Image 5: Filter Chain Diagram
+
+**What the image shows:**
+A diagram of the Spring Security filter chain showing multiple filters processing a request in sequence.
+
+**Concept Explained:**
+
+Imagine you're entering a high-security government building. You don't just walk straight in—you go through a series of checkpoints, each with a specific job.
+
+```
+ENTRANCE → Checkpoint 1 → Checkpoint 2 → Checkpoint 3 → OFFICE
+```
+
+**Each Checkpoint's Job:**
+
+**Checkpoint 1 (Security Guard):** Checks if you have an ID badge at all. If not, you're turned away.
+
+**Checkpoint 2 (Metal Detector):** Checks for prohibited items. If something is found, you're stopped.
+
+**Checkpoint 3 (Document Verifier):** Checks if your ID badge gives you access to the specific office you're visiting.
+
+The Spring Security filter chain works exactly the same way with HTTP requests:
+
+```
+REQUEST → Filter 1 → Filter 2 → Filter 3 → CONTROLLER
+```
+
+**The Real Filters in Spring Security:**
+
+**Filter 1 (CorsFilter):** Checks if the request is coming from an allowed website (like checking if your ID badge is from a trusted organization).
+
+**Filter 2 (CsrfFilter):** Checks for CSRF tokens to prevent forged requests (like checking the ID badge's hologram to ensure it's not a fake).
+
+**Filter 3 (BasicAuthenticationFilter):** Extracts and validates username and password (like scanning your ID badge to verify your identity).
+
+**Filter 4 (Authorization Filter):** Checks if you have permission for the specific resource you're requesting (like checking if your ID badge grants access to the specific room you want).
+
+**Customizing the Filter Chain:**
+
+You can add your own checkpoints to the chain. For example, you might add:
+
+**CustomFilter (Request-Id Validator):** Checks if every request has a unique tracking ID. If not, it blocks the request.
+
+This is like adding a "Logbook Checkpoint" at the building entrance where everyone must sign in with their name and purpose.
+
+---
+
+## Image 6: UserDetails and GrantedAuthority Relationship
+
+**What the image shows:**
+A diagram showing the relationship between UserDetails and GrantedAuthority interfaces.
+
+**Concept Explained:**
+
+Think of your application like a company office with different employees.
+
+**UserDetails (The Employee):**
+- Has a name (username)
+- Has a password
+- Has a collection of permissions (authorities)
+- Is either active or inactive
+
+**GrantedAuthority (The Permission):**
+- Each permission has a name
+- Represents what the employee is allowed to do
+
+**Real-World Example:**
+
+Let's create a company hierarchy:
+
+```
+Company: Tech Solutions Inc.
+
+EMPLOYEE 1: John (Developer)
+    Authorities:
+    - read_code
+    - write_code
+    - deploy_application
+
+EMPLOYEE 2: Sarah (Manager)
+    Authorities:
+    - read_code
+    - approve_time_off
+    - manage_team
+
+EMPLOYEE 3: Mike (Intern)
+    Authorities:
+    - read_code
+```
+
+When John tries to deploy an application to production, the system checks:
+1. Is John a valid employee? (Authentication)
+2. Does John have the "deploy_application" authority? (Authorization)
+
+Since John has the right authority, he's allowed to proceed. Sarah, even though she's a manager, doesn't have "deploy_application" authority, so she can't deploy code.
+
+**The Code Analogy:**
+
+```java
+// Creating Employee (UserDetails)
+UserDetails john = User.withUsername("john")
+    .password("secret")
+    .authorities("read_code", "write_code", "deploy_application")
+    .build();
+
+// Creating Manager (UserDetails)  
+UserDetails sarah = User.withUsername("sarah")
+    .password("secret")
+    .authorities("read_code", "approve_time_off", "manage_team")
+    .build();
+```
+
+**Authority Names Convention:**
+- Authorities can be named anything you want
+- Common names: "READ", "WRITE", "DELETE", "ADMIN"
+- Roles are a special type of authority with the "ROLE_" prefix
+
+This is like having job titles (roles) and specific responsibilities (authorities):
+- Role: "Developer"
+- Authorities: "write_code", "review_code", "create_tests"
+
+---
+
+## Image 7: AuthenticationProvider Flow
+
+**What the image shows:**
+A detailed flowchart of how the AuthenticationProvider processes an authentication request, including success and failure paths.
+
+**Concept Explained:**
+
+Let's use a real-world scenario: you're trying to enter a secure office building using your ID badge and fingerprint.
+
+**Step 1: Request Arrives**
+You approach the security desk with your ID badge. This is like the authentication request arriving at the AuthenticationProvider.
+
+**Step 2: Extract Credentials**
+The security guard takes your ID badge and reads your name. This is the AuthenticationProvider extracting the username and password.
+
+**Step 3: Look Up Employee Record**
+The guard checks the employee database to find your record. This is the UserDetailsService loading the user by username.
+
+**Step 4: Path A - Employee Not Found**
+If there's no record of you in the database, the guard says "We don't have any record of you." The authentication fails with "UsernameNotFoundException."
+
+**Step 5: Path B - Employee Found**
+If you're in the database, the guard proceeds to check your fingerprints.
+
+**Step 6: Verify Password**
+The guard checks if your fingerprint matches what's in your file. This is the PasswordEncoder matching your password against the stored hash.
+
+**Step 7: Path C - Password Doesn't Match**
+If the fingerprint doesn't match, the guard says "Invalid credentials." This throws a "BadCredentialsException."
+
+**Step 8: Path D - Password Matches**
+If everything checks out, the guard confirms your identity. This returns a fully authenticated Authentication object.
+
+**Step 9: Store Security Context**
+Now that you're authenticated, you get a visitor badge that identifies you for the rest of your visit. This is storing the Authentication in the SecurityContext.
+
+**Step 10: Continue to Authorization**
+With your visitor badge, you can now proceed to your destination—but only if your badge gives you access to that specific area. This is the authorization step.
+
+**Visual Flow Summary:**
+
+```
+Login Request (You at security desk)
+    ↓
+Extract Credentials (Show ID and fingerprint)
+    ↓
+Look Up User (Guard checks database)
+    ↓
+    ├── User Not Found → ❌ Reject (You're not an employee)
+    ↓
+User Found → Check Password
+    ↓
+    ├── Password Wrong → ❌ Reject (Fingerprint doesn't match)
+    ↓
+Password Correct → ✅ Approve (You're verified)
+    ↓
+Create Security Context (Give visitor badge)
+    ↓
+Proceed to Authorization (Go to specific room)
+```
+
+---
+
+## Image 8: SecurityContext Management Strategies
+
+**What the image shows:**
+Three diagrams showing different ways SecurityContext is managed: MODE_THREADLOCAL, MODE_INHERITABLETHREADLOCAL, and MODE_GLOBAL.
+
+**Concept Explained:**
+
+Imagine you have a company that handles customer service requests. Each request needs to be handled with the correct customer information.
+
+**MODE_THREADLOCAL (Each Request Gets Its Own Folder)**
+
+```
+Request A → Folder A → Processed by Employee A
+Request B → Folder B → Processed by Employee B
+Request C → Folder C → Processed by Employee C
+```
+
+Think of this like a restaurant taking orders. Each order has its own ticket, and each waiter handles their own customers. Customer A's details are only on Customer A's ticket. Customer B's details are only on Customer B's ticket. No confusion, no mixing up orders.
+
+This is the default Spring Security behavior. Each request gets its own thread with its own SecurityContext. This prevents one user's data from being seen by another user.
+
+**MODE_INHERITABLETHREADLOCAL (Parent Passes Folder to Child)**
+
+```
+Request A → Folder A → Child Task A1 → Gets Folder A
+                    → Child Task A2 → Gets Folder A
+Request B → Folder B → Child Task B1 → Gets Folder B
+```
+
+This is like a manager (parent) giving a task to an assistant (child). The assistant needs the customer's information to do the job. The manager passes the customer's file to the assistant.
+
+In Spring Security, this happens when you use @Async methods. If the main thread starts a background task, the background task can inherit the security context.
+
+**MODE_GLOBAL (One Shared Folder for Everyone)**
+
+```
+Shared Folder →
+    Request A (Employee A looks at folder)
+    Request B (Employee B looks at same folder)  
+    Request C (Employee C looks at same folder)
+```
+
+Imagine a single whiteboard with customer information. Everyone in the office can see it and write on it. If Employee A writes something, Employee B can see it immediately.
+
+This is rarely used in web applications because it would allow different users to see each other's data. It would be like having one bank account for everyone—a bad idea!
+
+**When to Use Each Strategy:**
+
+| Strategy | Best For | Analogy |
+|----------|----------|---------|
+| MODE_THREADLOCAL | Web applications, APIs | Each waiter has their own order pad |
+| MODE_INHERITABLETHREADLOCAL | Background tasks, Async methods | Manager gives assistant the file |
+| MODE_GLOBAL | Simple applications, prototyping | One whiteboard for everyone |
+
+---
+
+## Image 9: CSRF Attack Diagram
+
+**What the image shows:**
+A diagram illustrating how a CSRF attack works, showing the user, the malicious site, and the target site.
+
+**Concept Explained:**
+
+CSRF (Cross-Site Request Forgery) is like someone sneaking into your bank account while you're distracted.
+
+**The Attack Flow:**
+
+```
+STEP 1: You're Logged Into Your Bank
+You've logged into your bank at bank.com. Your browser has a "session cookie" that proves you're authenticated.
+
+Your Browser → bank.com
+(Shows "Logged in as John")
+
+STEP 2: You Visit a Malicious Website
+While still logged into your bank, you open another tab and visit evil.com.
+
+Your Browser → evil.com
+(Opens a malicious website)
+
+STEP 3: Malicious Website Makes a Request
+evil.com sends a request to your bank without you knowing:
+"POST /transfer  to=attacker&amount=10000"
+
+Your Browser → bank.com
+(With your session cookie, the bank thinks it's YOU making the request!)
+
+STEP 4: Bank Processes Transfer
+The bank sees the request with your valid session cookie. It processes the transfer, and money moves from your account.
+
+bank.com processes the transfer: $10,000 sent to attacker
+```
+
+**Why This Works:**
+
+The malicious website exploits the fact that your browser automatically sends your session cookie with requests. The bank can't tell if the request came from a link you clicked on bank.com or from a link on evil.com.
+
+**How Spring Security Prevents This:**
+
+**CSRF Token Pattern:**
+
+Think of it like a one-time PIN code for your transactions.
+
+```
+STEP 1: Bank gives you a unique code
+When you log in to your bank, you get a special code (CSRF token) that's valid for your current session.
+
+bank.com → Your Browser
+"Here's your special code: xyz123"
+
+STEP 2: Every request must include this code
+When you transfer money, you must include the special code in your request.
+
+Your Browser → bank.com
+"POST /transfer to=friend&amount=100
+ CSRF-Token: xyz123"
+
+STEP 3: Evil site doesn't know your code
+The evil website doesn't know your unique code, so its fraudulent request fails.
+
+evil.com → bank.com
+"POST /transfer to=attacker&amount=10000
+ CSRF-Token: ???"  → ❌ REJECTED
+```
+
+**Protecting Your Application:**
+
+1. **Spring Security enables CSRF protection by default** for web applications
+2. **When you submit a form**, you must include the CSRF token
+3. **For REST APIs**, you may choose to disable CSRF (since they use tokens like JWT instead)
+
+**Real-Life Analogy:**
+
+This is like your credit card company requiring you to enter a one-time SMS code for every transaction. Even if someone steals your credit card number, they can't complete a transaction without the one-time code.
+
+---
+
+## Image 10: Form-Based Login Flow
+
+**What the image shows:**
+A diagram showing the form-based login flow from unauthenticated request to successful login and redirect to the home page.
+
+**Concept Explained:**
+
+Form-based login is how most websites handle user authentication. It's what you see when you log into Facebook, Amazon, or your email.
+
+**The Flow:**
+
+```
+Step 1: User Requests a Protected Page
+You want to see your dashboard (https://myapp.com/dashboard)
+But you're not logged in yet.
+
+Your Browser → myapp.com/dashboard (No session cookie)
+    ↓
+Spring Security: "User isn't authenticated!"
+
+Step 2: Redirect to Login Page
+Spring Security sends you to the login page.
+
+myapp.com → Your Browser: "Go to /login"
+
+Step 3: User Sees Login Form
+Your browser shows the login page with username and password fields.
+
+Your Browser → myapp.com/login
+(Shows: Username: ____  Password: ____  [Login Button])
+
+Step 4: User Submits Credentials
+You enter "john" and "secret123" and click Login.
+
+Your Browser → myapp.com/login (username=john&password=secret123)
+
+Step 5: Spring Security Processes Login
+The system validates your credentials.
+
+myapp.com/process-login → Checks username → Checks password
+
+Step 6: Authentication Success
+Your credentials are valid! Spring Security:
+- Creates a session for you
+- Stores your authentication details
+- Redirects you to the page you wanted
+
+Your Browser → myapp.com/dashboard (Now you see your dashboard)
+
+Step 7: User is Now Authenticated
+For the rest of your session, you're logged in.
+
+Your Browser → myapp.com/dashboard (Authenticated!)
+```
+
+**Key Differences from HTTP Basic:**
+
+| Aspect | Form Login | HTTP Basic |
+|--------|------------|------------|
+| **Login Experience** | You see a friendly form | Your browser shows a popup |
+| **Session** | You stay logged in | You send credentials every time |
+| **Logout** | Click "Logout" button | Close browser or clear cache |
+| **When to Use** | Web applications | APIs, mobile apps |
+
+**What Happens During Failed Login:**
+
+```
+Step 1: User Enters Wrong Credentials
+username=john&password=wrongpassword
+
+Step 2: Spring Security Validates
+Checks username → Found "john" → Checks password → Doesn't match!
+
+Step 3: Authentication Fails
+System redirects back to login page with an error message.
+
+Login Page: "Invalid username or password! Please try again."
+```
+
+**Custom Login Page:**
+
+Most applications customize the login page to match their brand:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Company - Login</title>
+</head>
+<body>
+    <div class="login-box">
+        <h1>Welcome Back!</h1>
+        <form method="POST" action="/login">
+            <input type="hidden" name="_csrf" value="token"/>
+            <div class="field">
+                <label>Username</label>
+                <input type="text" name="username"/>
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" name="password"/>
+            </div>
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+</body>
+</html>
+```
+
+---
+
+## Image 11: SecurityContextHolder Strategies Comparison
+
+**What the image shows:**
+A side-by-side comparison of the three SecurityContextHolder strategies with visual representation of how each works.
+
+**Concept Explained:**
+
+Think of the SecurityContextHolder as a filing cabinet for user identity information during request processing.
+
+**MODE_THREADLOCAL (Separate Drawers)**
+
+```
+Filing Cabinet with Multiple Drawers:
+┌─────────────┐
+│ Drawer A    │ → Request A (User: John)
+│  - User: John │
+│  - Roles: USER │
+├─────────────┤
+│ Drawer B    │ → Request B (User: Sarah)  
+│  - User: Sarah│
+│  - Roles: ADMIN│
+├─────────────┤
+│ Drawer C    │ → Request C (User: Mike)
+│  - User: Mike │
+│  - Roles: GUEST│
+└─────────────┘
+```
+
+Each drawer is completely separate. What's in Drawer A stays in Drawer A. No one else can see it.
+
+This is the default Spring Security behavior. Each request gets its own thread with its own security context.
+
+**MODE_INHERITABLETHREADLOCAL (Sharing Copies)**
+
+```
+Request A (Parent) → Starts Task A1 (Child)
+    │
+    ├── Creates copy for child task
+    ↓
+Task A1: "I have the same information as my parent!"
+```
+
+This is like a manager giving a copy of a file to an assistant. The assistant doesn't share the same physical file, but they have the same information.
+
+In Spring Security, when a request starts an asynchronous task, the new thread gets a copy of the security context. The original request thread and the new task thread have separate but identical information.
+
+**MODE_GLOBAL (One Shared Folder)**
+
+```
+One Shared Drawer:
+┌─────────────┐
+│ Shared      │
+│  - User: ??? │ → Everyone sees the same information
+└─────────────┘
+```
+
+Everyone in the office looks at the same whiteboard. If someone writes something, everyone else can see it immediately.
+
+This is rarely used because it would cause different users to see each other's data. It's like one bank account for all customers!
+
+**When to Use Each:**
+
+**Use MODE_THREADLOCAL (Default):**
+- For web applications
+- Most standard Spring Boot applications
+- You want each request to have its own security information
+
+**Use MODE_INHERITABLETHREADLOCAL:**
+- When using @Async methods
+- When performing background tasks that need user information
+- When you need to start additional threads
+
+**Use MODE_GLOBAL:**
+- For standalone applications (not web servers)
+- For prototyping
+- For very simple applications with no multiple users
+- Rarely used in production
+
+---
+
+## Image 12: Authorization Rule Example
+
+**What the image shows:**
+A diagram showing different users with different authorities accessing endpoints with appropriate authorization rules.
+
+**Concept Explained:**
+
+Imagine you work in an office building with different security levels.
+
+**The Office Building Layout:**
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Ground Floor (Public Access)                       │
+│  - Lobby (Open to everyone)                         │
+│  - Cafeteria (Open to everyone)                     │
+├─────────────────────────────────────────────────────┤
+│  1st Floor (Employee Only)                         │
+│  - Employee Lounge                                 │
+│  - Meeting Rooms                                   │
+├─────────────────────────────────────────────────────┤
+│  2nd Floor (Management Only)                       │
+│  - Manager's Office                                │
+│  - Executive Meeting Room                          │
+├─────────────────────────────────────────────────────┤
+│  3rd Floor (Executive Only)                        │
+│  - CEO Office                                      │
+│  - Board Room                                      │
+└─────────────────────────────────────────────────────┘
+```
+
+**The Employees:**
+
+**John (Guest):**
+- Access: Ground Floor only
+- Can: Visit lobby, eat at cafeteria
+
+**Sarah (Employee):**
+- Access: Ground Floor, 1st Floor
+- Can: Use lounge, book meeting rooms
+
+**Mike (Manager):**
+- Access: Ground Floor, 1st Floor, 2nd Floor
+- Can: Use manager's office, executive meetings
+
+**Lisa (Executive):**
+- Access: All floors
+- Can: Use CEO office, board room
+
+**The Authorization Rules in Spring Security:**
+
+```java
+@Configuration
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authz -> authz
+                // Ground Floor (Public)
+                .requestMatchers("/", "/public/**").permitAll()
+                
+                // 1st Floor (Employee)
+                .requestMatchers("/employee/**").hasRole("EMPLOYEE")
+                
+                // 2nd Floor (Manager)
+                .requestMatchers("/manager/**").hasRole("MANAGER")
+                
+                // 3rd Floor (Executive)
+                .requestMatchers("/executive/**").hasRole("EXECUTIVE")
+            );
+        return http.build();
+    }
+}
+```
+
+**Who Can Access What:**
+
+| Endpoint | Guest (John) | Employee (Sarah) | Manager (Mike) | Executive (Lisa) |
+|----------|--------------|------------------|----------------|------------------|
+| /public | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+| /employee | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
+| /manager | ❌ No | ❌ No | ✅ Yes | ✅ Yes |
+| /executive | ❌ No | ❌ No | ❌ No | ✅ Yes |
+
+**Real-World Example:**
+
+**Using Method Security:**
+
+```java
+@Service
+public class DocumentService {
+    // Only managers and executives can delete documents
+    @PreAuthorize("hasAnyRole('MANAGER', 'EXECUTIVE')")
+    public void deleteDocument(Long id) { /* ... */ }
+    
+    // Employees can view documents
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public Document getDocument(Long id) { /* ... */ }
+}
+```
+
+---
+
+This comprehensive analysis of all images from "Spring Security in Action" provides a visual and intuitive understanding of Spring Security concepts, making them accessible even to non-technical readers.
