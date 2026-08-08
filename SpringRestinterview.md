@@ -1745,3 +1745,802 @@ subscription SubscribeToOrderUpdates($customerId: ID!) {
 3. CQRS with GraphQL
 4. Federation in GraphQL
 5. Observability (metrics, traces, logs)
+
+# OAuth2 with Spring Security in Microservices - The Passport Concept
+
+## The Passport Analogy 🛂
+
+Think of OAuth2 as an international airport security system:
+
+| OAuth2 Concept | Passport Analogy | Microservices Equivalent |
+|----------------|------------------|--------------------------|
+| **Resource Owner** | Traveler (You) | End User |
+| **Client Application** | Traveler entering a country | Microservice/UI App |
+| **Authorization Server** | Immigration Office | Authentication Service |
+| **Resource Server** | Country/Attraction | Business Microservices |
+| **Access Token** | Entry Visa | Temporary Access Credential |
+| **Refresh Token** | Multiple Entry Visa | Token Renewal Credential |
+| **Scope** | Visa type (Tourist, Business, Student) | Permission Set |
+
+---
+
+## Complete Architecture Diagram
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        UI[Web/Mobile App]
+        Gateway[API Gateway]
+    end
+    
+    subgraph "Security Layer"
+        Auth[Authorization Server<br>Spring Security OAuth2]
+        JWKS[JWKS Endpoint<br>Public Keys]
+        Token[Token Store]
+    end
+    
+    subgraph "Microservices Layer"
+        MS1[Order Service<br>Resource Server]
+        MS2[Payment Service<br>Resource Server]
+        MS3[User Service<br>Resource Server]
+    end
+    
+    subgraph "Data Layer"
+        DB[(User Database)]
+        Cache[(Token Cache<br>Redis)]
+    end
+    
+    UI -->|Login Request| Gateway
+    Gateway -->|Authentication| Auth
+    Auth -->|Validate| DB
+    Auth -->|Generate JWT| Token
+    Token -->|Store| Cache
+    Auth -->|Return Tokens| UI
+    UI -->|Request with Token| Gateway
+    Gateway -->|Validate Token| JWKS
+    Gateway -->|Route Request| MS1
+    Gateway -->|Route Request| MS2
+    Gateway -->|Route Request| MS3
+    MS1 -->|Validate Token| Auth
+    MS2 -->|Validate Token| Auth
+    MS3 -->|Validate Token| Auth
+    
+    style Auth fill:#ff6b6b
+    style Gateway fill:#4ecdc4
+    style MS1 fill:#45b7d1
+    style MS2 fill:#45b7d1
+    style MS3 fill:#45b7d1
+```
+
+---
+
+## Implementation with Spring Security
+
+### 1. Authorization Server (The Immigration Office)
+
+```java
+@Configuration
+@EnableAuthorizationServer
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    
+    @Autowired
+    private DataSource dataSource;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+            .withClient("ecommerce-app")                    // Client ID
+            .secret(passwordEncoder.encode("app-secret"))   // Client Secret
+            .authorizedGrantTypes(
+                "authorization_code",                        // For web apps
+                "password",                                  // For mobile apps
+                "refresh_token",                            // For token renewal
+                "client_credentials"                        // For machine-to-machine
+            )
+            .scopes("read", "write", "trust")               // Permissions
+            .accessTokenValiditySeconds(3600)               // 1 hour validity
+            .refreshTokenValiditySeconds(86400)             // 24 hours validity
+            .redirectUris("http://localhost:3000/login")    // Callback URL
+            .autoApprove(true);
+    }
+    
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        endpoints
+            .authenticationManager(authenticationManager)
+            .tokenStore(tokenStore())
+            .accessTokenConverter(accessTokenConverter())
+            .tokenEnhancer(tokenEnhancer());
+    }
+    
+    @Bean
+    public TokenStore tokenStore() {
+        // JWT Tokens stored in memory (stateless)
+        return new JwtTokenStore(accessTokenConverter());
+    }
+    
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        KeyPair keyPair = new KeyStoreKeyFactory(
+            new ClassPathResource("keystore.jks"),
+            "password".toCharArray()
+        ).getKeyPair("jwt-sign-key");
+        converter.setKeyPair(keyPair);
+        return converter;
+    }
+    
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return (accessToken, authentication) -> {
+            // Add custom claims
+            Map<String, Object> additionalInfo = new HashMap<>();
+            additionalInfo.put("tenantId", getTenantId(authentication));
+            additionalInfo.put("department", getUserDepartment(authentication));
+            additionalInfo.put("permissions", getUserPermissions(authentication));
+            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+            return accessToken;
+        };
+    }
+}
+```
+
+### 2. Resource Server Configuration (The Country Entry)
+
+```java
+@Configuration
+@EnableResourceServer
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+    
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http
+            .cors().and()
+            .csrf().disable()
+            .authorizeRequests(authorize -> authorize
+                // Public endpoints
+                .antMatchers("/api/public/**").permitAll()
+                
+                // Authenticated endpoints
+                .antMatchers("/api/orders/**").authenticated()
+                
+                // Role-based endpoints
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                
+                // Scope-based endpoints
+                .antMatchers("/api/sensitive/**").access("#oauth2.hasScope('trust')")
+                
+                // SpEL expressions
+                .antMatchers("/api/orders/{orderId}").access(
+                    "@securityService.hasOrderAccess(authentication, #orderId)"
+                )
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwt -> jwt
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
+            );
+    }
+    
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+        converter.setAuthorityPrefix("ROLE_");
+        converter.setAuthoritiesClaimName("authorities");
+        
+        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+        jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
+        return jwtConverter;
+    }
+}
+```
+
+### 3. Complete Security Implementation
+
+```java
+@Configuration
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+            .cors().and()
+            .csrf().disable()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+            .authorizeHttpRequests(authz -> authz
+                // Auth endpoints
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/oauth/**").permitAll()
+                .requestMatchers("/actuator/health").permitAll()
+                
+                // Resource endpoints
+                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/orders/**").authenticated()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/manager/**").hasAnyRole("ADMIN", "MANAGER")
+                
+                // Any other request
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwt -> jwt
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
+                .authenticationEntryPoint(authenticationEntryPoint())
+                .accessDeniedHandler(accessDeniedHandler())
+            )
+            .build();
+    }
+    
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+        converter.setAuthorityPrefix("");
+        
+        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+        jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
+        jwtConverter.setPrincipalClaimName("sub");
+        
+        return jwtConverter;
+    }
+    
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Unauthorized");
+            error.put("message", "Authentication required");
+            error.put("path", request.getRequestURI());
+            error.put("timestamp", Instant.now().toString());
+            
+            new ObjectMapper().writeValue(response.getWriter(), error);
+        };
+    }
+    
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Forbidden");
+            error.put("message", "Insufficient permissions");
+            error.put("path", request.getRequestURI());
+            error.put("timestamp", Instant.now().toString());
+            
+            new ObjectMapper().writeValue(response.getWriter(), error);
+        };
+    }
+}
+```
+
+### 4. Authentication Service Implementation
+
+```java
+@Service
+@Slf4j
+public class AuthenticationService {
+    
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private TokenStore tokenStore;
+    
+    @Autowired
+    private JwtAccessTokenConverter tokenConverter;
+    
+    public OAuth2Authentication authenticate(String username, String password) {
+        // Validate credentials
+        UserDetails user = userDetailsService.loadUserByUsername(username);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+        
+        // Create authentication
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            user, null, user.getAuthorities()
+        );
+        
+        // Create OAuth2 request
+        TokenRequest tokenRequest = new TokenRequest(
+            Map.of(),                              // Parameters
+            "ecommerce-app",                      // Client ID
+            Arrays.asList("read", "write"),        // Scopes
+            "password"                            // Grant type
+        );
+        
+        OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(
+            new DefaultClientDetails("ecommerce-app", null, null, 
+                Arrays.asList("read", "write"), 
+                Arrays.asList("password", "refresh_token"), 
+                null, null, false, null, null)
+        );
+        
+        // Create OAuth2 authentication
+        OAuth2Authentication oAuth2Auth = new OAuth2Authentication(oAuth2Request, authentication);
+        
+        // Generate tokens
+        OAuth2AccessToken token = tokenConverter.enhance(
+            tokenStore.getAccessToken(oAuth2Auth),
+            oAuth2Auth
+        );
+        
+        if (token == null) {
+            token = tokenStore.createAccessToken(oAuth2Auth);
+        }
+        
+        log.info("User {} authenticated successfully", username);
+        return oAuth2Auth;
+    }
+    
+    public OAuth2AccessToken refreshToken(String refreshToken) {
+        OAuth2RefreshToken oAuth2RefreshToken = 
+            tokenStore.readRefreshToken(refreshToken);
+        
+        if (oAuth2RefreshToken == null) {
+            throw new InvalidTokenException("Invalid refresh token");
+        }
+        
+        OAuth2Authentication auth = 
+            tokenStore.readAuthenticationForRefreshToken(oAuth2RefreshToken);
+        
+        // Revoke existing access token
+        OAuth2AccessToken accessToken = 
+            tokenStore.getAccessToken(auth);
+        if (accessToken != null) {
+            tokenStore.removeAccessToken(accessToken);
+        }
+        
+        // Create new access token
+        OAuth2AccessToken newAccessToken = 
+            tokenConverter.enhance(
+                tokenStore.createAccessToken(auth),
+                auth
+            );
+        
+        log.info("Token refreshed for user: {}", auth.getName());
+        return newAccessToken;
+    }
+}
+```
+
+### 5. Service-to-Service Communication (The Intra-Country Travel)
+
+```java
+@Component
+public class OAuth2RestTemplate {
+    
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+    
+    @Bean
+    public OAuth2ClientContext oauth2ClientContext() {
+        return new DefaultOAuth2ClientContext();
+    }
+    
+    @Bean
+    public OAuth2RestOperations oAuth2RestOperations(
+            OAuth2ClientContext oAuth2ClientContext,
+            RestTemplate restTemplate) {
+        
+        OAuth2ProtectedResourceDetails resource = 
+            new AuthorizationCodeResourceDetails();
+        resource.setAccessTokenUri("http://auth-service/oauth/token");
+        resource.setClientId("service-client");
+        resource.setClientSecret("service-secret");
+        resource.setGrantType("client_credentials");
+        resource.setScope(Arrays.asList("read", "write"));
+        
+        return new OAuth2RestTemplate(resource, oAuth2ClientContext);
+    }
+}
+
+@Service
+public class OrderService {
+    
+    @Autowired
+    private OAuth2RestOperations oAuth2RestTemplate;
+    
+    private final String PAYMENT_SERVICE_URL = "http://payment-service/api/payments";
+    private final String INVENTORY_SERVICE_URL = "http://inventory-service/api/inventory";
+    
+    public Order createOrder(OrderRequest request) {
+        // Get token for service-to-service communication
+        String token = oAuth2RestTemplate.getAccessToken().getValue();
+        
+        // Call Payment Service
+        PaymentResponse payment = oAuth2RestTemplate.postForObject(
+            PAYMENT_SERVICE_URL,
+            new PaymentRequest(request.getAmount()),
+            PaymentResponse.class
+        );
+        
+        // Call Inventory Service
+        oAuth2RestTemplate.put(
+            INVENTORY_SERVICE_URL + "/" + request.getProductId(),
+            new InventoryUpdate(request.getQuantity())
+        );
+        
+        // Create order
+        return new Order(request, payment);
+    }
+}
+```
+
+### 6. Microservice Security Interceptor
+
+```java
+@Component
+public class SecurityInterceptor implements HandlerInterceptor {
+    
+    @Autowired
+    private JwtDecoder jwtDecoder;
+    
+    @Autowired
+    private UserService userService;
+    
+    @Override
+    public boolean preHandle(HttpServletRequest request, 
+                            HttpServletResponse response, 
+                            Object handler) {
+        
+        String token = extractJwtFromRequest(request);
+        
+        if (token != null) {
+            Jwt jwt = jwtDecoder.decode(token);
+            
+            // Extract user info
+            String userId = jwt.getClaim("sub");
+            String tenantId = jwt.getClaim("tenantId");
+            String department = jwt.getClaim("department");
+            List<String> permissions = jwt.getClaim("permissions");
+            
+            // Set context
+            SecurityContextHolder.getContext().setAuthentication(
+                new PreAuthenticatedAuthenticationToken(
+                    userId,
+                    null,
+                    jwt.getClaim("authorities")
+                )
+            );
+            
+            // Set tenant context for multi-tenancy
+            TenantContext.setCurrentTenant(tenantId);
+            
+            // Log for auditing
+            log.info("Request from user: {}, tenant: {}, path: {}", 
+                userId, tenantId, request.getRequestURI());
+        }
+        
+        return true;
+    }
+    
+    private String extractJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+```
+
+### 7. Token Propagation for Microservices
+
+```java
+@Configuration
+public class TokenPropagationConfig {
+    
+    @Bean
+    public RequestInterceptor tokenPropagationInterceptor() {
+        return request -> {
+            // Get current token from security context
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth instanceof OAuth2Authentication) {
+                OAuth2Authentication oauth = (OAuth2Authentication) auth;
+                OAuth2AccessToken accessToken = 
+                    tokenStore.getAccessToken(oauth);
+                if (accessToken != null) {
+                    request.header(
+                        "Authorization", 
+                        "Bearer " + accessToken.getValue()
+                    );
+                }
+            }
+        };
+    }
+}
+```
+
+---
+
+## Authentication Flow Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App as Web/Mobile App
+    participant Gateway as API Gateway
+    participant Auth as Auth Service<br>(Authorization Server)
+    participant Redis as Token Cache
+    participant MS as Microservice<br>(Resource Server)
+    
+    User->>App: Enter Credentials
+    App->>Gateway: POST /auth/login
+    Gateway->>Auth: Forward Credentials
+    
+    Auth->>Auth: Validate User
+    Auth->>Redis: Store Refresh Token
+    Auth->>Auth: Generate JWT Access Token
+    Auth-->>Gateway: Return Access + Refresh Token
+    Gateway-->>App: Tokens
+    
+    User->>App: Access Resource
+    App->>Gateway: GET /api/orders<br>Header: Bearer {token}
+    
+    Gateway->>Gateway: Validate JWT
+    Gateway->>MS: Forward Request
+    
+    MS->>MS: Validate Token Locally<br>(Stateless)
+    MS-->>Gateway: Response
+    Gateway-->>App: Response
+    
+    Note over Auth,Redis: Token Expired
+    
+    App->>Gateway: POST /auth/refresh<br>Header: Bearer {refresh}
+    Gateway->>Auth: Verify Refresh Token
+    Auth->>Redis: Validate Refresh Token
+    Auth->>Auth: Generate New Access Token
+    Auth-->>Gateway: New Access Token
+    Gateway-->>App: New Access Token
+    
+    Note over User,MS: API Gateway Benefits:
+    Note over User,MS: 1. Single entry point
+    Note over User,MS: 2. Token validation
+    Note over User,MS: 3. Request routing
+    Note over User,MS: 4. Rate limiting
+    Note over User,MS: 5. Logging & monitoring
+```
+
+---
+
+## Token Flow in Microservices
+
+```mermaid
+graph LR
+    subgraph "Request Flow"
+        Client[Client App] -->|JWT Token| Gateway[API Gateway]
+        Gateway -->|Validate JWT| JWKS[JWKS Endpoint]
+        JWKS -->|Public Key| Gateway
+        Gateway -->|Forward with Token| Service1[Service 1]
+        Gateway -->|Forward with Token| Service2[Service 2]
+        Service1 -->|Propagate Token| Service3[Service 3]
+    end
+    
+    subgraph "Token Validation"
+        Service1 -->|Decode JWT| Validate1[JWT Validation]
+        Service2 -->|Decode JWT| Validate2[JWT Validation]
+        Service3 -->|Decode JWT| Validate3[JWT Validation]
+        Validate1 -->|Check Claims| Context1[Security Context]
+        Validate2 -->|Check Claims| Context2[Security Context]
+        Validate3 -->|Check Claims| Context3[Security Context]
+    end
+    
+    style Gateway fill:#4ecdc4
+    style Service1 fill:#45b7d1
+    style Service2 fill:#45b7d1
+    style Service3 fill:#45b7d1
+```
+
+---
+
+## Common OAuth2 Grant Types
+
+```java
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    
+    // 1. Password Grant - Mobile/Native Apps
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest request) {
+        // User provides username/password directly
+        OAuth2Authentication auth = authService.authenticate(
+            request.getUsername(), 
+            request.getPassword()
+        );
+        return ResponseEntity.ok(createTokenResponse(auth));
+    }
+    
+    // 2. Authorization Code Grant - Web Applications
+    @GetMapping("/authorize")
+    public ResponseEntity<Void> authorize(
+            @RequestParam String clientId,
+            @RequestParam String redirectUri,
+            @RequestParam String scope,
+            HttpServletResponse response) throws IOException {
+        
+        // Step 1: User authorizes app
+        // Step 2: Redirect with authorization code
+        String authCode = UUID.randomUUID().toString();
+        response.sendRedirect(redirectUri + "?code=" + authCode);
+        return ResponseEntity.ok().build();
+    }
+    
+    @PostMapping("/token")
+    public ResponseEntity<TokenResponse> token(@RequestParam String code) {
+        // Step 3: Exchange code for token
+        OAuth2AccessToken token = authService.exchangeCodeForToken(code);
+        return ResponseEntity.ok(createTokenResponse(token));
+    }
+    
+    // 3. Client Credentials - Machine-to-Machine
+    @PostMapping("/client-token")
+    public ResponseEntity<TokenResponse> clientToken(
+            @RequestHeader("Authorization") String clientAuth) {
+        // Service-to-service communication
+        OAuth2AccessToken token = authService.getClientToken(clientAuth);
+        return ResponseEntity.ok(createTokenResponse(token));
+    }
+}
+```
+
+---
+
+## Security Best Practices for Microservices
+
+```java
+@Configuration
+public class SecurityBestPractices {
+    
+    // 1. Use JWKS (JSON Web Key Set) for public key distribution
+    @Bean
+    public JWKSet jwkSet() {
+        RSAKey rsaKey = new RSAKey.Builder(publicKey)
+            .keyID(UUID.randomUUID().toString())
+            .build();
+        return new JWKSet(rsaKey);
+    }
+    
+    // 2. Implement Token Blacklisting
+    @Service
+    public class TokenBlacklist {
+        private final RedisTemplate<String, String> redis;
+        
+        public void blacklistToken(String token) {
+            long expiration = getTokenExpiration(token);
+            redis.opsForValue().set(
+                "blacklist:" + token,
+                "true",
+                Duration.ofSeconds(expiration)
+            );
+        }
+        
+        public boolean isBlacklisted(String token) {
+            return redis.hasKey("blacklist:" + token);
+        }
+    }
+    
+    // 3. Rate Limiting per Client
+    @Component
+    public class RateLimitingInterceptor implements HandlerInterceptor {
+        private final LoadingCache<String, AtomicLong> requestCounts = 
+            CacheBuilder.newBuilder()
+                .expireAfterWrite(1, TimeUnit.MINUTES)
+                .build(CacheLoader.from(() -> new AtomicLong(0)));
+        
+        @Override
+        public boolean preHandle(HttpServletRequest request, 
+                                HttpServletResponse response, 
+                                Object handler) {
+            String clientId = extractClientId(request);
+            long count = requestCounts.get(clientId).incrementAndGet();
+            
+            if (count > 100) { // 100 requests per minute
+                response.setStatus(429);
+                return false;
+            }
+            return true;
+        }
+    }
+    
+    // 4. Validate Claims
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withPublicKey(publicKey)
+            .build()
+            .withIssuer("auth-service")
+            .withAudience("ecommerce-services")
+            .withClaim("tenantId", String::notBlank)
+            .withClaim("clientId", String::notBlank)
+            .withClaim("authorities", authorities -> authorities != null);
+    }
+    
+    // 5. Multi-Tenancy Support
+    @Component
+    public class TenantInterceptor implements HandlerInterceptor {
+        @Override
+        public boolean preHandle(HttpServletRequest request, 
+                                HttpServletResponse response, 
+                                Object handler) {
+            Authentication auth = SecurityContextHolder.getContext()
+                .getAuthentication();
+            
+            if (auth instanceof JwtAuthenticationToken) {
+                JwtAuthenticationToken jwtAuth = (JwtAuthenticationToken) auth;
+                String tenantId = jwtAuth.getToken().getClaim("tenantId");
+                
+                // Set tenant in thread-local context
+                TenantContext.setCurrentTenant(tenantId);
+                
+                // Modify database queries to use tenant
+                // Example: SELECT * FROM orders WHERE tenant_id = ?
+            }
+            return true;
+        }
+    }
+}
+```
+
+---
+
+## Key OAuth2 Flows Summary
+
+| Grant Type | Use Case | Client Type | Example |
+|------------|----------|-------------|---------|
+| **Authorization Code** | Web applications with login | Confidential | Spring Boot Web App |
+| **Password** | Mobile/native apps | Public/Confidential | iOS/Android App |
+| **Client Credentials** | Machine-to-machine | Confidential | Microservices communication |
+| **Refresh Token** | Token renewal | All types | Extended sessions |
+| **Implicit** | Legacy SPAs | Public | (Deprecated) |
+
+---
+
+## Interview Questions with Passport Analogy
+
+### Q: Why use OAuth2 over basic authentication in microservices?
+**A:** In the passport analogy, OAuth2 is like having a visa that works across multiple countries, while basic authentication is like showing your driver's license at every border. OAuth2 provides:
+- **Single sign-on**: One passport for multiple services
+- **Delegated access**: Give limited permissions (visa type) to third parties
+- **Token revocation**: Cancel visa when needed
+- **Stateless validation**: Immigration officer validates without calling home
+
+### Q: How do you handle token propagation?
+**A:** Like passing a diplomatic passport between countries. The original token with user context must be forwarded to downstream services.
+```java
+// Propagate token to downstream services
+headers.set("Authorization", "Bearer " + originalToken);
+```
+
+### Q: Explain token introspection vs JWT validation
+**A:** Passport analogy:
+- **JWT Validation**: Like checking passport features (watermarks, signature) at the border
+- **Token Introspection**: Calling the issuing embassy to verify the passport is valid and not revoked
+
+**JWT Validation (Stateless)**:
+```java
+jwtDecoder.decode(token); // Uses public key
+```
+
+**Token Introspection (Stateful)**:
+```java
+oauth2ResourceServer.oauth2Introspection();
+```
